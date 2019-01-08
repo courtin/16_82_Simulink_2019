@@ -1,0 +1,74 @@
+function trajectory_reconstruction(stateHistory)
+
+%stateHistory = results_state;
+
+t = stateHistory.Time;
+
+Xe = stateHistory.Data(:,10);
+Ye = stateHistory.Data(:,11);
+Ze = -stateHistory.Data(:,12);
+
+if range(Ye) == 0
+    %only longitudinal, so a 2D plot will suffice
+    
+    figure
+    hold on
+    %mark start point
+    scatter(Xe(1), Ze(1), 'go','filled')
+    %mark end point
+    scatter(Xe(end), Ze(end), 'ro','filled')
+    %plot data
+    plot(Xe,Ze,'k','LineWidth',3)
+    grid on
+    title(sprintf('Trajectory (3D) over %.1f seconds', max(t)))
+    xlabel('X')
+    ylabel('Z')
+    
+else
+    
+    %% 3D reconstruction
+    figure
+    hold on
+    %mark start point
+    scatter3(Xe(1), Ye(1), Ze(1), 'go','filled')
+    %mark end point
+    scatter3(Xe(end), Ye(end), Ze(end), 'ro','filled')
+    
+    %plot data
+    plot3(Xe,Ye,Ze,'k','LineWidth',3)
+    
+    %make it look nice
+    grid
+    view([-45,45])
+    title(sprintf('Trajectory (3D) over %.1f seconds', max(t)))
+    xlabel('X')
+    ylabel('Y')
+    zlabel('Z')
+    
+    %% generate grid
+    xtick = xticks;
+    ytick = yticks;
+    ztick = zticks;
+    
+    xl = xlim;
+    yl = ylim;
+    zl = zlim;
+    xmin = xl(1);
+    xmax = xl(2);
+    ymin = yl(1);
+    ymax = yl(2);
+    zmin = zl(1);
+    zmax = zl(2);
+    
+    for i = 1:length(ytick)
+        v = [xmin, ytick(i), zmin; xmax, ytick(i), zmin; xmax, ytick(i), zmax;xmin, ytick(i), zmax];
+        f = [1 2 3 4];
+        patch('Faces',f,'Vertices',v,'FaceColor','blue','FaceAlpha',0.03)
+        
+    end
+    
+    
+    
+end
+
+end
