@@ -28,7 +28,7 @@
 %	Inertial, Geometric, and Aerodynamic Properties
 %   *** STOL_Input.m must first be run to save Airplane.mat***
 	load Airplane.mat
-    load 40df_fits.mat
+    
 
     %Handy variable shorthands
     i_w = airplane.geometry.Wing.i;
@@ -77,6 +77,7 @@
     %C_L_wing
     %Currently this interpolator is only for 40deg flaps; any
     %flap changes are ignored.
+    cl_fit = airplane.aero.Wing.cl_fit;
     cl_left = cl_fit(a_w_deg, dCJ_BL);
     cl_right = cl_fit(a_w_deg, dCJ_BR);
     
@@ -95,14 +96,15 @@
     %Elevator and Pitch Rate effects
     CLde = airplane.stability.CLde;
     CLde_check = Sh/Sw*CLah*tau_h;
-    CLde = CLde_check %Very different drom JVL; need to debug
+    CLde = CLde_check; %Very different drom JVL; need to debug
     CLq = airplane.stability.CLq;
     CLq_check = -2*Vh*CLah;
-    CLq = CLq_check %Very different drom JVL; need to debug
+    CLq = CLq_check; %Very different drom JVL; need to debug
     CL = CLw + CLah*a_h + CLq*x(3) + CLde*u(1);
 
 %	CX Calculations 
 %	====================================
+    cx_fit = airplane.aero.Wing.cx_fit;
     cx_left = cx_fit(a_w_deg, dCJ_BL);
     cx_right = cx_fit(a_w_deg, dCJ_BR);
     
@@ -114,6 +116,7 @@
 
 %	Cm Calculations 
 %	====================================    
+    cm_fit = airplane.aero.Wing.cm_fit;
     cm_left     = cm_fit(a_w_deg, dCJ_BL);
     cm_right    = cm_fit(a_w_deg, dCJ_BR); 
     
@@ -126,7 +129,7 @@
     Cmaf = 0; %Negelect fuselage contributions for now
     Cmf = Cmaf*alphar;
     
-    Cm = CLw*(x_cg-x_acw)/cbar + Cmw + Cmh + Cmf + Cmh + Cmde*u(1) + Cmq*x(3);
+    Cm = CLw*(x_cg-x_acw)/cbar + Cmw + Cmh + Cmf + Cmde*u(1) + Cmq*x(3);
     
     	
 %	Current Lateral-Directional Characteristics
@@ -136,7 +139,7 @@
 %	Rolling Moment Coefficient
 
 	%Cl      =	(ClBr*betar + CldRr*u(2)) + Clrr * x(7) + Clpr * x(6) ...
-    %            + (CldAr*u(3));% + CldASr*u(5));
+    %            + (CldAr*u(3));%
 									% Total Rolling-Moment Coefficient
     Cl = 0;
 

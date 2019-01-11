@@ -37,7 +37,7 @@ geometry.Wing.f_spoil_chor      = .2;
 
 geometry.Htail.S                = 43 * ftsq2msq;   %square feet
 geometry.Htail.l                = 16 * ft2m;
-geometry.Htail.i                = -5 * deg2rad;
+geometry.Htail.i                = 0 * deg2rad;
 geometry.Htail.sweep            = 0;
 
 geometry.Vtail.S                = 43 * ftsq2msq;
@@ -60,7 +60,7 @@ weights.Ixx         = 1048 * slugftsq2kgmsq;
 weights.Iyy         = 3000 * slugftsq2kgmsq;
 weights.Izz         = 3530 * slugftsq2kgmsq;
 weights.Ixz         = 0.0 * slugftsq2kgmsq;
-weights.xcg         = .295*geometry.Wing.cbar;
+weights.xcg         = .0295*geometry.Wing.cbar;
 
 %%%%%%%%%%%
 %STABILITY%
@@ -136,6 +136,11 @@ aero.Wing.e              = .75;
 aero.Wing.x_ac           = .25*geometry.Wing.cbar;
 aero.Htail.tau            = .65;
 aero.Htail.cla            = 2*pi;
+
+load 40df_fits.mat
+aero.Wing.cl_fit        = cl_fit;
+aero.Wing.cx_fit        = cx_fit;
+aero.Wing.cm_fit        = cm_fit;
 %%%%%%%%%%%%%%%%%%%%%%%%
 %ENVIRONMENT DEFINITION%
 %%%%%%%%%%%%%%%%%%%%%%%%

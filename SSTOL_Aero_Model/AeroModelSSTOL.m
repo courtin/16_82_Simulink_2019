@@ -28,7 +28,7 @@
 %	Inertial, Geometric, and Aerodynamic Properties
 %   *** STOL_Input.m must first be run to save Airplane.mat***
 	load Airplane.mat
-    load 40df_fits.mat
+    
 
     %Handy variable shorthands
     i_w = airplane.geometry.Wing.i;
@@ -77,6 +77,7 @@
     %C_L_wing
     %Currently this interpolator is only for 40deg flaps; any
     %flap changes are ignored.
+    cl_fit = airplane.aero.Wing.cl_fit;
     cl_left = cl_fit(a_w_deg, dCJ_BL);
     cl_right = cl_fit(a_w_deg, dCJ_BR);
     
@@ -103,6 +104,7 @@
 
 %	CX Calculations 
 %	====================================
+    cx_fit = airplane.aero.Wing.cx_fit;
     cx_left = cx_fit(a_w_deg, dCJ_BL);
     cx_right = cx_fit(a_w_deg, dCJ_BR);
     
@@ -114,6 +116,7 @@
 
 %	Cm Calculations 
 %	====================================    
+    cm_fit = airplane.aero.Wing.cm_fit;
     cm_left     = cm_fit(a_w_deg, dCJ_BL);
     cm_right    = cm_fit(a_w_deg, dCJ_BR); 
     
@@ -136,7 +139,7 @@
 %	Rolling Moment Coefficient
 
 	%Cl      =	(ClBr*betar + CldRr*u(2)) + Clrr * x(7) + Clpr * x(6) ...
-    %            + (CldAr*u(3));% + CldASr*u(5));
+    %            + (CldAr*u(3));%
 									% Total Rolling-Moment Coefficient
     Cl = 0;
 
