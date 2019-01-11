@@ -136,6 +136,13 @@ aero.Wing.e              = .75;
 aero.Wing.x_ac           = .25*geometry.Wing.cbar;
 aero.Htail.tau            = .65;
 aero.Htail.cla            = 2*pi;
+
+load 40df_fits.mat
+
+aero.Wing.cl_fit        = cl_fit;
+aero.Wing.cx_fit        = cx_fit;
+aero.Wing.cm_fit        = cm_fit;
+
 %%%%%%%%%%%%%%%%%%%%%%%%
 %ENVIRONMENT DEFINITION%
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -143,7 +150,6 @@ aero.Htail.cla            = 2*pi;
 %%%%%%%%%%%%%%%%%%%%%%%
 %SIMULATION DEFINITION%
 %%%%%%%%%%%%%%%%%%%%%%%
-
 
 %Combine Data Structures
 airplane.geometry       = geometry;
