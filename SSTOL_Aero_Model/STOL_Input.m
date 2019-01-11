@@ -152,5 +152,6 @@ airplane.propulsion     = propulsion;
 airplane.aero           = aero;
 airplane.stability      = stability;
 
-save("Airplane.mat","airplane")
-
+save("./SSTOL_Aero_Model/Airplane.mat","airplane")
+clear all; 
+load("./SSTOL_Aero_Model/Airplane.mat")

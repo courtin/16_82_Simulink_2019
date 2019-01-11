@@ -1,9 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%
 %AeroModelSSTOL Test
 %%%%%%%%%%%%%%%%%%%%
-clear all
-close all
-STOL_Input;
 
 hft         =   0;   % Altitude above Sea Level, ft
 VKIAS       =   50;     % Indicated Airspeed, kt
@@ -29,7 +26,6 @@ V       =   sqrt(2*qBarSL/airDens);	% True Airspeed, TAS, m/s
 TASms   =   V;
 disp('  ')
 disp(['Dynamic Pressure = ',num2str(qBarSL),' N/m^2, True Airspeed = ',num2str(V),' m/s'])
-
 
 alpha   =	13.5;      % Angle of attack, deg (relative to air mass)
 beta    =	0;      % Sideslip angle, deg (relative to air mass)
@@ -87,5 +83,4 @@ u	=	[dE * 0.01745329
         dB_R
         dT_L
         dT_R];
-    
-[CX,CL,CY,Cl,Cm,Cn]	=	AeroModelSSTOL(x,u,Mach,alphar,betar,V)
+   
