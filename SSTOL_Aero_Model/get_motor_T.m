@@ -1,3 +1,4 @@
+%% 
 function [T, Vj] = get_motor_T(Pshaft, V, rho,propulsor)
 %%%%%%%%%%%%%%%%%%%%%
 %Computes motor thrust as a function of input power, motor size, and flight
