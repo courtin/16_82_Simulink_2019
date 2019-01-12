@@ -17,7 +17,7 @@
 %   u(2) = rudder deflection, rad, positive trailing edge down
 %   u(3) = aileron deflection, rad, positive left trailing edge down
 %   u(4) = left flap deflection, rad, positive trailing edge down
-%   u(5) = left flap deflection, rad, positive trailing edge down
+%   u(5) = right flap deflection, rad, positive trailing edge down
 %   u(6:end) = u_t, thrust control vector, 0-1
 
 %   u_thrust(1) = left blowing throttle, 0-1
@@ -69,17 +69,41 @@
     [dCJ_BR, ~, CT_BR] = propulsor_perf(d_BR, airplane.propulsion.right_blower, cbar, alt, V);
     [~, T_L, CT_CL] = propulsor_perf(d_TL, airplane.propulsion.left_cruiser, cbar, alt, V);
     [~, T_R, CT_CR] = propulsor_perf(d_TR, airplane.propulsion.right_cruiser, cbar, alt, V);
-    
+%   Stability Derivates from JVL
+%   ====================================
+%   Currently these are just keyed off of the left flap deflection; no
+%   provision yet for these as a result of asymmetric flap deflections
+
+    [CLde, CLq, ...
+    Cmde, Cmq, ...
+    CYb, CYdA, CYdR, CYr, CYp,...
+    Clb, CldA, CldR, Clr, Clp,...
+    Cnb, CndA, CndR, Cnr, Cnp] = get_JVL_derivatives(u(4), dCJ_BL, airplane);
 %	CL Calculations 
 %	====================================
 
     %Wing Lift Coefficient
     %C_L_wing
     %Currently this interpolator is only for 40deg flaps; any
-    %flap changes are ignored.
-    cl_fit = airplane.aero.Wing.cl_fit;
-    cl_left = cl_fit(a_w_deg, dCJ_BL);
-    cl_right = cl_fit(a_w_deg, dCJ_BR);
+    %flap changes are ignored except the zero deg flap case.
+    cl_fit_wt = airplane.aero.Wing.cl_fit;
+    
+    %Left wing
+    if u(4) == 40
+        %Interpolate from wind tunnel data
+        cl_left = cl_fit_wt(a_w_deg, dCJ_BL);
+    else
+        %Use linear TAT model with fixed cl_max
+        cl_left = min(2*pi*a_w_deg*pi/180, airplane.aero.Wing.cl_max_clean);
+    end
+    %Right wing
+    if u(5) == 40
+        %Interpolate from wind tunnel data
+        cl_right = cl_fit_wt(a_w_deg, dCJ_BR);
+    else
+        %Use linear TAT model with fixed cl_max
+        cl_right = min(2*pi*a_w_deg*pi/180, airplane.aero.Wing.cl_max_clean);
+    end
     
     CLw = .9*(cl_left + cl_right)/2;
     
@@ -94,22 +118,35 @@
     CLah = (2*pi*AR)/(2+sqrt(4*(AR/eta)^2*(1+tan(sweep_h)^2)));
     CLt = CLah*a_h*Sh/Sw*eta_h;
     %Elevator and Pitch Rate effects
-    CLde = airplane.stability.CLde;
+    %CLde = airplane.stability.CLde;
     CLde_check = Sh/Sw*CLah*tau_h;
-    CLde = CLde_check; %Very different drom JVL; need to debug
-    CLq = airplane.stability.CLq;
-    CLq_check = -2*Vh*CLah;
-    CLq = CLq_check; %Very different drom JVL; need to debug
-    CL = CLw + CLah*a_h + CLq*x(3) + CLde*u(1);
+    %CLde = CLde_check; %Very different drom JVL; need to debug
+    %CLq = airplane.stability.CLq;
+    CLq_check = -2*Vh*CLah*eta_h;
+    %CLq = CLq_check; %Very different from JVL; need to debug
+    CL = CLw + CLah*a_h + CLq*x(3)*(cbar/(2*V)) + CLde*u(1);
 
 %	CX Calculations 
 %	====================================
     cx_fit = airplane.aero.Wing.cx_fit;
-    cx_left = cx_fit(a_w_deg, dCJ_BL);
-    cx_right = cx_fit(a_w_deg, dCJ_BR);
+    
+    %If there is no flap deflection, use the thrust coefficients calculated
+    %above
+    %Left wing
+    if u(4) == 40
+        cx_left = cx_fit(a_w_deg, dCJ_BL);
+    else
+        cx_left = -CT_BL;
+    end
+    %Right wing
+    if u(4) == 40
+        cx_right = cx_fit(a_w_deg, dCJ_BR);
+    else
+        cx_right = -CT_BR;
+    end
     
     CXw = (cx_left+cx_right)/2;
-    CDi = CLw^2/(pi*AR*e+(CT_BL+CT_BR));
+    CDi = CLw^2/(pi*AR*e+2*(CT_BL+CT_BR));
     CDp = .03;  %Placeholder, this has little effect on the high-lift cases
     
     CX = CXw + CDi + CDp - CT_CL - CT_CR;
@@ -117,19 +154,30 @@
 %	Cm Calculations 
 %	====================================    
     cm_fit = airplane.aero.Wing.cm_fit;
-    cm_left     = cm_fit(a_w_deg, dCJ_BL);
-    cm_right    = cm_fit(a_w_deg, dCJ_BR); 
+    
+    %Left wing
+    if u(4) == 40
+        cm_left = cm_fit(a_w_deg, dCJ_BL);
+    else
+        cm_left = .05; %From WTT
+    end
+    %Right wing
+    if u(5) == 40
+        cm_right = cm_fit(a_w_deg, dCJ_BR);
+    else
+        cm_right = .05; %from WTT
+    end
     
     Cmw = (cm_left + cm_right)/2;
     Cmh = -Vh*eta_h*CLah*a_h;
     
-    Cmde = airplane.stability.Cmde;
-    Cmq = airplane.stability.Cmq;
+    %Cmde = airplane.stability.Cmde;
+    %Cmq = airplane.stability.Cmq;
     
     Cmaf = 0; %Negelect fuselage contributions for now
     Cmf = Cmaf*alphar;
     
-    Cm = CLw*(x_cg-x_acw)/cbar + Cmw + Cmh + Cmf + Cmde*u(1) + Cmq*x(3);
+    Cm = CLw*(x_cg-x_acw)/cbar + Cmw + Cmh + Cmf + Cmde*u(1) + Cmq*x(3)*(cbar/(2*V));
     
     	
 %	Current Lateral-Directional Characteristics

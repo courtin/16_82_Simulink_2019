@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This file defines the aircraft who's performance is to be analyzed.  The
 % aircraft is represented by an "airplane" data structure which
 % contains all the parameters that describe the airplane.  This
@@ -65,33 +65,33 @@ weights.xcg         = .0295*geometry.Wing.cbar;
 %%%%%%%%%%%
 %STABILITY%
 %%%%%%%%%%%
+%Currently each JVL stability derivative is given only as a function of
+%flap deflection.  At high flap deflections there is a positive CJ in the
+%JVL model; the variation with this is not yet captured.  This is valid
+%only as an early estimate; currently only derivatives for flap angles [0,
+%25, 45] deg are provided. TODO: Automate this input
 
-% stability.CL = 4.306;
-% stability.CD = -.55;
-% stability.CLa = 6.64;
-% stability.CDa = .33;
-% stability.Cma = -.736;
-% stability.CLadot = 0.0;
-% stability.Cmadot = -4.36;
-stability.CLq = 10.33;
-stability.Cmq = -24.7;
-% stability.CLM = 0.0;
-% stability.CDM = 0.0;
-% stability.CmM = 0.0;
-stability.CLde = .010 / deg2rad;
-stability.Cmde = -0.038 / deg2rad;
-% stability.CyB = -1.324;
-% stability.ClB = -.204;
-% stability.CnB = .236;
-% stability.Clp = -.445;
-% stability.Cnp = -.154;
-% stability.Clr = .276;
-% stability.Cnr = -.324;
-% stability.Clda = -.134;
-% stability.Cnda = -.0035;
-% stability.Cydr = -.0025;
-% stability.Cldr = -.00009;
-% stability.Cndr = -0.001472;
+stability.flap_settings = [0, 25, 45];
+stability.CLq = [14.45, 16.5, 15.18];
+stability.Cmq = [-42.66, -44.54, -42.5];
+stability.CLde = [.0144 .0152 .0139] ./ deg2rad;
+stability.Cmde = [-0.0624 -.0667 -.0639] ./ deg2rad;
+stability.CYB = [-.728, -1.22,-1.233];
+stability.ClB = [-.030, -.136, -.201];
+stability.CnB = [.241, .315, .362];
+stability.CYdA = [.00018, .000135, .00045] ./ deg2rad;
+stability.CYdR = [-.00537, -.00527, -.00486] ./ deg2rad;
+stability.CldA = [-.004136, -.00415, -.00389] ./ deg2rad;
+stability.CldR = [-.000264, -.000241, -.000198] ./ deg2rad;
+stability.CndA = [-.000043, -.000303, 0.000469] ./ deg2rad;
+stability.CndR = [.00299, .00291, .002677] ./ deg2rad;
+stability.CYr = [.555, .644, .541];
+stability.CYp = [.0461, .452, .747];
+stability.Clr = [.1141, .4115, .6210];
+stability.Clp = [-.5877, -.6260, -.5873];
+stability.Cnr = [-.2911, -.3746, -.4040];
+stability.Cnp = [-.0311, -.2357, -.2974];
+
 
 %%%%%%%%%%%%%%%%%%%
 %PROPULSION SYSTEM%
@@ -134,6 +134,7 @@ propulsion.wheels.mu_roll   = .02;
 %%%%%%%%%%%%%%%%%%%%%%%%
 aero.Wing.e              = .75;
 aero.Wing.x_ac           = .25*geometry.Wing.cbar;
+aero.Wing.cl_max_clean   = 1.6;
 aero.Htail.tau            = .65;
 aero.Htail.cla            = 2*pi;
 
