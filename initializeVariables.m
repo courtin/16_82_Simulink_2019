@@ -52,3 +52,15 @@ disp(x)
 %print initial control inputs vector:
 disp('initial control input:')
 disp(u);
+
+
+%% set up the data fit
+
+load ./SSTOL_Aero_Model/40df_fits.mat;
+
+funcCL = @(u) feval(cl_fit,u);
+funcCX = @(u) feval(cx_fit,u);
+funcCM = @(u) feval(cm_fit,u);
+
+
+
