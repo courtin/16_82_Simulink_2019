@@ -14,7 +14,7 @@ addpath('SSTOL_Aero_Model/')
 STOL_Input;
 
 %mass is defined as 'm'
-m=airplane.weights.MTOW;
+m=airplane.weights.MTOW/9.81;
 
 %inertia matrix is not defined the the components are. Collect them:
 
@@ -40,7 +40,7 @@ sstol_test_Simulink;
 
 initial_position = x(10:12);
 
-initial_velocity = [x(1), x(5), x(3)];
+initial_velocity = [x(1), x(5), x(2)];
 
 initial_orientation = [x(8), x(4), x(9)];
 
@@ -56,23 +56,39 @@ disp(u);
 
 %% set up wing coefficients
 
-alpha_vals = -10:5:40;
-deltaCJ_vals = 0:8;
+alpha_range = -10:5:40;
+dCJ_range = 0:8;
 
 load('SSTOL_Aero_Model/40df_fits.mat');
 
-cls=zeros(length(deltaCJ_vals),length(alpha_vals));
-cxs=zeros(length(deltaCJ_vals),length(alpha_vals));
-cms=zeros(length(deltaCJ_vals),length(alpha_vals));
+cls=zeros(length(dCJ_range),length(alpha_range));
+cxs=zeros(length(dCJ_range),length(alpha_range));
+cms=zeros(length(dCJ_range),length(alpha_range));
 
-for i =1:length(alpha_vals)
-    for j =1:length(deltaCJ_vals)
-        cls(j,i)=cl_fit(alpha_vals(i),deltaCJ_vals(j));
-        cls(j,i)=cl_fit(alpha_vals(i),deltaCJ_vals(j));
+for i =1:length(alpha_range)
+    for j =1:length(dCJ_range)
+        cls(j,i)=cl_fit(alpha_range(i),dCJ_range(j));
+        cxs(j,i)=cx_fit(alpha_range(i),dCJ_range(j));
+        cms(j,i)=cm_fit(alpha_range(i),dCJ_range(j));
     end
 end
 
-figure(1)
-carpet(alpha_vals,deltaCJ_vals,cl,0);
-carpetlabel(alpha_vals,deltaCJ_vals,cl,0,0);
+figure;
+carpet(alpha_range,dCJ_range,cls,0);
+carpetlabel(alpha_range,dCJ_range,cls,0,0);
+title('Carpet Plot of CL')
 
+figure;
+carpet(alpha_range,dCJ_range,cxs,0);
+carpetlabel(alpha_range,dCJ_range,cxs,0,0);
+title('Carpet Plot of CX')
+
+figure;
+carpet(alpha_range,dCJ_range,cms,0);
+carpetlabel(alpha_range,dCJ_range,cms,0,0);
+title('Carpet Plot of CM')
+
+
+cls = cls';
+cxs = cxs';
+cms = cms';

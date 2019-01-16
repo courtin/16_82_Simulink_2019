@@ -30,7 +30,7 @@ disp(['Dynamic Pressure = ',num2str(qBarSL),' N/m^2, True Airspeed = ',num2str(V
 alpha   =	-5;      % Angle of attack, deg (relative to air mass)
 beta    =	0;      % Sideslip angle, deg (relative to air mass)
 dA      =	0;      % Aileron angle, deg
-dE      =	10;      % Elevator angle, deg
+dE      =	20;      % Elevator angle, deg
 dR      =	0;      % Rudder angle, deg
 dF_L    =   40;     % Flap angle, deg
 dF_R    =   40;     % Flap angle, deg

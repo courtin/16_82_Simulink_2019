@@ -40,7 +40,7 @@ sstol_test_Simulink;
 
 initial_position = x(10:12);
 
-initial_velocity = [x(1), x(5), x(3)];
+initial_velocity = [x(1), x(5), x(2)];
 
 initial_orientation = [x(8), x(4), x(9)];
 
