@@ -119,12 +119,14 @@ propulsion.left_cruiser.eta_v        = .85;
 propulsion.left_cruiser.eta_add      = .7;
 propulsion.left_cruiser.R            = .381;
 propulsion.left_cruiser.r_hub        = .06;
+propulsion.left_cruiser.b            = geometry.Wing.b/2;
 propulsion.right_cruiser.N           = 1;
 propulsion.right_cruiser.P_shaft_max = (240*1000);
 propulsion.right_cruiser.eta_v       = .85;
 propulsion.right_cruiser.eta_add     = .7;
 propulsion.right_cruiser.R           = .381;
 propulsion.right_cruiser.r_hub       = .06;
+propulsion.right_cruiser.b           = geometry.Wing.b/2;
 
 propulsion.wheels.mu_brk    = .5;
 propulsion.wheels.mu_roll   = .02;
