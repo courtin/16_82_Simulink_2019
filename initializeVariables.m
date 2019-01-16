@@ -14,7 +14,7 @@ addpath('SSTOL_Aero_Model/')
 STOL_Input;
 
 %mass is defined as 'm'
-m=airplane.weights.MTOW;
+m=airplane.weights.MTOW/9.81;
 
 %inertia matrix is not defined the the components are. Collect them:
 
