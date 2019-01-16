@@ -39,7 +39,7 @@ while err > thr && iter < itermax
     eta_p = eta_i*eta_v;
     err = abs(eta_p_i - eta_p);
     eta_p_i = eta_p;
-    iter = iter+1
+    iter = iter+1;
 end
 
 w = V*(1/eta_i-1);

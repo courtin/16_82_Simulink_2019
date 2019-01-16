@@ -2,7 +2,7 @@
 %AeroModelSSTOL Test
 %%%%%%%%%%%%%%%%%%%%
 
-hft         =   0;   % Altitude above Sea Level, ft
+hft         =   3000;   % Altitude above Sea Level, ft
 VKIAS       =   50;     % Indicated Airspeed, kt
 
 hm          =   hft * 0.3048;    % Altitude above Sea Level, m
