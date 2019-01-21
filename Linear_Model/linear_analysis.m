@@ -185,128 +185,128 @@ for i = 1:length(e_u)
     disp(['Damping ratio: ', num2str(damp), ', Natural Frequency: ', num2str(freq) ' rad/s, Period: ', num2str(2*pi/freq), ' s']);
 end
 
-disp('  ')
-disp('Control Vector Time History Table')
-disp('=================================')
-disp('Time, sec: t0, t1, t2, ...')
-tuHis	=	[0 9 10 11 12 100]
-
-disp('Columns:  Elements of the Control Vector')
-disp('Rows:     Value at time, t0, t1, ...')
-deluHis	=  [0 0 0 0 0 0 0
-            0 0 0 0 0 0 0
-            -.05 0 0 0 0 0 0
-            .05 0 0 0 0 0 0
-            0 0 0 0 0 0 0
-            0 0 0 0 0 0 0]
-
-%Analysis of F and G matrix
-
-C = [1 0 0 0 0 0 0 0 0 0 0 0;
-    0 1 0 0 0 0 0 0 0 0 0 0
-    0 0 1 0 0 0 0 0 0 0 0 0
-    0 0 0 1 0 0 0 0 0 0 0 0];
-
-sys = ss(F,G,C,0);
-%t = repmat([0:.1:60], length(C), 1);
-t = [0:.1:10];
-ut = zeros(length(u), length(t));
-for i = 1:length(t)
-    ut(:,i) = u;
-end
-y =lsim(sys, ut, t,x);
-figure()
-plot(t,y)
-legend('ub', 'wb', 'q', '\theta')
-
-%Simulation initial conditions - start from trim state, plus any deltas
-del_x = [0      %u_b
-         0      %w_b
-         0 / rad2deg;     %q
-         0 / rad2deg;      %theta
-         0      %v_b
-         0      %p
-         0      %r
-         0      %phi
-         0      %psi
-         0      %x_e
-         0      %y_e
-         0];    %z_e
-del_u = [0 / rad2deg      %d_E
-         0      %d_R
-         0      %d_A
-         0      %d_FL
-         0      %d_FR
-         0      %d_TBL
-         0      %d_TBR
-         0      %d_TCL
-         0];    %d_TCR
-
-u = u+del_u;
-x_i = x+del_x;
-
-%Simulation
-if SIM
-    tf      =	100;    % Final time for simulation, sec
-    ti      = 	0;      % Initial time for simulation, sec
-    mps2kts = 1.94384;
-    mps2fpm = 196.85;
-    [t_his, x_his] = ode45('EoM3', [ti, tf], x_i);
-    %Speed History
-    figure()
-
-    subplot(3,1,1)
-    plot(t_his, x_his(:,1).*mps2kts)
-    ylabel('u_b (kts)')
-    title('Speed history')
-    subplot(3,1,2)
-    plot(t_his, x_his(:,5))
-    ylabel('v_b (m/s)')
-    subplot(3,1,3)
-    plot(t_his, x_his(:,2).*mps2fpm)
-    ylabel('w_b (ft/min)')
-
-    %Altitude history
-    figure()
-
-    subplot(3,1,1)
-    plot(t_his, x_his(:,10))
-    ylabel('x_e (m)')
-    title('Location history')
-    subplot(3,1,2)
-    plot(t_his, x_his(:,11))
-    ylabel('y_e (m)')
-    subplot(3,1,3)
-    plot(t_his, -x_his(:,12))
-    ylabel('alt (m)')
-    
-    %Orientation history
-    figure()
-
-    subplot(3,1,1)
-    plot(t_his, x_his(:,4).*rad2deg)
-    ylabel('\theta (deg)')
-    title('Orientation history')
-    subplot(3,1,2)
-    plot(t_his, x_his(:,8).*rad2deg)
-    ylabel('\phi (deg)')
-    subplot(3,1,3)
-    plot(t_his, x_his(:,9).*rad2deg)
-    ylabel('\psi (m)')
-    
-    %Rate history
-    figure()
-
-    subplot(3,1,1)
-    plot(t_his, x_his(:,3).*rad2deg)
-    ylabel('q (deg/sec)')
-    title('Angular rate history')
-    subplot(3,1,2)
-    plot(t_his, x_his(:,6).*rad2deg)
-    ylabel('p (deg/sec)')
-    subplot(3,1,3)
-    plot(t_his, x_his(:,7).*rad2deg)
-    ylabel('r (m)')
-end
+% disp('  ')
+% disp('Control Vector Time History Table')
+% disp('=================================')
+% disp('Time, sec: t0, t1, t2, ...')
+% tuHis	=	[0 9 10 11 12 100]
+% 
+% disp('Columns:  Elements of the Control Vector')
+% disp('Rows:     Value at time, t0, t1, ...')
+% deluHis	=  [0 0 0 0 0 0 0
+%             0 0 0 0 0 0 0
+%             -.05 0 0 0 0 0 0
+%             .05 0 0 0 0 0 0
+%             0 0 0 0 0 0 0
+%             0 0 0 0 0 0 0]
+% 
+% %Analysis of F and G matrix
+% 
+% C = [1 0 0 0 0 0 0 0 0 0 0 0;
+%     0 1 0 0 0 0 0 0 0 0 0 0
+%     0 0 1 0 0 0 0 0 0 0 0 0
+%     0 0 0 1 0 0 0 0 0 0 0 0];
+% 
+% sys = ss(F,G,C,0);
+% %t = repmat([0:.1:60], length(C), 1);
+% t = [0:.1:10];
+% ut = zeros(length(u), length(t));
+% for i = 1:length(t)
+%     ut(:,i) = u;
+% end
+% y =lsim(sys, ut, t,x);
+% figure()
+% plot(t,y)
+% legend('ub', 'wb', 'q', '\theta')
+% 
+% %Simulation initial conditions - start from trim state, plus any deltas
+% del_x = [0      %u_b
+%          0      %w_b
+%          0 / rad2deg;     %q
+%          0 / rad2deg;      %theta
+%          0      %v_b
+%          0      %p
+%          0      %r
+%          0      %phi
+%          0      %psi
+%          0      %x_e
+%          0      %y_e
+%          0];    %z_e
+% del_u = [0 / rad2deg      %d_E
+%          0      %d_R
+%          0      %d_A
+%          0      %d_FL
+%          0      %d_FR
+%          0      %d_TBL
+%          0      %d_TBR
+%          0      %d_TCL
+%          0];    %d_TCR
+% 
+% u = u+del_u;
+% x_i = x+del_x;
+% 
+% %Simulation
+% if SIM
+%     tf      =	100;    % Final time for simulation, sec
+%     ti      = 	0;      % Initial time for simulation, sec
+%     mps2kts = 1.94384;
+%     mps2fpm = 196.85;
+%     [t_his, x_his] = ode45('EoM3', [ti, tf], x_i);
+%     %Speed History
+%     figure()
+% 
+%     subplot(3,1,1)
+%     plot(t_his, x_his(:,1).*mps2kts)
+%     ylabel('u_b (kts)')
+%     title('Speed history')
+%     subplot(3,1,2)
+%     plot(t_his, x_his(:,5))
+%     ylabel('v_b (m/s)')
+%     subplot(3,1,3)
+%     plot(t_his, x_his(:,2).*mps2fpm)
+%     ylabel('w_b (ft/min)')
+% 
+%     %Altitude history
+%     figure()
+% 
+%     subplot(3,1,1)
+%     plot(t_his, x_his(:,10))
+%     ylabel('x_e (m)')
+%     title('Location history')
+%     subplot(3,1,2)
+%     plot(t_his, x_his(:,11))
+%     ylabel('y_e (m)')
+%     subplot(3,1,3)
+%     plot(t_his, -x_his(:,12))
+%     ylabel('alt (m)')
+%     
+%     %Orientation history
+%     figure()
+% 
+%     subplot(3,1,1)
+%     plot(t_his, x_his(:,4).*rad2deg)
+%     ylabel('\theta (deg)')
+%     title('Orientation history')
+%     subplot(3,1,2)
+%     plot(t_his, x_his(:,8).*rad2deg)
+%     ylabel('\phi (deg)')
+%     subplot(3,1,3)
+%     plot(t_his, x_his(:,9).*rad2deg)
+%     ylabel('\psi (m)')
+%     
+%     %Rate history
+%     figure()
+% 
+%     subplot(3,1,1)
+%     plot(t_his, x_his(:,3).*rad2deg)
+%     ylabel('q (deg/sec)')
+%     title('Angular rate history')
+%     subplot(3,1,2)
+%     plot(t_his, x_his(:,6).*rad2deg)
+%     ylabel('p (deg/sec)')
+%     subplot(3,1,3)
+%     plot(t_his, x_his(:,7).*rad2deg)
+%     ylabel('r (m)')
+% end
 
 
