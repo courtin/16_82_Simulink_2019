@@ -147,7 +147,7 @@ aero.Wing.cm_fit        = cm_fit;
 %%%%%%%%%%%%%%%%%%%%%%%%
 %ENVIRONMENT DEFINITION%
 %%%%%%%%%%%%%%%%%%%%%%%%
-
+environment.g = 9.8067;
 %%%%%%%%%%%%%%%%%%%%%%%
 %SIMULATION DEFINITION%
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -158,6 +158,7 @@ airplane.weights        = weights;
 airplane.propulsion     = propulsion;
 airplane.aero           = aero;
 airplane.stability      = stability;
+airplane.environment    = environment;
 
-save("Airplane.mat","airplane")
+save("Airplane.mat","airplane");
 

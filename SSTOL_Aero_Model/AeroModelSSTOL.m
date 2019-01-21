@@ -89,7 +89,7 @@
     cl_fit_wt = airplane.aero.Wing.cl_fit;
     
     %Left wing
-    if u(4) == 40
+    if round(u(4)*rad2deg,0) == 40 
         %Interpolate from wind tunnel data
         cl_left = cl_fit_wt(a_w_deg, dCJ_BL);
     else
@@ -97,7 +97,7 @@
         cl_left = min(2*pi*a_w_deg*pi/180, airplane.aero.Wing.cl_max_clean);
     end
     %Right wing
-    if u(5) == 40
+    if round(u(5)*rad2deg,0) == 40
         %Interpolate from wind tunnel data
         cl_right = cl_fit_wt(a_w_deg, dCJ_BR);
     else
@@ -133,21 +133,21 @@
     %If there is no flap deflection, use the thrust coefficients calculated
     %above
     %Left wing
-    if u(4) == 40
+    if round(u(4)*rad2deg,0) == 40 
         cx_left = cx_fit(a_w_deg, dCJ_BL);
     else
-        cx_left = -CT_BL;
+        cx_left = .01-CT_BL;
     end
     %Right wing
-    if u(4) == 40
+    if round(u(5)*rad2deg,0) == 40 
         cx_right = cx_fit(a_w_deg, dCJ_BR);
     else
-        cx_right = -CT_BR;
+        cx_right = .01-CT_BR;
     end
     
     CXw = (cx_left+cx_right)/2;
     CDi = CLw^2/(pi*AR*e+2*(CT_BL+CT_BR));
-    CDp = .03;  %Placeholder, this has little effect on the high-lift cases
+    CDp = .02;  %Placeholder, this has little effect on the high-lift cases
     
     CX = CXw + CDi + CDp - CT_CL - CT_CR;
 
@@ -156,16 +156,16 @@
     cm_fit = airplane.aero.Wing.cm_fit;
     
     %Left wing
-    if u(4) == 40
+    if round(u(4)*rad2deg,0) == 40 
         cm_left = cm_fit(a_w_deg, dCJ_BL);
     else
-        cm_left = .05; %From WTT
+        cm_left = -.05; %From WTT
     end
     %Right wing
-    if u(5) == 40
+    if round(u(5)*rad2deg,0) == 40 
         cm_right = cm_fit(a_w_deg, dCJ_BR);
     else
-        cm_right = .05; %from WTT
+        cm_right = -.05; %from WTT
     end
     
     Cmw = (cm_left + cm_right)/2;
