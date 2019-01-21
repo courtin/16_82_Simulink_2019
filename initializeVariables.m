@@ -1,4 +1,4 @@
-close all; clc;
+clear all; close all; clc;
 
 %%% this script is ran everytime run is hit, so all the variables are
 %%% defined here first. The initial conditions for the simulator are also

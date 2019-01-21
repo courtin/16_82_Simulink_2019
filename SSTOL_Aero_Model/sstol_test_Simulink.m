@@ -27,15 +27,15 @@ TASms   =   V;
 disp('  ')
 disp(['Dynamic Pressure = ',num2str(qBarSL),' N/m^2, True Airspeed = ',num2str(V),' m/s'])
 
-alpha   =	-5;      % Angle of attack, deg (relative to air mass)
+alpha   =	-14.4;      % Angle of attack, deg (relative to air mass)
 beta    =	0;      % Sideslip angle, deg (relative to air mass)
 dA      =	0;      % Aileron angle, deg
-dE      =	10;      % Elevator angle, deg
+dE      =	-23.7;   % Elevator angle, deg
 dR      =	0;      % Rudder angle, deg
 dF_L    =   40;     % Flap angle, deg
 dF_R    =   40;     % Flap angle, deg
-dB_L    = 	.7;    % Left Blower throttle setting, % / 100
-dB_R    = 	.7;    % Right Blower throttle setting, % / 100
+dB_L    = 	.02;    % Left Blower throttle setting, % / 100
+dB_R    = 	.02;    % Right Blower throttle setting, % / 100
 dT_L    = 	0.0;    % Left Cruiser throttle setting, % / 100
 dT_R    = 	0.0;    % Right Cruiser throttle setting, % / 100
 hdot    =	0;      % Altitude rate, m/s
@@ -44,7 +44,7 @@ phi     =	0;      % Body roll angle wrt earth, deg
 psi     =	0;      % Body yaw angle wrt earth, deg
 q       =	0;      % Body-axis pitch rate, deg/sec
 r       =	0;      % Body-axis yaw rate, deg/s
-theta   =	10;  % Body pitch angle wrt earth, deg [theta = alpha if hdot = 0]
+theta   =	0;  % Body pitch angle wrt earth, deg [theta = alpha if hdot = 0]
 xe      =	0;      % Initial longitudinal position, m
 ye      = 	0;      % Initial lateral position, m
 ze      = 	-hm;    % Initial vertical position, m [h: + up, z: + down]
