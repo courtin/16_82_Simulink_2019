@@ -144,9 +144,19 @@ aero.Htail.cla            = 2*pi;
 
 load 40df_fits.mat
 
-aero.Wing.cl_fit        = cl_fit;
-aero.Wing.cx_fit        = cx_fit;
-aero.Wing.cm_fit        = cm_fit;
+%aero.Wing.cl_fit        = cl_fit;
+%aero.Wing.cx_fit        = cx_fit;
+%aero.Wing.cm_fit        = cm_fit;
+
+aero.Wing.fits.alpha_range = -10:40;
+aero.Wing.fits.dCJ_range = 0:8;
+aero.Wing.fits.flaps_range = 40;
+
+%%% To do: Fix the way these data tables are generated so they work for
+%%% more than one flap angle
+aero.Wing.fits.cls = create_cl_datatable(cl_fit,aero.Wing.fits);
+aero.Wing.fits.cxs = create_cx_datatable(cx_fit,aero.Wing.fits);
+aero.Wing.fits.cms = create_cm_datatable(cm_fit,aero.Wing.fits);
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %ENVIRONMENT DEFINITION%
@@ -165,6 +175,5 @@ airplane.stability      = stability;
 airplane.environment    = environment;
 
 
-save("./SSTOL_Aero_Model/Airplane.mat","airplane")
-clear all; 
-load("./SSTOL_Aero_Model/Airplane.mat")
+save("Airplane.mat","airplane")
+clearvars -except airplane

@@ -1,4 +1,4 @@
-	function [CX,CL,CY,Cl,Cm,Cn]	=	AeroModelSSTOL(x,u,Mach,alphar,betar,V)
+	function [CX,CL,CY,Cl,Cm,Cn]	=	AeroModelSSTOL(x,u,Mach,alphar,betar,V,airplane)
 %	SSTOL Aero Model
 %   x(1) = u_b          Body axis u velocity, m/s
 %   x(2) = w_b          Body axis w velocity, m/s
@@ -27,7 +27,8 @@
 
 %	Inertial, Geometric, and Aerodynamic Properties
 %   *** STOL_Input.m must first be run to save Airplane.mat***
-	load Airplane.mat
+	A=load('Airplane.mat');
+    airplane = A.airplane;
     
 
     %Handy variable shorthands
@@ -51,10 +52,9 @@
     
     alt = -x(12);
     
-    rad2deg = 180/pi;
     
     alpha_w     = alphar + i_w;
-	a_w_deg	=	(alpha_w)*rad2deg;
+	a_w_deg	=	rad2deg(alpha_w);
     
     %Thrust Control vector
     u_t = u(6:end);
@@ -69,6 +69,7 @@
     [dCJ_BR, ~, CT_BR] = propulsor_perf(d_BR, airplane.propulsion.right_blower, cbar, alt, V);
     [~, T_L, CT_CL] = propulsor_perf(d_TL, airplane.propulsion.left_cruiser, cbar, alt, V);
     [~, T_R, CT_CR] = propulsor_perf(d_TR, airplane.propulsion.right_cruiser, cbar, alt, V);
+
 %   Stability Derivates from JVL
 %   ====================================
 %   Currently these are just keyed off of the left flap deflection; no
@@ -79,6 +80,8 @@
     CYb, CYdA, CYdR, CYr, CYp,...
     Clb, CldA, CldR, Clr, Clp,...
     Cnb, CndA, CndR, Cnr, Cnp] = get_JVL_derivatives(u(4), dCJ_BL, airplane);
+
+
 %	CL Calculations 
 %	====================================
 
@@ -86,24 +89,12 @@
     %C_L_wing
     %Currently this interpolator is only for 40deg flaps; any
     %flap changes are ignored except the zero deg flap case.
-    cl_fit_wt = airplane.aero.Wing.cl_fit;
     
-    %Left wing
-    if round(u(4)*rad2deg,0) == 40 
-        %Interpolate from wind tunnel data
-        cl_left = cl_fit_wt(a_w_deg, dCJ_BL);
-    else
-        %Use linear TAT model with fixed cl_max
-        cl_left = min(2*pi*a_w_deg*pi/180, airplane.aero.Wing.cl_max_clean);
-    end
-    %Right wing
-    if round(u(5)*rad2deg,0) == 40
-        %Interpolate from wind tunnel data
-        cl_right = cl_fit_wt(a_w_deg, dCJ_BR);
-    else
-        %Use linear TAT model with fixed cl_max
-        cl_right = min(2*pi*a_w_deg*pi/180, airplane.aero.Wing.cl_max_clean);
-    end
+    flap_L_deg = round(rad2deg(u(4)));
+    flap_R_deg = round(rad2deg(u(5)));
+    
+    cl_left = getCLwing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
+    cl_right = getCLwing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
     
     CLw = .9*(cl_left + cl_right)/2;
     
@@ -128,22 +119,8 @@
 
 %	CX Calculations 
 %	====================================
-    cx_fit = airplane.aero.Wing.cx_fit;
-    
-    %If there is no flap deflection, use the thrust coefficients calculated
-    %above
-    %Left wing
-    if round(u(4)*rad2deg,0) == 40 
-        cx_left = cx_fit(a_w_deg, dCJ_BL);
-    else
-        cx_left = .01-CT_BL;
-    end
-    %Right wing
-    if round(u(5)*rad2deg,0) == 40 
-        cx_right = cx_fit(a_w_deg, dCJ_BR);
-    else
-        cx_right = .01-CT_BR;
-    end
+    cx_left = getCXwing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
+    cx_right = getCXwing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
     
     CXw = (cx_left+cx_right)/2;
     CDi = CLw^2/(pi*AR*e+2*(CT_BL+CT_BR));
@@ -153,20 +130,9 @@
 
 %	Cm Calculations 
 %	====================================    
-    cm_fit = airplane.aero.Wing.cm_fit;
+    cm_left = getCMwing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
+    cm_right = getCMwing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
     
-    %Left wing
-    if round(u(4)*rad2deg,0) == 40 
-        cm_left = cm_fit(a_w_deg, dCJ_BL);
-    else
-        cm_left = -.05; %From WTT
-    end
-    %Right wing
-    if round(u(5)*rad2deg,0) == 40 
-        cm_right = cm_fit(a_w_deg, dCJ_BR);
-    else
-        cm_right = -.05; %from WTT
-    end
     
     Cmw = (cm_left + cm_right)/2;
     Cmh = -Vh*eta_h*CLah*a_h;

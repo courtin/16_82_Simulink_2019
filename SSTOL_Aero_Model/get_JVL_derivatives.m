@@ -4,6 +4,7 @@ function [CLde, CLq, ...
     Clb, CldA, CldR, Clr, Clp,...
     Cnb, CndA, CndR, Cnr, Cnp] = get_JVL_derivatives(delta_flap, delta_CJ, airplane)
 
+
 flaps = airplane.stability.flap_settings;
 
 %Check if the commanded flap setting is valid

@@ -27,10 +27,11 @@ TASms   =   V;
 disp('  ')
 disp(['Dynamic Pressure = ',num2str(qBarSL),' N/m^2, True Airspeed = ',num2str(V),' m/s'])
 
-alpha   =	5;      % Angle of attack, deg (relative to air mass)
+
+alpha   =	20;      % Angle of attack, deg (relative to air mass)
 beta    =	0;      % Sideslip angle, deg (relative to air mass)
 dA      =	0;      % Aileron angle, deg
-dE      =	10;   % Elevator angle, deg
+dE      =	5;   % Elevator angle, deg
 dR      =	0;      % Rudder angle, deg
 dF_L    =   40;     % Flap angle, deg
 dF_R    =   40;     % Flap angle, deg
@@ -49,38 +50,17 @@ xe      =	0;      % Initial longitudinal position, m
 ye      = 	0;      % Initial lateral position, m
 ze      = 	-hm;    % Initial vertical position, m [h: + up, z: + down]
 
-Mach	= 	V / soundSpeed;	
-gamma	=	57.2957795 * atan(hdot / sqrt(V^2 - hdot^2));
-disp(['Mach number      = ',num2str(Mach),', Flight Path Angle = ',num2str(gamma),' deg'])										
-disp('  ')
+%construct the state vector
+[x0,u0]=constructStateandControlVector(alpha,beta,dA, dE, dR,dF_L,dF_R, dB_L,dB_R, dT_L,dT_R, hdot, p,q,r, phi,theta, psi, xe,ye,ze,V,soundSpeed);
 
-phir	=	phi * 0.01745329;
-thetar	=	theta * 0.01745329;
-psir	=	psi * 0.01745329;
+%% find trim state
+if 1
+    inputs0 = [alpha, dE, dB_L]; %% assumes we want equal left and right blowing 
+    [x,u, trimmed_inputs] = calculate_trimmed_state(inputs0,x0, u0, airplane);
+end
 
-alphar	=	alpha * 0.01745329;
-betar	=	beta * 0.01745329;
-
-x	=	[V * cos(alphar) * cos(betar)
-        V * sin(alphar) * cos(betar)
-        q * 0.01745329
-        thetar
-        V * sin(betar)
-        p * 0.01745329
-        r * 0.01745329
-        phir
-        psir
-        xe
-        ye
-        ze];
-
-u	=	[dE * 0.01745329
-        dA * 0.01745329
-        dR * 0.01745329
-        dF_L * 0.01745329
-        dF_R * 0.01745329
-        dB_L
-        dB_R
-        dT_L
-        dT_R];
+disp('Initial inputs')
+inputs0'
+disp('Trimed Conditions')
+trimmed_inputs'
    

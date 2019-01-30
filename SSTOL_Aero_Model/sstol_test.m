@@ -4,7 +4,7 @@
 clear all
 close all
 STOL_Input;
-
+%%
 hft         =   0;   % Altitude above Sea Level, ft
 VKIAS       =   50;     % Indicated Airspeed, kt
 
@@ -89,3 +89,13 @@ u	=	[dE * 0.01745329
         dT_R];
     
 [CX,CL,CY,Cl,Cm,Cn]	=	AeroModelSSTOL(x,u,Mach,alphar,betar,V)
+
+% this is the coefficients in stability axes. 
+%Compute the gravitational force contribution
+
+mg = angle2dcm(-psir, -thetar, -phir) * [0;0;airplane.weights.MTOW];
+
+body_force = [CX; CY; -CL]*(0.5*airDens*V^2*airplane.geometry.Wing.S) + mg
+
+
+

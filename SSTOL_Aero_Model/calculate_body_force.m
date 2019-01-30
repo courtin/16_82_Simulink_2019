@@ -1,10 +1,6 @@
-%%%%%%%%%%%%%%%%%%%%
-%AeroModelSSTOL Test
-%%%%%%%%%%%%%%%%%%%%
-clear all
-close all
-STOL_Input;
+function [norm_body_force, x, u] = calculate_body_force(inputs,airplane)
 
+%%
 hft         =   0;   % Altitude above Sea Level, ft
 VKIAS       =   50;     % Indicated Airspeed, kt
 
@@ -30,15 +26,16 @@ TASms   =   V;
 disp('  ')
 disp(['Dynamic Pressure = ',num2str(qBarSL),' N/m^2, True Airspeed = ',num2str(V),' m/s'])
 
-alpha   =	15;      % Angle of attack, deg (relative to air mass)
+
+alpha   =	inputs(1);      % Angle of attack, deg (relative to air mass)
 beta    =	0;      % Sideslip angle, deg (relative to air mass)
 dA      =	0;      % Aileron angle, deg
-dE      =	-1;      % Elevator angle, deg
+dE      =	inputs(2);      % Elevator angle, deg
 dR      =	0;      % Rudder angle, deg
 dF_L    =   40;     % Flap angle, deg
 dF_R    =   40;     % Flap angle, deg
-dB_L    = 	1;    % Left Blower throttle setting, % / 100
-dB_R    = 	1;    % Right Blower throttle setting, % / 100
+dB_L    = 	inputs(3);    % Left Blower throttle setting, % / 100
+dB_R    = 	inputs(3);    % Right Blower throttle setting, % / 100
 dT_L    = 	0.0;    % Left Cruiser throttle setting, % / 100
 dT_R    = 	0.0;    % Right Cruiser throttle setting, % / 100
 hdot    =	0;      % Altitude rate, m/s
@@ -88,3 +85,13 @@ u	=	[dE * 0.01745329
         dT_R];
     
 [CX,CL,CY,Cl,Cm,Cn]	=	AeroModelSSTOL(x,u,Mach,alphar,betar,V)
+
+% this is the coefficients in stability axes. 
+%Compute the gravitational force contribution
+
+mg = angle2dcm(-psir, -thetar, -phir) * [0;0;airplane.weights.MTOW];
+
+body_force = [CX; CY; -CL]*(0.5*airDens*V^2*airplane.geometry.Wing.S) + mg
+
+
+norm_body_force = norm(body_force);

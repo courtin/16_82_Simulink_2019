@@ -14,7 +14,8 @@ addpath('SSTOL_Aero_Model/')
 STOL_Input;
 
 %mass is defined as 'm'
-m=airplane.weights.MTOW/9.81;
+
+m=airplane.weights.MTOW/airplane.environment.g;
 
 %inertia matrix is not defined the the components are. Collect them:
 
@@ -58,18 +59,21 @@ disp(u);
 
 alpha_range = -10:5:40;
 dCJ_range = 0:8;
+flap_range = 40;
 
 load('SSTOL_Aero_Model/40df_fits.mat');
 
-cls=zeros(length(dCJ_range),length(alpha_range));
-cxs=zeros(length(dCJ_range),length(alpha_range));
-cms=zeros(length(dCJ_range),length(alpha_range));
+cls=zeros(length(dCJ_range),length(alpha_range),length(flap_range));
+cxs=zeros(length(dCJ_range),length(alpha_range),length(flap_range));
+cms=zeros(length(dCJ_range),length(alpha_range),length(flap_range));
 
-for i =1:length(alpha_range)
-    for j =1:length(dCJ_range)
-        cls(j,i)=cl_fit(alpha_range(i),dCJ_range(j));
-        cxs(j,i)=cx_fit(alpha_range(i),dCJ_range(j));
-        cms(j,i)=cm_fit(alpha_range(i),dCJ_range(j));
+for k = 1:length(flap_range)
+    for i =1:length(alpha_range)
+        for j =1:length(dCJ_range)
+            cls(j,i,k)=cl_fit(alpha_range(i),dCJ_range(j));
+            cxs(j,i,k)=cx_fit(alpha_range(i),dCJ_range(j));
+            cms(j,i,k)=cm_fit(alpha_range(i),dCJ_range(j));
+        end
     end
 end
 
@@ -89,6 +93,11 @@ carpetlabel(alpha_range,dCJ_range,cms,0,0);
 title('Carpet Plot of CM')
 
 
-cls = cls';
-cxs = cxs';
-cms = cms';
+airplane.aero.fits.cl.cls = cls;
+airplane.aero.fits.cl.alpha_range = alpha_range;
+airplane.aero.fits.cl.dCJ_range = dCJ_range;
+airplane.aero.fits.cl.flap_range = flap_range;
+
+
+
+
