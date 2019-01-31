@@ -2,7 +2,7 @@
 %AeroModelSSTOL Test
 %%%%%%%%%%%%%%%%%%%%
 
-inputs0 = [20, 10, 0.1]; %assumes laterally symmetric
+inputs0 = [8, -3, 0.2]; %assumes laterally symmetric
 
 [norm_body_force, x, u] = calculate_body_force(inputs0,airplane) %calculates body force and the state vector
 
@@ -14,7 +14,7 @@ end
 [norm_body_force, x, u] = calculate_body_force(trimmed_inputs,airplane);
 
 disp('Initial inputs')
-inputs0'
+disp(inputs0')
 disp('Trimed Conditions')
-trimmed_inputs'
+disp(trimmed_inputs')
    

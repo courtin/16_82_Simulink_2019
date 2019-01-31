@@ -36,7 +36,7 @@ MZ = momentHistory.Data(:,3);
 
 
 
-figure
+fig_h = figure
 
 %location
 ax1=subplot(2,4,1);
@@ -87,3 +87,6 @@ grid on
 title('Moments')
 
 linkaxes([ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8],'x')
+
+
+movegui(fig_h,'northeast')
