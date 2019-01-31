@@ -10,13 +10,14 @@ flaps = airplane.stability.flap_settings;
 %Check if the commanded flap setting is valid
 df = delta_flap;
 
+
 if ~ismember(df, flaps, 'legacy')
     df = 0;
 end
 
 %Find the index of the commanded flap setting 
-i = find(flaps==df);
-
+%i = find(flaps==df,1);
+i=1;
 %Get the correct value from the table
 CLde    = airplane.stability.CLde(i);
 CLq     = airplane.stability.CLq(i);

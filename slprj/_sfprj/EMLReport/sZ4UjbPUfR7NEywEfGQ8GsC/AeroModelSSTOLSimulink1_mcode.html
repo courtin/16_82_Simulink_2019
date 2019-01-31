@@ -1,0 +1,52 @@
+<html>
+<body>
+<script src="resources/eml_report_loadable_data.js"></script>
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="1,1" id="srcline1"> 1</a></span><span class="line">	<span class="keyword">function</span> [<span class="var type1" id="S2T1U3">CX</span>,<span class="var type1" id="S3T1U4">CL</span>,<span class="var type1" id="S4T1U5">CY</span>,<span class="var type1" id="S5T1U6">Cl</span>,<span class="var type1" id="S6T1U7">Cm</span>,<span class="var type1" id="S7T1U8">Cn</span>] = AeroModelSSTOLSimulink(<span class="var type1" id="S8T2U11">x</span>,<span class="var type1" id="S9T3U12">u</span>,<span class="var type1" id="S10T1U13">Mach</span>,<span class="var type1" id="S11T1U14">alphar</span>,<span class="var type1" id="S12T1U15">betar</span>,<span class="var type1" id="S13T1U16">V</span>)</span></span>
+<span class="srcline"><span class="lineno"><a href="1,2" id="srcline2"> 2</a></span><span class="line"><span class="comment">%	SSTOL Aero Model</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,3" id="srcline3"> 3</a></span><span class="line"><span class="comment">%   x(1) = u_b          Body axis u velocity, m/s</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,4" id="srcline4"> 4</a></span><span class="line"><span class="comment">%   x(2) = w_b          Body axis w velocity, m/s</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,5" id="srcline5"> 5</a></span><span class="line"><span class="comment">%   x(3) = q            Pitch rate, rad/s</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,6" id="srcline6"> 6</a></span><span class="line"><span class="comment">%   x(4) = theta        Pitch euler angle, rad</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,7" id="srcline7"> 7</a></span><span class="line"><span class="comment">%   x(5) = v_b          Body axis v velocity, m/s</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,8" id="srcline8"> 8</a></span><span class="line"><span class="comment">%   x(6) = p            Roll rate, rad/s</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,9" id="srcline9"> 9</a></span><span class="line"><span class="comment">%   x(7) = r            Yaw rate, rad/s</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,10" id="srcline10">10</a></span><span class="line"><span class="comment">%   x(8) = phi          Roll euler angle, rad</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,11" id="srcline11">11</a></span><span class="line"><span class="comment">%   x(9) = psi          Yaw euler angle, rad</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,12" id="srcline12">12</a></span><span class="line"><span class="comment">%   x(10) = xe          North position, Earth frame, m</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,13" id="srcline13">13</a></span><span class="line"><span class="comment">%   x(11) = ye          East position, Earth frame, m</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,14" id="srcline14">14</a></span><span class="line"><span class="comment">%   x(12) = ze =-h      Negative of altitude, Earth frame, m</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,15" id="srcline15">15</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="1,16" id="srcline16">16</a></span><span class="line"><span class="comment">%   u(1) = elevator deflection, rad, positive trailing edge down</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,17" id="srcline17">17</a></span><span class="line"><span class="comment">%   u(2) = rudder deflection, rad, positive trailing edge down</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,18" id="srcline18">18</a></span><span class="line"><span class="comment">%   u(3) = aileron deflection, rad, positive left trailing edge down</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,19" id="srcline19">19</a></span><span class="line"><span class="comment">%   u(4) = left flap deflection, rad, positive trailing edge down</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,20" id="srcline20">20</a></span><span class="line"><span class="comment">%   u(5) = right flap deflection, rad, positive trailing edge down</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,21" id="srcline21">21</a></span><span class="line"><span class="comment">%   u(6:end) = u_t, thrust control vector, 0-1</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,22" id="srcline22">22</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="1,23" id="srcline23">23</a></span><span class="line"><span class="comment">%   u_thrust(1) = left blowing throttle, 0-1</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,24" id="srcline24">24</a></span><span class="line"><span class="comment">%   u_thrust(2) = right blowing throttle, 0-1</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,25" id="srcline25">25</a></span><span class="line"><span class="comment">%   u_thrust(3) = left thruster throttle, 0-1</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,26" id="srcline26">26</a></span><span class="line"><span class="comment">%   u_thrust(4) = right thruster throttle, 0-1</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,27" id="srcline27">27</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="1,28" id="srcline28">28</a></span><span class="line"><span class="comment">%	Inertial, Geometric, and Aerodynamic Properties</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,29" id="srcline29">29</a></span><span class="line"><span class="comment">%   *** STOL_Input.m must first be run to save Airplane.mat***</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,30" id="srcline30">30</a></span><span class="line">	</span></span>
+<span class="srcline"><span class="lineno"><a href="1,31" id="srcline31">31</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="1,32" id="srcline32">32</a></span><span class="line">    <span class="var type1" id="S14T4U19">A</span>=<span class="extrinsicFcn" id="F2N10:B21">load</span>(<span class="string">'Airplane.mat'</span>);</span></span>
+<span class="srcline"><span class="lineno"><a href="1,33" id="srcline33">33</a></span><span class="line">    <span class="var type1" id="S16T5U25">airplane</span>=<span class="var type1" id="S14T4U27">A</span>.airplane;</span></span>
+<span class="srcline"><span class="lineno"><a href="1,34" id="srcline34">34</a></span><span class="line">    </span></span>
+<span class="srcline"><span class="lineno"><a href="1,35" id="srcline35">35</a></span><span class="line">    <span class="var type0" id="S2T0U31">CX</span> = 0;</span></span>
+<span class="srcline"><span class="lineno"><a href="1,36" id="srcline36">36</a></span><span class="line">    <span class="var type0" id="S3T0U35">CL</span> = 0;</span></span>
+<span class="srcline"><span class="lineno"><a href="1,37" id="srcline37">37</a></span><span class="line">    <span class="var type0" id="S4T0U39">CY</span> = 0;</span></span>
+<span class="srcline"><span class="lineno"><a href="1,38" id="srcline38">38</a></span><span class="line">    <span class="var type0" id="S5T0U43">Cl</span> = 0;</span></span>
+<span class="srcline"><span class="lineno"><a href="1,39" id="srcline39">39</a></span><span class="line">    <span class="var type0" id="S6T0U47">Cm</span> = 0;</span></span>
+<span class="srcline"><span class="lineno"><a href="1,40" id="srcline40">40</a></span><span class="line">    <span class="var type0" id="S7T0U51">Cn</span> = 0;</span></span>
+<span class="srcline"><span class="lineno"><a href="1,41" id="srcline41">41</a></span><span class="line">    <span class="message fatal" id="M1F1C">[<span class="var type0" id="S2T0U56">CX</span>,<span class="var type0" id="S3T0U57">CL</span>,<span class="var type0" id="S4T0U58">CY</span>,<span class="var type0" id="S5T0U59">Cl</span>,<span class="var type0" id="S6T0U60">Cm</span>,<span class="var type0" id="S7T0U61">Cn</span>] = <span class="fcn" id="F3N2:B63">AeroModelSSTOL</span>(<span class="var type1" id="S8T2U64">x</span>,<span class="var type1" id="S9T3U65">u</span>,<span class="var type1" id="S10T1U66">Mach</span>,<span class="var type1" id="S11T1U67">alphar</span>,<span class="var type1" id="S12T1U68">betar</span>,<span class="var type1" id="S13T1U69">V</span>,<span class="var type1" id="S16T5U70">airplane</span>)</span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="1,42" id="srcline42">42</a></span><span class="line">    disp(<span class="var type0" id="S3T0U74">CL</span>)</span></span>
+<span class="srcline"><span class="lineno"><a href="1,43" id="srcline43">43</a></span><span class="line">    <span class="var type0" id="S3T0U77">CL</span> = 0;</span></span>
+<span class="srcline"><span class="lineno"><a href="1,44" id="srcline44">44</a></span><span class="line">    </span></span>
+<span class="srcline"><span class="lineno"><a href="1,45" id="srcline45">45</a></span><span class="line">    </span></span>
+</pre>
+</body>
+</html>

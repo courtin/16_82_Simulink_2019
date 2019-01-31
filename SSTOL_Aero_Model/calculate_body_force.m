@@ -1,7 +1,7 @@
 function [norm_body_force, x, u] = calculate_body_force(inputs,airplane)
 
 %%
-hft         =   0;   % Altitude above Sea Level, ft
+hft         =   3000;   % Altitude above Sea Level, ft
 VKIAS       =   50;     % Indicated Airspeed, kt
 
 hm          =   hft * 0.3048;    % Altitude above Sea Level, m
@@ -61,28 +61,9 @@ psir	=	psi * 0.01745329;
 alphar	=	alpha * 0.01745329;
 betar	=	beta * 0.01745329;
 
-x	=	[V * cos(alphar) * cos(betar)
-        V * sin(alphar) * cos(betar)
-        q * 0.01745329
-        thetar
-        V * sin(betar)
-        p * 0.01745329
-        r * 0.01745329
-        phir
-        psir
-        xe
-        ye
-        ze];
+%construct the state vector
+[x,u]=constructStateandControlVector(alpha,beta,dA, dE, dR,dF_L,dF_R, dB_L,dB_R, dT_L,dT_R, hdot, p,q,r, phi,theta, psi, xe,ye,ze,V,soundSpeed);
 
-u	=	[dE * 0.01745329
-        dA * 0.01745329
-        dR * 0.01745329
-        dF_L * 0.01745329
-        dF_R * 0.01745329
-        dB_L
-        dB_R
-        dT_L
-        dT_R];
     
 [CX,CL,CY,Cl,Cm,Cn]	=	AeroModelSSTOL(x,u,Mach,alphar,betar,V)
 
@@ -93,5 +74,11 @@ mg = angle2dcm(-psir, -thetar, -phir) * [0;0;airplane.weights.MTOW];
 
 body_force = [CX; CY; -CL]*(0.5*airDens*V^2*airplane.geometry.Wing.S) + mg
 
+body_moments = [Cl; Cm; Cn]*(0.5*airDens*V^2*airplane.geometry.Wing.S*airplane.geometry.Wing.cbar)
 
-norm_body_force = norm(body_force);
+disp('body force:')
+disp(body_force)
+disp('body_moments:')
+disp(body_moments)
+
+norm_body_force = norm([body_force;body_moments]);
