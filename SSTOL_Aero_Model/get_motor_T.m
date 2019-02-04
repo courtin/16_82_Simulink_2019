@@ -26,6 +26,13 @@ err = 1e6;
 thr = 1e-3;
 iter = 0;
 itermax = 100;
+
+
+eta_i = 1;
+
+T=0;
+
+
 while err > thr && iter < itermax
     T = Pshaft*eta_p_i/V;
     Tc = T/(rho*V^2*.5*pi*R^2);

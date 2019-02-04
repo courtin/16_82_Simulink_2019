@@ -11,7 +11,7 @@ Ze = -stateHistory.Data(:,12);
 if range(Ye) == 0
     %only longitudinal, so a 2D plot will suffice
     
-    figure
+    fig_h = figure
     hold on
     %mark start point
     scatter(Xe(1), Ze(1), 'go','filled')
@@ -19,6 +19,8 @@ if range(Ye) == 0
     scatter(Xe(end), Ze(end), 'ro','filled')
     %plot data
     plot(Xe,Ze,'k','LineWidth',3)
+    scatter(Xe,Ze,[],t,'filled')
+    colorbar
     grid on
     title(sprintf('Trajectory (2D) over %.1f seconds', max(t)))
     xlabel('X')
@@ -27,7 +29,7 @@ if range(Ye) == 0
 else
     
     %% 3D reconstruction
-    figure
+    fig_h = figure
     hold on
     %mark start point
     scatter3(Xe(1), Ye(1), Ze(1), 'go','filled')

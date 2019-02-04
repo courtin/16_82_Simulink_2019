@@ -20,6 +20,8 @@ in2m        = 0.0254;
 slugftsq2kgmsq = 1.35581795;
 deg2rad     = pi/180;
 
+g = 9.81;
+
 %%%%%%%%%%%%%%%%%%%%%%%
 %VEHICLE GEOMETRY     %
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -119,12 +121,14 @@ propulsion.left_cruiser.eta_v        = .85;
 propulsion.left_cruiser.eta_add      = .7;
 propulsion.left_cruiser.R            = .381;
 propulsion.left_cruiser.r_hub        = .06;
+propulsion.left_cruiser.b            = geometry.Wing.b/2;
 propulsion.right_cruiser.N           = 1;
 propulsion.right_cruiser.P_shaft_max = (240*1000);
 propulsion.right_cruiser.eta_v       = .85;
 propulsion.right_cruiser.eta_add     = .7;
 propulsion.right_cruiser.R           = .381;
 propulsion.right_cruiser.r_hub       = .06;
+propulsion.right_cruiser.b           = geometry.Wing.b/2;
 
 propulsion.wheels.mu_brk    = .5;
 propulsion.wheels.mu_roll   = .02;
@@ -140,14 +144,24 @@ aero.Htail.cla            = 2*pi;
 
 load 40df_fits.mat
 
-aero.Wing.cl_fit        = cl_fit;
-aero.Wing.cx_fit        = cx_fit;
-aero.Wing.cm_fit        = cm_fit;
+%aero.Wing.cl_fit        = cl_fit;
+%aero.Wing.cx_fit        = cx_fit;
+%aero.Wing.cm_fit        = cm_fit;
+
+aero.Wing.fits.alpha_range = -10:40;
+aero.Wing.fits.dCJ_range = 0:8;
+aero.Wing.fits.flaps_range = 40;
+
+%%% To do: Fix the way these data tables are generated so they work for
+%%% more than one flap angle
+aero.Wing.fits.cls = create_cl_datatable(cl_fit,aero.Wing.fits);
+aero.Wing.fits.cxs = create_cx_datatable(cx_fit,aero.Wing.fits);
+aero.Wing.fits.cms = create_cm_datatable(cm_fit,aero.Wing.fits);
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %ENVIRONMENT DEFINITION%
 %%%%%%%%%%%%%%%%%%%%%%%%
-
+environment.g = 9.8067;
 %%%%%%%%%%%%%%%%%%%%%%%
 %SIMULATION DEFINITION%
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -158,6 +172,8 @@ airplane.weights        = weights;
 airplane.propulsion     = propulsion;
 airplane.aero           = aero;
 airplane.stability      = stability;
+airplane.environment    = environment;
+
 
 save("Airplane.mat","airplane")
-
+clearvars -except airplane

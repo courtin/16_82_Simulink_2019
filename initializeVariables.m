@@ -1,4 +1,4 @@
-close all; clc;
+clear all; close all; clc;
 
 %%% this script is ran everytime run is hit, so all the variables are
 %%% defined here first. The initial conditions for the simulator are also
@@ -6,24 +6,26 @@ close all; clc;
 
 %% include aircraft path
 
-addpath('BizJet_Test')
+addpath('SSTOL_Aero_Model/')
 
 %% aircraft model properties
 
 %run the initialization script that will create the aircraft data
-GeoMassAero;
+STOL_Input;
 
 %mass is defined as 'm'
+
+m=airplane.weights.MTOW/airplane.environment.g;
 
 %inertia matrix is not defined the the components are. Collect them:
 
 inertia_matrix = zeros(3);
 
-inertia_matrix(1,1) = Ixx;
-inertia_matrix(1,3) = -Ixz;
-inertia_matrix(3,1) = -Ixz;
-inertia_matrix(2,2) = Iyy;
-inertia_matrix(3,3) = Izz;
+inertia_matrix(1,1) = airplane.weights.Ixx;
+inertia_matrix(1,3) = -airplane.weights.Ixz;
+inertia_matrix(3,1) = -airplane.weights.Ixz;
+inertia_matrix(2,2) = airplane.weights.Iyy;
+inertia_matrix(3,3) = airplane.weights.Izz;
 
 
 
@@ -35,34 +37,15 @@ inertia_matrix(3,3) = Izz;
 %run the script to define the initial conditions and then extract the
 %properties into the simulink model
 
-bizjet_test;
+sstol_test_Simulink;
 
-Xe_init = 0;
-Ye_init = 0;
-Ze_init = -hm; %m
+initial_position = x(10:12);
 
-initial_position = [Xe_init, Ye_init, Ze_init];
+initial_velocity = [x(1), x(5), x(2)];
 
-%true airspeed = V;
+initial_orientation = [x(8), x(4), x(9)];
 
-U_init = V * cos(alphar) * cos(betar) - windb(1); %m/s
-V_init = V * sin(betar) - windb(2);
-W_init = V * sin(alphar) * cos(betar) - windb(3);
-
-initial_velocity = [U_init, V_init, W_init];
-
-
-
-roll_init = phir;
-pitch_init = thetar;
-yaw_init = psir;
-
-initial_orientation = [roll_init, pitch_init, yaw_init];
-
-p_init = p * 0.01745329;
-q_init = q * 0.01745329;
-r_init = r * 0.01745329;
-initial_rotation_rate = [p_init, q_init,r_init];
+initial_rotation_rate = [x(6), x(3), x(7)];
 
 %print initial conditions vector:
 disp('initial state:')
@@ -70,3 +53,51 @@ disp(x)
 %print initial control inputs vector:
 disp('initial control input:')
 disp(u);
+
+
+%% set up wing coefficients
+
+alpha_range = -10:5:40;
+dCJ_range = 0:8;
+flap_range = 40;
+
+load('SSTOL_Aero_Model/40df_fits.mat');
+
+cls=zeros(length(dCJ_range),length(alpha_range),length(flap_range));
+cxs=zeros(length(dCJ_range),length(alpha_range),length(flap_range));
+cms=zeros(length(dCJ_range),length(alpha_range),length(flap_range));
+
+for k = 1:length(flap_range)
+    for i =1:length(alpha_range)
+        for j =1:length(dCJ_range)
+            cls(j,i,k)=cl_fit(alpha_range(i),dCJ_range(j));
+            cxs(j,i,k)=cx_fit(alpha_range(i),dCJ_range(j));
+            cms(j,i,k)=cm_fit(alpha_range(i),dCJ_range(j));
+        end
+    end
+end
+
+figure;
+carpet(alpha_range,dCJ_range,cls,0);
+carpetlabel(alpha_range,dCJ_range,cls,0,0);
+title('Carpet Plot of CL')
+
+figure;
+carpet(alpha_range,dCJ_range,cxs,0);
+carpetlabel(alpha_range,dCJ_range,cxs,0,0);
+title('Carpet Plot of CX')
+
+figure;
+carpet(alpha_range,dCJ_range,cms,0);
+carpetlabel(alpha_range,dCJ_range,cms,0,0);
+title('Carpet Plot of CM')
+
+
+airplane.aero.fits.cl.cls = cls;
+airplane.aero.fits.cl.alpha_range = alpha_range;
+airplane.aero.fits.cl.dCJ_range = dCJ_range;
+airplane.aero.fits.cl.flap_range = flap_range;
+
+
+
+

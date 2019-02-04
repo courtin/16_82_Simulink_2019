@@ -1,0 +1,35 @@
+<html>
+<body>
+<script src="resources/eml_report_loadable_data.js"></script>
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="56,1" id="srcline1"> 1</a></span><span class="line"><span class="keyword">function</span> <span class="var type1" id="S2T4U3">out</span> = fcn(<span class="var type1" id="S3T1U6">x</span>,<span class="var type1" id="S4T2U7">u</span>,<span class="var type1" id="S5T3U8">V</span>)</span></span>
+<span class="srcline"><span class="lineno"><a href="56,2" id="srcline2"> 2</a></span><span class="line"><span class="comment">%% this function gets the blowing power levels</span></span></span>
+<span class="srcline"><span class="lineno"><a href="56,3" id="srcline3"> 3</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="56,4" id="srcline4"> 4</a></span><span class="line"><span class="mxinfo " id="T5:U5"><span class="var type1" id="S6T5U11">A</span>=<span class="mxinfo " id="T5:U7">coder.load(<span class="string">'Airplane.mat'</span>)</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="56,5" id="srcline5"> 5</a></span><span class="line"><span class="mxinfo " id="T6:U8"><span class="var type1" id="S8T6U19">airplane</span>=<span class="mxinfo " id="T6:U10"><span class="var type1" id="S6T5U21">A</span>.airplane</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="56,6" id="srcline6"> 6</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="56,7" id="srcline7"> 7</a></span><span class="line"><span class="comment">%Handy variable shorthands</span></span></span>
+<span class="srcline"><span class="lineno"><a href="56,8" id="srcline8"> 8</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="56,9" id="srcline9"> 9</a></span><span class="line"><span class="mxinfo " id="T3:U12"><span class="var type1" id="S9T3U25">cbar</span> = <span class="mxinfo " id="T3:U14"><span class="var type1" id="S8T6U29">airplane</span>.geometry.Wing.cbar</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="56,10" id="srcline10">10</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="56,11" id="srcline11">11</a></span><span class="line"><span class="mxinfo " id="T3:U16"><span class="var type1" id="S10T3U35">alt</span> = <span class="mxinfo " id="T3:U18">-<span class="mxinfo " id="T3:U19"><span class="var type1" id="S3T1U38">x</span>(<span class="mxinfo " id="T26:U21">12</span>)</span></span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="56,12" id="srcline12">12</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="56,13" id="srcline13">13</a></span><span class="line"><span class="comment">%Thrust Control vector</span></span></span>
+<span class="srcline"><span class="lineno"><a href="56,14" id="srcline14">14</a></span><span class="line"><span class="mxinfo " id="T27:U22"><span class="var type1" id="S11T27U42">u_t</span> = <span class="mxinfo " id="T27:U24"><span class="var type1" id="S4T2U44">u</span>(<span class="mxinfo " id="T28:U26">6:end</span>)</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="56,15" id="srcline15">15</a></span><span class="line"><span class="mxinfo " id="T3:U27"><span class="var type1" id="S13T3U51">d_BL</span> = <span class="mxinfo " id="T3:U29"><span class="var type1" id="S11T27U53">u_t</span>(<span class="mxinfo " id="T26:U31">1</span>)</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="56,16" id="srcline16">16</a></span><span class="line"><span class="mxinfo " id="T3:U32"><span class="var type1" id="S14T3U57">d_BR</span> = <span class="mxinfo " id="T3:U34"><span class="var type1" id="S11T27U59">u_t</span>(<span class="mxinfo " id="T26:U36">2</span>)</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="56,17" id="srcline17">17</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="56,18" id="srcline18">18</a></span><span class="line"><span class="comment">%   Blowing and Thrust Calculations</span></span></span>
+<span class="srcline"><span class="lineno"><a href="56,19" id="srcline19">19</a></span><span class="line"><span class="comment">%   ====================================</span></span></span>
+<span class="srcline"><span class="lineno"><a href="56,20" id="srcline20">20</a></span><span class="line">[<span class="var type1" id="S15T3U64">dCJ_BL</span>, <span class="mxinfo " id="T3:U38">~</span>, <span class="mxinfo " id="T3:U39">~</span>] = <span class="fcn" id="F15N12:B68">propulsor_perf</span>(<span class="var type1" id="S13T3U69">d_BL</span>, <span class="mxinfo " id="T14:U41"><span class="var type1" id="S8T6U72">airplane</span>.propulsion.left_blower</span>, <span class="var type1" id="S9T3U75">cbar</span>, <span class="var type1" id="S10T3U76">alt</span>, <span class="var type1" id="S5T3U77">V</span>);</span></span>
+<span class="srcline"><span class="lineno"><a href="56,21" id="srcline21">21</a></span><span class="line">[<span class="var type1" id="S17T3U81">dCJ_BR</span>, <span class="mxinfo " id="T3:U47">~</span>, <span class="mxinfo " id="T3:U48">~</span>] = <span class="fcn" id="F15N12:B85">propulsor_perf</span>(<span class="var type1" id="S14T3U86">d_BR</span>, <span class="mxinfo " id="T14:U50"><span class="var type1" id="S8T6U89">airplane</span>.propulsion.right_blower</span>, <span class="var type1" id="S9T3U92">cbar</span>, <span class="var type1" id="S10T3U93">alt</span>, <span class="var type1" id="S5T3U94">V</span>);</span></span>
+<span class="srcline"><span class="lineno"><a href="56,22" id="srcline22">22</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="56,23" id="srcline23">23</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="56,24" id="srcline24">24</a></span><span class="line"><span class="mxinfo " id="T4:U55"><span class="var type1" id="S2T4U97">out</span> = <span class="mxinfo " id="T4:U57">zeros(<span class="mxinfo " id="T3:U58">2</span>,1)</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="56,25" id="srcline25">25</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="56,26" id="srcline26">26</a></span><span class="line"><span class="var type0" id="S2T0U105">out</span>(1) = <span class="var type0" id="S15T0U107">dCJ_BL</span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="56,27" id="srcline27">27</a></span><span class="line"><span class="var type0" id="S2T0U111">out</span>(2) = <span class="var type0" id="S17T0U113">dCJ_BR</span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="56,28" id="srcline28">28</a></span><span class="line"><span class="keyword">end</span></span></span>
+</pre>
+</body>
+</html>
