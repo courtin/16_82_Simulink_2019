@@ -77,20 +77,20 @@ for k = 1:length(flap_range)
     end
 end
 
-figure;
-carpet(alpha_range,dCJ_range,cls,0);
-carpetlabel(alpha_range,dCJ_range,cls,0,0);
-title('Carpet Plot of CL')
-
-figure;
-carpet(alpha_range,dCJ_range,cxs,0);
-carpetlabel(alpha_range,dCJ_range,cxs,0,0);
-title('Carpet Plot of CX')
-
-figure;
-carpet(alpha_range,dCJ_range,cms,0);
-carpetlabel(alpha_range,dCJ_range,cms,0,0);
-title('Carpet Plot of CM')
+% figure;
+% carpet(alpha_range,dCJ_range,cls,0);
+% carpetlabel(alpha_range,dCJ_range,cls,0,0);
+% title('Carpet Plot of CL')
+% 
+% figure;
+% carpet(alpha_range,dCJ_range,cxs,0);
+% carpetlabel(alpha_range,dCJ_range,cxs,0,0);
+% title('Carpet Plot of CX')
+% 
+% figure;
+% carpet(alpha_range,dCJ_range,cms,0);
+% carpetlabel(alpha_range,dCJ_range,cms,0,0);
+% title('Carpet Plot of CM')
 
 
 airplane.aero.fits.cl.cls = cls;

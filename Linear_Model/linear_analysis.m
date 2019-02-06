@@ -6,6 +6,10 @@ close all
 STOL_Input;
 global V m Ixx Iyy Izz Ixz S b cBar TrimHist x u
 
+addpath ../SSTOL_Aero_Model/
+addpath ..
+
+
 g = airplane.environment.g;
 Ixx = airplane.weights.Ixx;
 Iyy = airplane.weights.Iyy;
@@ -16,7 +20,7 @@ S = airplane.geometry.Wing.S;
 b = airplane.geometry.Wing.b;
 cBar = airplane.geometry.Wing.cbar;
 hft         =   1000;   % Altitude above Sea Level, ft
-VKIAS       =   30;     % Indicated Airspeed, kt
+VKIAS       =   35;     % Indicated Airspeed, kt
 
 hm          =   hft * 0.3048;    % Altitude above Sea Level, m
 VmsIAS      =   VKIAS * 0.5154;  % Indicated Airspeed, m/s
