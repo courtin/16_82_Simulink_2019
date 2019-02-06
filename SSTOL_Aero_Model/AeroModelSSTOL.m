@@ -121,8 +121,8 @@
     end
 %	CX Calculations 
 %	====================================
-    cx_left = getCXwing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
-    cx_right = getCXwing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
+    cx_left = getCXwing(a_w_deg,dCJ_BL,CT_BL,flap_L_deg,airplane);
+    cx_right = getCXwing(a_w_deg,dCJ_BR,CT_BR,flap_R_deg,airplane);
     
     CXw = (cx_left+cx_right)/2;
     CDi = CLw^2/(pi*AR*e+2*(CT_BL+CT_BR));

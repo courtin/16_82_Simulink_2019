@@ -65,16 +65,16 @@ betar	=	beta * 0.01745329;
 [x,u]=constructStateandControlVector(alpha,beta,dA, dE, dR,dF_L,dF_R, dB_L,dB_R, dT_L,dT_R, hdot, p,q,r, phi,theta, psi, xe,ye,ze,V,soundSpeed);
 
     
-[CX,CL,CY,Cl,Cm,Cn]	=	AeroModelSSTOL(x,u,Mach,alphar,betar,V)
+[CX,CL,CY,Cl,Cm,Cn]	=	AeroModelSSTOL(x,u,Mach,alphar,betar,V);
 
 % this is the coefficients in stability axes. 
 %Compute the gravitational force contribution
 
 mg = angle2dcm(-psir, -thetar+alphar, -phir) * [0;0;airplane.weights.MTOW];
 
-body_force = [CX; CY; -CL]*(0.5*airDens*V^2*airplane.geometry.Wing.S) + mg
+body_force = [CX; CY; -CL]*(0.5*airDens*V^2*airplane.geometry.Wing.S) + mg;
 
-body_moments = [Cl; Cm; Cn]*(0.5*airDens*V^2*airplane.geometry.Wing.S*airplane.geometry.Wing.cbar)
+body_moments = [Cl; Cm; Cn]*(0.5*airDens*V^2*airplane.geometry.Wing.S*airplane.geometry.Wing.cbar);
 
 disp('body force:')
 disp(body_force)

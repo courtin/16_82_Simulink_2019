@@ -1,4 +1,4 @@
-function cx = getCXwing(a_w_deg,dCJ_B,flap_deg,airplane)
+function cx = getCXwing(a_w_deg,dCJ_B,CT_B,flap_deg,airplane)
 
 
 %load data
@@ -15,9 +15,8 @@ cxs = airplane.aero.Wing.fits.cxs;
         %Interpolate from wind tunnel data
         cx = interpn(alpha_range, dCJ_range, cxs,a_w_deg, dCJ_B);
     else
-        %Use linear TAT model with fixed cl_max
-        error('update getCXwing for non-40 degree flaps')
-       
+        cd0 = .02; %WAG at wing profile drag coefficient
+        cx = cd0 - CT_B;      
     end
     
     

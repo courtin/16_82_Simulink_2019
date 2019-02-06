@@ -16,7 +16,7 @@ cms = airplane.aero.Wing.fits.cms;
         cm = interpn(alpha_range, dCJ_range, cms,a_w_deg, dCJ_B);
     else
         %Use linear TAT model with fixed cl_max
-        error('update getCMwing for non-40 degree flaps')
+        cm = -.1; %WAG at reasonable wing CM
        
     end
     

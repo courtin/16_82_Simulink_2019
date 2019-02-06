@@ -13,6 +13,9 @@ function [dCJ, T, CT] = propulsor_perf(thr, propulsor,c, alt, Vi)
 %           c           wing chord
 %
 
+%Don't allow throttle less than zero
+thr = max(thr, 0);
+
 %Compute the thrust/jet velocity of a single propulsor
 Pshaft_one = propulsor.P_shaft_max*thr;
 [~, ~, rho] = int_std_atm(alt);
