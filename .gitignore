@@ -1,0 +1,4 @@
+#ignore mat files
+*.mat
+*.autosave
+*.m~

@@ -17,4 +17,4 @@ disp('Initial inputs')
 disp(inputs0')
 disp('Trimed Conditions')
 disp(trimmed_inputs')
-   
+  
