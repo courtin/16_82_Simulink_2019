@@ -93,8 +93,11 @@
     flap_L_deg = round(rad2deg(u(4)));
     flap_R_deg = round(rad2deg(u(5)));
     
-    cl_left = getCLwing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
-    cl_right = getCLwing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
+    [cl_left,cx_left,cm_left]=get_coeffs_wing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
+    [cl_right,cx_right,cm_right]=get_coeffs_wing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
+    
+%     cl_left = getCLwing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
+%     cl_right = getCLwing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
     
     CLw = .9*(cl_left + cl_right)/2;
     
@@ -121,8 +124,8 @@
     end
 %	CX Calculations 
 %	====================================
-    cx_left = getCXwing(a_w_deg,dCJ_BL,CT_BL,flap_L_deg,airplane);
-    cx_right = getCXwing(a_w_deg,dCJ_BR,CT_BR,flap_R_deg,airplane);
+%     cx_left = getCXwing(a_w_deg,dCJ_BL,CT_BL,flap_L_deg,airplane);
+%     cx_right = getCXwing(a_w_deg,dCJ_BR,CT_BR,flap_R_deg,airplane);
     
     CXw = (cx_left+cx_right)/2;
     CDi = CLw^2/(pi*AR*e+2*(CT_BL+CT_BR));
@@ -132,9 +135,9 @@
 
 %	Cm Calculations 
 %	====================================    
-    cm_left = getCMwing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
-    cm_right = getCMwing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
-    
+%     cm_left = getCMwing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
+%     cm_right = getCMwing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
+%     
     
     Cmw = (cm_left + cm_right)/2;
     Cmh = -Vh*eta_h*CLah*a_h;
