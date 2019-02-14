@@ -1,4 +1,4 @@
-	function [CX,CL,CY,Cl,Cm,Cn]	=	AeroModelSSTOL(x,u,Mach,alphar,betar,V,airplane)
+	function [CX,CL,CY,Cl,Cm,Cn, vis_data]	=	AeroModelSSTOL(x,u,Mach,alphar,betar,V,airplane)
 %	SSTOL Aero Model
 %   x(1) = u_b          Body axis u velocity, m/s
 %   x(2) = w_b          Body axis w velocity, m/s
@@ -69,6 +69,9 @@
     [dCJ_BR, ~, CT_BR] = propulsor_perf(d_BR, airplane.propulsion.right_blower, cbar, alt, V);
     [~, T_L, CT_CL] = propulsor_perf(d_TL, airplane.propulsion.left_cruiser, cbar, alt, V);
     [~, T_R, CT_CR] = propulsor_perf(d_TR, airplane.propulsion.right_cruiser, cbar, alt, V);
+    
+    vis_data.dCJ_BL = dCJ_BL;
+    vis_data.dCJ_BR = dCJ_BR;
 
 %   Stability Derivates from JVL
 %   ====================================
@@ -101,6 +104,8 @@
     
     CLw = .9*(cl_left + cl_right)/2;
     
+    vis_data.CLw = CLw;
+    
     %Tail Lift Coefficient
     %C_L_ht
     eta_h = 1; %Update with better method of estimating tail dynamic pressure ratio
@@ -113,12 +118,15 @@
     CLt = CLah*a_h*Sh/Sw*eta_h;
     %Elevator and Pitch Rate effects
     %CLde = airplane.stability.CLde;
-    CLde_check = Sh/Sw*CLah*tau_h;
+    %CLde_check = Sh/Sw*CLah*tau_h;
     %CLde = CLde_check; %Very different drom JVL; need to debug
     %CLq = airplane.stability.CLq;
-    CLq_check = -2*Vh*CLah*eta_h;
+    %CLq_check = -2*Vh*CLah*eta_h;
     %CLq = CLq_check; %Very different from JVL; need to debug
-    CL = CLw + CLah*a_h + CLq*x(3)*(cbar/(2*V)) + CLde*u(1);
+    
+    vis_data.CL_tail = CLt + CLde*u(1);
+    
+    CL = CLw + CLt + CLq*x(3)*(cbar/(2*V)) + CLde*u(1);
     if length(CL) ~= 1
         error('CL is not size 1')
     end
@@ -150,7 +158,8 @@
     
     Cm = CLw*(x_cg-x_acw)/cbar + Cmw + Cmh + Cmf + Cmde*u(1) + Cmq*x(3)*(cbar/(2*V));
     
-    	
+    
+    vis_data.Cmw = Cmw;
 %	Current Lateral-Directional Characteristics
 %	===========================================
 %	Cl Calculations 
