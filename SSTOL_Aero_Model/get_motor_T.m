@@ -23,7 +23,7 @@ R = propulsor.R;
 
 eta_p_i = .9;
 err = 1e6;
-thr = 1e-3;
+thr = 1e-6;
 iter = 0;
 itermax = 100;
 

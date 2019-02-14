@@ -1,0 +1,8 @@
+
+Scorpion SII-3014, 129g, 38mm dia, 30A max, 5s max
+
+ 1     ! motor type (brushed DC)
+
+ 0.042    ! Rmotor (Ohms)
+ 1.06     ! Io     (Amps)
+ 830.0    ! Kv     (rpm/Volt)

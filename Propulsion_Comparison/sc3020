@@ -1,0 +1,8 @@
+
+Scorpion SII-3020, 166g, 38mm dia, 40A max, 6s max
+
+ 1     ! motor type (brushed DC)
+
+ 0.030    ! Rmotor (Ohms)
+ 1.21     ! Io     (Amps)
+ 780.0    ! Kv     (rpm/Volt)
