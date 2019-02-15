@@ -2,6 +2,12 @@
 %actuator disk case and the constant RPM case
 addpath ../SSTOL_Aero_Model
 close all; clear all;
+%Command line calls to qprop (bash error when executing from matlab
+%environment)
+% qprop propfile motorfile vmin, vmax, dv rpm
+% qprop an9x6 sc3014 10.58,30.58,.5 13930 %constant rpm
+% qprop propfile motorfile vmin, vmax, dv 0 volt
+% qprop an9x6 sc3014 10.58,30.58,.5 0 18 %Constant voltage
 %Useful unit conversion factors
 ftsq2msq    = 0.0929;
 ft2m        = 0.3048;
@@ -22,13 +28,13 @@ propulsor.R           = .1143; %m
 propulsor.r_hub       = .019;
 propulsor.b           = propulsor.R*2;
 
-%Pshaft = 467; %W
-Pshaft = 290; %W
+Pshaft = 467; %W
+%Pshaft = 290; %W
 %%Set up speed range
 
 V_nom = 40 * kts2mps;
 
-V_offset = [-10:.1:10];
+V_offset = [-15:.1:15];
 
 V = V_offset + V_nom;
 rho = 1.225;
