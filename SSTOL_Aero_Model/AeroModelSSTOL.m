@@ -124,7 +124,7 @@
     %CLq_check = -2*Vh*CLah*eta_h;
     %CLq = CLq_check; %Very different from JVL; need to debug
     
-    vis_data.CL_tail = CLt + CLde*u(1);
+    vis_data.CL_tail = (CLt + CLde*u(1))*Sw/Sh*1/eta_h; %Display CL referenced to tail area
     
     CL = CLw + CLt + CLq*x(3)*(cbar/(2*V)) + CLde*u(1);
     if length(CL) ~= 1
