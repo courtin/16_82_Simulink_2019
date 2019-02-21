@@ -70,7 +70,8 @@
     [~, T_L, CT_CL] = propulsor_perf(d_TL, airplane.propulsion.left_cruiser, cbar, alt, V);
     [~, T_R, CT_CR] = propulsor_perf(d_TR, airplane.propulsion.right_cruiser, cbar, alt, V);
     
-    
+    vis_data.dCJ_BL = dCJ_BL;
+    vis_data.dCJ_BR = dCJ_BR;
 
 %   Stability Derivates from JVL
 %   ====================================
@@ -103,7 +104,7 @@
     
     CLw = .9*(cl_left + cl_right)/2;
     
-    
+    vis_data.CLw = CLw;
     
     %Tail Lift Coefficient
     %C_L_ht
@@ -123,12 +124,13 @@
     %CLq_check = -2*Vh*CLah*eta_h;
     %CLq = CLq_check; %Very different from JVL; need to debug
     
+    vis_data.CL_tail = CLt + CLde*u(1);
     
     CL = CLw + CLt + CLq*x(3)*(cbar/(2*V)) + CLde*u(1);
     if length(CL) ~= 1
         error('CL is not size 1')
     end
-    
+    vis_data.CL = CL;
 %	CX Calculations 
 %	====================================
 %     cx_left = getCXwing(a_w_deg,dCJ_BL,CT_BL,flap_L_deg,airplane);
@@ -184,11 +186,5 @@
 									% Total Yawing-Moment Coefficient
     Cn = 0;
 
-% vis_data.dCJ_BL = dCJ_BL;
-% vis_data.dCJ_BR = dCJ_BR;
-% vis_data.CLw = CLw;
-CL_tail = CLt + CLde*u(1);
-% vis_data.CL = CL;
-% vis_data.Cmw = Cmw;
-
-vis_data = [dCJ_BL dCJ_BR CLw CL_tail CL Cmw];
+    
+vis_data.Cmw = Cmw;
