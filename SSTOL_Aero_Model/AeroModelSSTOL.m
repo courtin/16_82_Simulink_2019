@@ -187,7 +187,7 @@
 % vis_data.dCJ_BL = dCJ_BL;
 % vis_data.dCJ_BR = dCJ_BR;
 % vis_data.CLw = CLw;
-CL_tail = CLt + CLde*u(1);
+CL_tail = (CLt + CLde*u(1))*Sw/Sh*1/eta_h; %Display CL referenced to tail area;
 % vis_data.CL = CL;
 % vis_data.Cmw = Cmw;
 
