@@ -1,8 +1,10 @@
 function [norm_body_force, x, u] = calculate_body_force(inputs,airplane)
 
 %%
-hft         =   50;   % Altitude above Sea Level, ft
-VKIAS       =   35;     % Indicated Airspeed, kt
+CL          = 3;
+
+hft         =   1000;   % Altitude above Sea Level, ft
+VKIAS       =   28;     % Indicated Airspeed, kt
 
 hm          =   hft * 0.3048;    % Altitude above Sea Level, m
 VmsIAS      =   VKIAS * 0.5154;  % Indicated Airspeed, m/s
@@ -20,6 +22,8 @@ disp('  ')
 disp(['Air Density     = ',num2str(airDens),' kg/m^3, Air Pressure = ',num2str(airPres),' N/m^2'])
 disp(['Air Temperature = ',num2str(temp),' K,         Sound Speed  = ',num2str(soundSpeed),' m/s'])
 
+%VmsIAS=sqrt(2*airplane.weights.MTOW/(airDens*airplane.geometry.Wing.S*CL))
+
 qBarSL  =   0.5*1.225*VmsIAS^2;  % Dynamic Pressure at sea level, N/m^2
 V       =   sqrt(2*qBarSL/airDens);	% True Airspeed, TAS, m/s
 TASms   =   V;
@@ -32,12 +36,12 @@ beta    =	0;      % Sideslip angle, deg (relative to air mass)
 dA      =	0;      % Aileron angle, deg
 dE      =	inputs(2);      % Elevator angle, deg
 dR      =	0;      % Rudder angle, deg
-dF_L    =   40;     % Flap angle, deg
-dF_R    =   40;     % Flap angle, deg
+dF_L    =   0;     % Flap angle, deg
+dF_R    =   0;     % Flap angle, deg
 dB_L    = 	inputs(3);    % Left Blower throttle setting, % / 100
 dB_R    = 	inputs(3);    % Right Blower throttle setting, % / 100
-dT_L    = 	0.0;    % Left Cruiser throttle setting, % / 100
-dT_R    = 	0.0;    % Right Cruiser throttle setting, % / 100
+dT_L    = 	inputs(4);    % Left Cruiser throttle setting, % / 100
+dT_R    = 	inputs(4);    % Right Cruiser throttle setting, % / 100
 hdot    =	0;      % Altitude rate, m/s
 p       =	0;      % Body-axis roll rate, deg/s
 phi     =	0;      % Body roll angle wrt earth, deg

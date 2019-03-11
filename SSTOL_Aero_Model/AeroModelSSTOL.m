@@ -65,13 +65,26 @@
 
 %   Blowing and Thrust Calculations
 %   ====================================
-    [dCJ_BL, ~, CT_BL] = propulsor_perf(d_BL, airplane.propulsion.left_blower, cbar, alt, V);
-    [dCJ_BR, ~, CT_BR] = propulsor_perf(d_BR, airplane.propulsion.right_blower, cbar, alt, V);
-    [~, T_L, CT_CL] = propulsor_perf(d_TL, airplane.propulsion.left_cruiser, cbar, alt, V);
-    [~, T_R, CT_CR] = propulsor_perf(d_TR, airplane.propulsion.right_cruiser, cbar, alt, V);
-    
-    
+    [dCJ_BL, ~, CT_BL] = propulsor_perf(d_BL, airplane.propulsion.left_blower, cbar,Sw, alt, V);
+    [dCJ_BR, ~, CT_BR] = propulsor_perf(d_BR, airplane.propulsion.right_blower, cbar,Sw, alt, V);
+    [dCJ_TL, T_L, CT_CL] = propulsor_perf(d_TL, airplane.propulsion.left_cruiser, cbar,Sw, alt, V);
+    [dCJ_TR, T_R, CT_CR] = propulsor_perf(d_TR, airplane.propulsion.right_cruiser, cbar,Sw, alt, V);
 
+    %Outboard most motor contributes to half of the blowing
+    dCJ_BL=(3*dCJ_BL+0.5*dCJ_TL)/3.5;
+    dCJ_BR=(3*dCJ_BR+0.5*dCJ_TR)/3.5;
+    
+    CT_BL=CT_BL+0.5*CT_CL;
+    CT_BR=CT_BR+0.5*CT_CR;
+    
+    %Half of outboard motor is pure thrust
+    CT_CL=0.5*CT_CL;
+    CT_CR=0.5*CT_CR;
+   
+    
+    T_L=0.5*T_L;
+    T_R=0.5*T_R;
+    
 %   Stability Derivates from JVL
 %   ====================================
 %   Currently these are just keyed off of the left flap deflection; no
@@ -102,8 +115,6 @@
 %     cl_right = getCLwing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
     
     CLw = .9*(cl_left + cl_right)/2;
-    
-    
     
     %Tail Lift Coefficient
     %C_L_ht

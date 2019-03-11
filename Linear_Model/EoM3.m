@@ -13,7 +13,7 @@
  
     AeroModel   =   @AeroModelSSTOL;
     
-    %[value,isterminal,direction] = event(t,x);
+    %[value,isterminal,di0.04214011rection] = event(t,x);
     
     uTotal = u;
     

@@ -13,6 +13,8 @@ addpath('SSTOL_Aero_Model/')
 %run the initialization script that will create the aircraft data
 STOL_Input;
 
+%load('POC_airplane.mat');
+
 %mass is defined as 'm'
 
 m=airplane.weights.MTOW/airplane.environment.g;

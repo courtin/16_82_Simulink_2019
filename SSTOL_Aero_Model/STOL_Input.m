@@ -174,6 +174,6 @@ airplane.aero           = aero;
 airplane.stability      = stability;
 airplane.environment    = environment;
 
-
+load('POC_airplane.mat')
 save("Airplane.mat","airplane")
 clearvars -except airplane
