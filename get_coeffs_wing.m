@@ -12,12 +12,12 @@ cm_coeffs = [-0.0346   -0.0009   -0.0000   -0.0031    0.0000;
              0.0419    0.0003    0.0000   -0.0037    0.0000];
 
 %load data
-alpha_range = airplane.aero.Wing.fits.alpha_range;
-dCJ_range = airplane.aero.Wing.fits.dCJ_range;
-flaps_range = airplane.aero.Wing.fits.flaps_range;
-cls = airplane.aero.Wing.fits.cls;
+% alpha_range = airplane.aero.Wing.fits.alpha_range;
+% dCJ_range = airplane.aero.Wing.fits.dCJ_range;
+% flaps_range = airplane.aero.Wing.fits.flaps_range;
+% cls = airplane.aero.Wing.fits.cls;
 
-[cl,cx,cm]=regression_results(a_w_deg, flap_deg, dCJ_B,cl_coeffs,cx_coeffs,cm_coeffs)
+[cl,cx,cm]=regression_results(a_w_deg, flap_deg, dCJ_B,cl_coeffs,cx_coeffs,cm_coeffs);
 %%% TO DO: Include the flap range fitting to this function%%%%%%%
 
 % 
