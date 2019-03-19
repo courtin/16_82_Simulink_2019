@@ -2,3 +2,5 @@
 *.mat
 *.autosave
 *.m~
+
+slprj/_jitprj/
