@@ -5,7 +5,6 @@ function [x,u,trimmed_inputs] = calculate_trimmed_state(inputs0,x0, u0, airplane
 % (2) elevator angle in degrees
 % (3) blowing
 % (4) thrust
-% (5) flaps
 
 %calculates trim around the 'calculate body force' function 
 

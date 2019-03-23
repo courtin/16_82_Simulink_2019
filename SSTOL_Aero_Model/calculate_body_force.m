@@ -3,8 +3,13 @@ function [norm_body_force, x, u] = calculate_body_force(inputs,airplane)
 %%
 CL          = 3;
 
+<<<<<<< Updated upstream
 hft         =   250;   % Altitude above Sea Level, ft
 VKIAS       =   28;     % Indicated Airspeed, kt
+=======
+hft         =  1000;   % Altitude above Sea Level, ft
+VKIAS       =  20;     % Indicated Airspeed, kt
+>>>>>>> Stashed changes
 
 hm          =   hft * 0.3048;    % Altitude above Sea Level, m
 VmsIAS      =   VKIAS * 0.5154;  % Indicated Airspeed, m/s
@@ -48,7 +53,7 @@ phi     =	0;      % Body roll angle wrt earth, deg
 psi     =	0;      % Body yaw angle wrt earth, deg
 q       =	0;      % Body-axis pitch rate, deg/sec
 r       =	0;      % Body-axis yaw rate, deg/s
-theta   =	alpha;  % Body pitch angle wrt earth, deg [theta = alpha if hdot = 0]
+theta   =	alpha+atan(hdot/sqrt(V^2-hdot^2))/0.01745329;  % Body pitch angle wrt earth, deg [theta = alpha if hdot = 0]
 xe      =	0;      % Initial longitudinal position, m
 ye      = 	0;      % Initial lateral position, m
 ze      = 	-hm;    % Initial vertical position, m [h: + up, z: + down]
