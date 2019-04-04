@@ -1,39 +1,34 @@
-function [CL,CDi,Cl, y] = run_NLL(alfa, dCJ_i,dF_i,V,N, verbose)
+function [CL,CDi,CX,Cl, y, a_i] = run_NLL(alfa, dCJ_i,dF_i,V,N, verbose)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %This function has geometry and control
 %assumptions unique to the Spring 16.821 POC
 %vehicle hard-coded!
 %
 %Outputs:
-%CL_linear  - CL calculated using the linear lifing line coefficients
-%CL_pos     - CL calculated by using the effective angle of attack
-%distribution calculated using the lifting line, and looking up the 2D
-%coefficients at each station/
-%CDi        - Induced drag
-%CX_p       - CX calulated using the effectinve AoA and integrating over he 2D
-%coefficients
-%CXnet      - CX_p+CDi
-%Cm         - Pitching moment, calculated in the same manner as CL_pos and CX_p
-%Cni        - Induced yawing moment coefficient
-%Cl         - Induced rolling moment coefficient
-%cl_section - Section cl at nominal angle of attack
-%e          - span efficiency
-%cls        - spanwise distribution of 2D lift coefficients
-%cxs        - spanwise distribution of 2D cx coefficients
-%cms        - spanwise distribution of 2D moment coefficients
+%CL
+%CDi
+%Cl         - rolling moment coefficient
 %y          - control points for cls/cxs/cms
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Define Geometry and flight condition
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-b = 13*.3048;       %span, m
+b_add = 0;
+global center_section_on
+center_section_on = 0;
+b = (13+b_add)*.3048;       %span, m
 rho = 1.225;        %Density, kg/m^3
-     
+
+load bw02b_polar.mat cl cd alpha;
+cl_unblown = cl;
+cd_unblown = cd;
+alpha_unblown = alpha;
+
 twist = zeros(1,N); %twist distribution, rad
 
 c_root = 1.5*.3048;
-ytip = 1.75*.3048;
+ytip = (1.75+b_add/2)*.3048;
 c_dist = ones(1,N+1)*c_root; %chord distribution, m
 y = linspace(-b/2, b/2, N+1);
 %POC wing
@@ -46,30 +41,33 @@ for i = 1:N+1
 end
 
 
-S = cumtrapz(y,c_dist);
-Sref = S(end);
+Sref = trapz(y,c_dist);
 AR = b^2/Sref;
 
-%cl = get_coeffs_wing(alfa*180/pi, CJs(i), dFs(i).*180/pi,1)
-cl = 2*pi*alfa;
+cl = get_coeffs_wing(alfa*180/pi, dCJ_i, dF_i.*180/pi,1);
+%cl = 2*pi*alfa;
 c = get_c(0, c_dist, y);
 
 Gam0 = .5*c*cl*V;
 Gam = Gam0*sqrt(1-(2*y/b).^2);
-plot(y, Gam)
+if verbose
+plot(y/.3048, Gam)
 title('Initial \Gamma distribution')
+hold on
+end
 dy = b/N;
 a_i = get_a_i(Gam, y,dy,V, N);
 %plot(y, a_i)
 a_eff = alfa - a_i;
 cl = zeros(1,N+1);
 c  = zeros(1,N+1);
+cx  = zeros(1,N+1);
 dCJs  = zeros(1,N+1);
 dFs  = zeros(1,N+1);
 for i = 1:N+1
     [dCJs(i), dFs(i)] = get_CJ_dF(y(i), dCJ_i, dF_i);
     if dCJs(i) == 0
-        cl(i) = 2*pi*alfa;
+        cl(i) = get_unblown_coeffs(a_eff(i)*180/pi, cl_unblown, cd_unblown, alpha_unblown);
     else
         cl(i) = get_coeffs_wing(a_eff(i)*180/pi, dCJs(i), dFs(i).*180/pi,1);
     end
@@ -82,7 +80,7 @@ Gam_new = .5.*V.*c.*cl;
 err = 1e6;
 max_iter = 100;
 iter = 1;
-threshold = .0001;
+threshold = .00001;
 D = .05;
 history = zeros(5, N+1);
 history(1,:) = Gam_new;
@@ -93,20 +91,21 @@ while err > threshold && iter <= max_iter
     a_eff = alfa - a_i;
     for i = 1:N+1
         if dCJs(i) == 0
-            cl(i) = 2*pi*a_eff(i);
+            [cl(i), cx(i)] = get_unblown_coeffs(a_eff(i)*180/pi, cl_unblown, cd_unblown, alpha_unblown);
+
         else
-            cl(i) = get_coeffs_wing(a_eff(i)*180/pi, dCJs(i), dFs(i).*180/pi,1);
+            [cl(i), cx(i)] = get_coeffs_wing(a_eff(i)*180/pi, dCJs(i), dFs(i).*180/pi,1);
         end
     end
     Gam_new = .5.*V.*c.*cl;
-    Gam_new(1) = 0;
-    Gam_new(end) = 0;
+    
     for k = 5:-1:2
         history(k,:) = history(k-1,:);
     end
     history(1,:) = Gam_new;
     Gam = Gam_in;
-    
+    Gam(1) = 0;
+    Gam(end) = 0;
     max_err = zeros(1,N+1);
     for j = 1:N+1
         e1 = history(2,j) - history(1,j);
@@ -135,9 +134,9 @@ end
 % end
 
 %CDi = CL_linear^2/(pi*AR)*(1+delta);
-figure()
-draw_c(c_dist, y,b)
-
+if verbose
+plot(y/.3048, Gam, '--')
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Calculate Forces and Moments %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -145,17 +144,22 @@ Lp = rho*V*Gam;
 lMp = rho*V*Gam.*y;
 Dip = rho.*Gam.*V.*a_i;
 
-L = sum(Lp)*dy;
-lM = sum(lMp)*dy;
-Di = sum(Dip)*dy;
+%L = sum(Lp)*dy;
+%lM = sum(lMp)*dy;
+%Di = sum(Dip)*dy;
+L = trapz(y, Lp);
+lM = trapz(y, lMp);
+Di = trapz(y, Dip);
 
 CL  = L/(.5*rho*V^2*Sref);
 CDi = Di/(.5*rho*V^2*Sref);
 Cl  = lM/(.5*rho*V^2*Sref*b);
+CX = trapz(y,cx.*c_dist)/Sref + CDi;
   
 %%%%%%%%%%%%%%%%%%%%%%%%
 %Write and plot results%
 %%%%%%%%%%%%%%%%%%%%%%%%
+if verbose
 figure()
 plot(y/.3048, a_i*180/pi)
 title('Downwash angle')
@@ -163,11 +167,16 @@ ylabel('Deg')
 xlabel('Spanwise location (ft)')
 
 figure()
-plot(y/.3048, a_eff*180/pi)
+plot(y(2:end-1)/.3048, a_eff(2:end-1)*180/pi)
 title('Effective angle')
 ylabel('Deg')
 xlabel('Spanwise location (ft)')
 
+figure()
+plot(y/.3048, cx)
+title('Net streamwise force')
+ylabel('C_X')
+xlabel('Spanwise location (ft)')
 
 disp('  ')
 disp('Initial Conditions')
@@ -184,7 +193,11 @@ disp('==================')
 disp(['CL (lift coefficient)   = ',num2str(CL)])
 disp(['CDi                     = ',num2str(CDi)])
 disp(['Cl (roll moment coeff.) = ',num2str(Cl)])
+disp(['CX                      = ',num2str(CX)])
 
+figure()
+draw_c(c_dist, y,b)
+end
 end
 
 
@@ -198,7 +211,14 @@ end
 
 function [dCJ, dF] = get_CJ_dF(y, dCJ_i, dF_i)
     %Hard-coded for POC
-    if abs(y)>9.73*.3048/2
+    global center_section_on
+    if center_section_on
+        fuse_width = 1.5;
+    else
+        fuse_width = 0;
+    end
+    
+    if abs(y)>9.73*.3048/2 || abs(y)<fuse_width*.3048/2
         dCJ = 0;
         dF  = 0;
     else
@@ -224,6 +244,7 @@ end
 function T = get_sum_term(j,n,dGam_dy, y)
     T = dGam_dy(j)/(y(n)-y(j));
 end
+
 
 function a_i = get_a_i(Gam, y,dy,V, N)
     dGam = zeros(1,N+1);

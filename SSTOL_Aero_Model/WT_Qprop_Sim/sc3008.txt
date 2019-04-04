@@ -1,0 +1,8 @@
+
+Scorpion SII-3008,  95g, 38mm dia, 26A max, 4s max
+
+ 1     ! motor type (brushed DC)
+
+ 0.058    ! Rmotor (Ohms)
+ 0.79     ! Io     (Amps)
+1090.0    ! Kv     (rpm/Volt)

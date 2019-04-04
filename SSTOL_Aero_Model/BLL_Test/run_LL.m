@@ -1,7 +1,7 @@
 function [CL_linear, CL_pos, ...
             CDi, CXnet,CX_p, ...
             CM,Cl, Cni, cl_section, e, ...
-            cls, cxs, cms, y] = run_LL(alfa, dCJ_i,dF_i,V,N, verbose)
+            cls, cxs, cms, y, a_i] = run_LL(alfa, dCJ_i,dF_i,V,N, verbose)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %This function has geometry and control
 %assumptions unique to the Spring 16.821 POC
@@ -32,10 +32,16 @@ function [CL_linear, CL_pos, ...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 b = 13*.3048;       %span, m
 rho = 1.225;        %Density, kg/m^3
+
+load bw02b_polar.mat cl cd alpha;
+cl_unblown = cl;
+cd_unblown = cd;
+alpha_unblown = alpha;
      
 twist = zeros(1,N); %twist distribution, rad
+
 psi = linspace(pi, 0, N);   %Angle coordinate transform
-%dpsi = (pi/(N-1));          
+dpsi1 = (pi/(N));          
 y = b/2*cos(psi);           %Corresponding y to psi distribution
 
 
@@ -69,14 +75,9 @@ for i = 1:length(c_dist)
         c_dist(i) = c_tip + c_tip/c_root*yin*.3048 ;
     end
 end
-%c_dist = ctip+ctip*2/b*(b/2-abs(y));
 
-%Asymmetric wing
-%c_dist(1:N/2) = 1;
-%c_dist(N/2:end) = 1;
 
-S = cumtrapz(y,c_dist);
-Sref = S(end);
+Sref = trapz(y,c_dist);
 AR = b^2/Sref;
 
 %%%%%%%%%%%%%%%%
@@ -102,12 +103,7 @@ for m = 1:M
         [dCJ, dF] = get_CJ_dF(psim,b, dCJ_i, dF_i);
         CJs(m) = dCJ;
         dFs(m) = dF;
-        if dF == 0
-            cla = 2*pi;
-            cl0 = 0;
-        else
-            [cla,cl0, cl_section] = get_blown_cla(alfa, dCJ, dF);
-        end
+        [cla,cl0, cl_section] = get_blown_cla(alfa, dCJ, dF, cl_unblown, cd_unblown, alpha_unblown);
         clas(m) = cla;
         cl0s(m) = cl0;
         a(m,n) = sin(n*psim)+c/(4*b)*cla*n*sin(n*psim)/sin(psim);
@@ -163,6 +159,8 @@ M = 0;
 cls = zeros(1,N);
 cxs = zeros(1,N);
 cms = zeros(1,N);
+
+
 for i = 1:N
     [cl, cx, cm] = get_coeffs_wing(a_eff(i)*180/pi, CJs(i), dFs(i).*180/pi,1);
     cls(i) = cl;
@@ -245,7 +243,7 @@ end
 function [dCJ, dF] = get_CJ_dF(psi,b, dCJ_i, dF_i)
     y = b/2*cos(psi);
     %Hard-coded for POC
-    if abs(y)>9.73*.3048/2
+    if abs(y)>9.73*.3048/2 || abs(y)<1.5*.3048/2
         dCJ = 0;
         dF  = 0;
     else
