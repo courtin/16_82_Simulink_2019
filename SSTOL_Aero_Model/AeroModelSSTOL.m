@@ -176,24 +176,24 @@
 %	==================================== 
 %	Rolling Moment Coefficient
 
-	%Cl      =	(ClBr*betar + CldRr*u(2)) + Clrr * x(7) + Clpr * x(6) ...
-    %            + (CldAr*u(3));%
+	Cl      =	Clb*betar + CldR*u(2) + Clr * x(7)*(b/(2*V)) + Clp * x(6)*(b/(2*V)) ...
+                + CldA*u(3);%
 									% Total Rolling-Moment Coefficient
-    Cl = 0;
+    %Cl = 0;
 
 %	CY Calculations 
 %	==================================== 
 %	Side-Force Coefficient
-	%CY	=	(CYBr*betar + CYdRr*u(2)) + (CYdAr*u(3));% + CYdASr*u(5));
-									% Total Side-Force Coefficient
-    CY = 0;
+	CY	=(	CYb*betar + CYdR*u(2) + CYdA*u(3)+CYp*x(6)*(b/(2*V))+CYr*x(7)*(b/(2*V)));% + CYdASr*u(5));
+								% Total Side-Force Coefficient
+    %CY = 0;
 %	Cn Calculations 
 %	====================================                                     
 %	Yawing Moment Coefficient
-	%Cn	=	(CnBr*betar + CndRr*u(2)) + Cnrr * x(7) + Cnpr * x(6) ...
-	%		+ (CndAr*u(3));% + CndASr*u(5));
+	Cn	=	Cnb*betar + CndR*u(2) + Cnr * x(7)*(b/(2*V)) + Cnp * x(6)*(b/(2*V)) ...
+			+ CndA*u(3);% + CndASr*u(5));
 									% Total Yawing-Moment Coefficient
-    Cn = 0;
+    %Cn = 0;
 
 % vis_data.dCJ_BL = dCJ_BL;
 % vis_data.dCJ_BR = dCJ_BR;
@@ -201,5 +201,5 @@
 CL_tail = (CLt + CLde*u(1))*Sw/Sh*1/eta_h; %Display CL referenced to tail area;
 % vis_data.CL = CL;
 % vis_data.Cmw = Cmw;
-
+spir=Clb*Cnr/(Clr*Cnb)
 vis_data = [dCJ_BL dCJ_BR CLw CL_tail CL Cmw];

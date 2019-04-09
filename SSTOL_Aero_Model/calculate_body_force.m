@@ -3,13 +3,8 @@ function [norm_body_force, x, u] = calculate_body_force(inputs,airplane)
 %%
 CL          = 3;
 
-<<<<<<< Updated upstream
-hft         =   250;   % Altitude above Sea Level, ft
-VKIAS       =   28;     % Indicated Airspeed, kt
-=======
 hft         =  1000;   % Altitude above Sea Level, ft
-VKIAS       =  20;     % Indicated Airspeed, kt
->>>>>>> Stashed changes
+VKIAS       =  15;     % Indicated Airspeed, kt
 
 hm          =   hft * 0.3048;    % Altitude above Sea Level, m
 VmsIAS      =   VKIAS * 0.5154;  % Indicated Airspeed, m/s
@@ -41,8 +36,8 @@ beta    =	0;      % Sideslip angle, deg (relative to air mass)
 dA      =	0;      % Aileron angle, deg
 dE      =	inputs(2);      % Elevator angle, deg
 dR      =	0;      % Rudder angle, deg
-dF_L    =   0;     % Flap angle, deg
-dF_R    =   0;     % Flap angle, deg
+dF_L    =   40;     % Flap angle, deg
+dF_R    =   40;     % Flap angle, deg
 dB_L    = 	inputs(3);    % Left Blower throttle setting, % / 100
 dB_R    = 	inputs(3);    % Right Blower throttle setting, % / 100
 dT_L    = 	inputs(4);    % Left Cruiser throttle setting, % / 100

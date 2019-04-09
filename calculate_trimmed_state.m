@@ -14,7 +14,7 @@ myfunc = @(inputs) calculate_body_force(inputs,airplane);
 %don't change power
 
 min_inputs = [-50, -30,0,0];
-max_inputs = [50, 30,0,1];
+max_inputs = [50, 30,1,1];
 
 trimmed_inputs = fmincon(myfunc,inputs0,[],[],[],[],min_inputs,max_inputs);
 
