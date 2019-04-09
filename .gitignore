@@ -1,6 +1,5 @@
 #ignore mat files
-*.mat
 *.autosave
 *.m~
 
-slprj/_jitprj/
+slprj/
