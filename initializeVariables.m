@@ -32,8 +32,6 @@ inertia_matrix(3,3) = airplane.weights.Izz;
 
 
 
-
-
 %% Initial conditions
 
 %run the script to define the initial conditions and then extract the
@@ -44,6 +42,12 @@ sstol_test_Simulink;
 initial_position = x(10:12);
 
 initial_velocity = [x(1), x(5), x(2)];
+
+% Set initial z-velocity to 0 if starting from ground
+if initial_position(3) == 0
+    initial_velocity(1) = 0.1;
+    initial_velocity(3) = 0;
+end
 
 initial_orientation = [x(8), x(4), x(9)];
 
