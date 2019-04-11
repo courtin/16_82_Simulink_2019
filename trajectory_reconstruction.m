@@ -41,6 +41,10 @@ else
     %plot data
     plot3(Xe,Ye,Ze,'k','LineWidth',3)
     
+    % reverse Y-axis so matches with left-handed simulation
+    aH = gca;
+    aH.YDir = 'reverse';
+    
     %make it look nice
     grid
     view([-45,45])
