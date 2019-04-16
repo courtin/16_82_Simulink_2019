@@ -65,10 +65,10 @@
 
 %   Blowing and Thrust Calculations
 %   ====================================
-    [dCJ_BL, ~, CT_BL] = propulsor_perf(d_BL, airplane.propulsion.left_blower, cbar,Sw, alt, V);
-    [dCJ_BR, ~, CT_BR] = propulsor_perf(d_BR, airplane.propulsion.right_blower, cbar,Sw, alt, V);
-    [dCJ_TL, T_L, CT_CL] = propulsor_perf(d_TL, airplane.propulsion.left_cruiser, cbar,Sw, alt, V);
-    [dCJ_TR, T_R, CT_CR] = propulsor_perf(d_TR, airplane.propulsion.right_cruiser, cbar,Sw, alt, V);
+    [dCJ_BL, ~, CT_BL] = propulsor_perf_qprop(d_BL, airplane.propulsion.left_blower, cbar,Sw, alt, V);
+    [dCJ_BR, ~, CT_BR] = propulsor_perf_qprop(d_BR, airplane.propulsion.right_blower, cbar,Sw, alt, V);
+    [dCJ_TL,~, T_L, CT_CL] = propulsor_perf_qprop(d_TL, airplane.propulsion.left_cruiser, cbar,Sw, alt, V);
+    [dCJ_TR,~, T_R, CT_CR] = propulsor_perf_qprop(d_TR, airplane.propulsion.right_cruiser, cbar,Sw, alt, V);
 
     %Outboard most motor contributes to half of the blowing
     dCJ_BL=(3*dCJ_BL+0.5*dCJ_TL)/3.5;
@@ -201,5 +201,5 @@
 CL_tail = (CLt + CLde*u(1))*Sw/Sh*1/eta_h; %Display CL referenced to tail area;
 % vis_data.CL = CL;
 % vis_data.Cmw = Cmw;
-spir=Clb*Cnr/(Clr*Cnb)
+spiral_stability=Clb*Cnr/(Clr*Cnb)
 vis_data = [dCJ_BL dCJ_BR CLw CL_tail CL Cmw];

@@ -202,11 +202,38 @@ load('f_JVLderivatives.mat')
 % stability.Cnr = @(x,y)A.f_Cnr(x,y);
 % stability.Cnp = @(x,y)A.f_Cnp(x,y);
 stability=A;
+db=load('POC_motor_db.mat');
+volt=1:1:22;
+speed=0:5:65;
+Thrust=reshape(db.T,[], 1);
+dv=reshape(db.DV,[], 1);
+dv(dv<-10) = -10; %remove outliers from data
+[Volt,Speed]=meshgrid(volt,speed);
+Volt=reshape(Volt,[],1);
+Speed=reshape(Speed,[],1);
+max_voltage=22;
+
+f_thrust=coeffvalues(fit([Volt Speed], Thrust,'poly22'));
+f_dv=coeffvalues(fit([Volt Speed], dv,'poly22'));
 
 
 %Combine Data Structures
 
 load('POC_airplane.mat')
 airplane.stability=stability;
+airplane.propulsion.right_cruiser.f_thrust=f_thrust;
+airplane.propulsion.left_cruiser.f_thrust=f_thrust;
+airplane.propulsion.right_blower.f_thrust=f_thrust;
+airplane.propulsion.left_blower.f_thrust=f_thrust;
+
+airplane.propulsion.right_cruiser.f_dv=f_dv;
+airplane.propulsion.left_cruiser.f_dv=f_dv;
+airplane.propulsion.right_blower.f_dv=f_dv;
+airplane.propulsion.left_blower.f_dv=f_dv;
+
+airplane.propulsion.right_cruiser.max_voltage=max_voltage;
+airplane.propulsion.left_cruiser.max_voltage=max_voltage;
+airplane.propulsion.right_blower.max_voltage=max_voltage;
+airplane.propulsion.left_blower.max_voltage=max_voltage;
 save("Airplane.mat","airplane")
 clearvars -except airplane
