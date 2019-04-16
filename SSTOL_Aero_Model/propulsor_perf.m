@@ -21,7 +21,7 @@ Pshaft_one = propulsor.P_shaft_max*thr;
 [~, ~, rho] = int_std_atm(alt);
 
 [T_one, Vj] = get_motor_T(Pshaft_one, Vi, rho,propulsor);
-T = T_one * propulsor.N;
+T = T_one * propulsor.N
 CT_calc=T/(0.5*rho*1.7*Vi^2);
 %This is just to allow for the case where there
 %are multiple non-blowers ganged into a single propulsor. 
