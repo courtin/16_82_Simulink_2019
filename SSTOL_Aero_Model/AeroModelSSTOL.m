@@ -140,8 +140,8 @@
         error('CL is not size 1')
     end
     
-    CL=min(CL,100);
-    CL=max(CL,-100);
+%     CL=min(CL,100);
+%     CL=max(CL,-100);
     
 %	CX Calculations 
 %	====================================
@@ -154,8 +154,8 @@
     
     CX = CXw + CDi + CDp - CT_CL - CT_CR;
     
-    CX=min(CX,100);
-    CX=max(CX,-100);
+%     CX=min(CX,100);
+%     CX=max(CX,-100);
     
 %	Cm Calculations 
 %	====================================    
@@ -174,8 +174,8 @@
     
     Cm = CLw*(x_cg-x_acw)/cbar + Cmw + Cmh + Cmf + Cmde*u(1) + Cmq*x(3)*(cbar/(2*V));
     
-    Cm=max(Cm,-100);
-    Cm=min(Cm,100);
+%     Cm=max(Cm,-100);
+%     Cm=min(Cm,100);
     
 %	Current Lateral-Directional Characteristics
 %	===========================================
