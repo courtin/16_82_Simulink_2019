@@ -140,6 +140,9 @@
         error('CL is not size 1')
     end
     
+    CL=min(CL,100);
+    CL=max(CL,-100);
+    
 %	CX Calculations 
 %	====================================
 %     cx_left = getCXwing(a_w_deg,dCJ_BL,CT_BL,flap_L_deg,airplane);
@@ -150,7 +153,10 @@
     CDp = .02;  %Placeholder, this has little effect on the high-lift cases
     
     CX = CXw + CDi + CDp - CT_CL - CT_CR;
-
+    
+    CX=min(CX,100);
+    CX=max(CX,-100);
+    
 %	Cm Calculations 
 %	====================================    
 %     cm_left = getCMwing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
@@ -168,7 +174,8 @@
     
     Cm = CLw*(x_cg-x_acw)/cbar + Cmw + Cmh + Cmf + Cmde*u(1) + Cmq*x(3)*(cbar/(2*V));
     
-    
+    Cm=max(Cm,-100);
+    Cm=min(Cm,100);
     
 %	Current Lateral-Directional Characteristics
 %	===========================================
