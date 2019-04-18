@@ -111,6 +111,14 @@
     [cl_left,cx_left,cm_left]=get_coeffs_wing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
     [cl_right,cx_right,cm_right]=get_coeffs_wing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
     
+    if a_w_deg>25
+        [~,~,cm_right]=get_coeffs_wing(25,dCJ_BR,flap_R_deg,airplane);
+        cm_right=cm_right-0.0067*(a_w_deg-25);
+        [~,~,cm_left]=get_coeffs_wing(25,dCJ_BL,flap_L_deg,airplane);
+        cm_left=cm_left-0.0067*(a_w_deg-25);
+    end
+    
+    
 %     cl_left = getCLwing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
 %     cl_right = getCLwing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
     
