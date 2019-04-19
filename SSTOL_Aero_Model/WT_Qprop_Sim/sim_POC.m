@@ -1,16 +1,19 @@
-function [CL, CXt, CM, ai_t_avg] = sim_POC(V, alpha, throttles, flaps, verbose)
+function [CL, CXt, CM, ai_t_avg, CL_t] = sim_POC(V, alpha, throttles, flaps, verbose, blow_center)
     if nargin == 0
+        V = 5.5;         %m/s
         V = 10;         %m/s
 %                      M1  M2  M3  M4  M5  M6  M7  M8                     
-        throttles   =  [1   1   1   1   1   1   1   1];
+        throttles   =  [0   1   1   1   1   1   1   0]*.75;
 %                      F1  F2  F3  F4 
-        flaps       =  [1   1   1   1].*40*pi/180;
-        
+        flaps       =  [50 40 40 30].*pi/180;
+        flaps       =  [40 40 40 40].*pi/180;
+
         alpha = 15;
         
         verbose = 1;
+        blow_center = 0;
     end
-    
+
     useTAT = 0;
     
     
@@ -50,7 +53,8 @@ function [CL, CXt, CM, ai_t_avg] = sim_POC(V, alpha, throttles, flaps, verbose)
         dCJs(i) = dCJ_diff(it(i));
     end
     
-    [~,CL,CXw, CM, ai, y] = run_NWVL3(alpha, dCJs, flaps, verbose, useTAT);
+    [~,CL,CXw, CM, ai, y] = run_NWVL3(alpha, dCJs, flaps, verbose, useTAT, blow_center);
+    y = y.*.3048;
     insq2msq = 0.00064516;
     W = 36 * 4.45;
     Sref = 17.95*.3048^2;
@@ -97,8 +101,9 @@ function [CL, CXt, CM, ai_t_avg] = sim_POC(V, alpha, throttles, flaps, verbose)
         end
     end
     ai_tail = zeros(1,C); 
-    y_tail = zeros(1,C);
-    k = 1;
+    y_tail  = zeros(1,C);
+    c_tail  = zeros(1,C);
+    k       = 1;
     for i = 1:length(ai)
         if abs(y(i)) <= bh/2
             y_tail(k) = y(i);
@@ -107,11 +112,53 @@ function [CL, CXt, CM, ai_t_avg] = sim_POC(V, alpha, throttles, flaps, verbose)
         end
     end
     
+    a_eff_t = ai_tail + alpha*pi/180;
+    cl_t = zeros(1,C);
+    a_t = alpha;
+    load bw02b_polar.mat cl cd cm alpha;
+    unblown.cl = cl;
+    unblown.cd = cd;
+    unblown.alpha = alpha;
+    unblown.cm = cm;
+    alpha = a_t;
+    c_root = 1.36*.3048; %m
+    c_tip = .62*.3048; %m
+    L = length(y_tail);
+    for i = 1:C
+        c_tail(i) = interp1([y_tail(1), y_tail(L/2),y_tail(L/2+1), y_tail(end)], [c_tip,c_root,c_root, c_tip], y_tail(i));
+        [cl_t(i),~, ~] = get_unblown_coeffs(a_eff_t(i)*180/pi, unblown.cl, unblown.cd, unblown.alpha, unblown.cm);
+    end
+    CL_tb = trapz(y_tail,cl_t.*c_tail)/airplane.geometry.Htail.S;
     ai_t_avg = mean(ai_tail);
+    CLt_max = 1.5;
+    Sh = 639;
+    S = 2500;
+    lw = .16*12;
+    lt = 6.5*12;
+    cref = 1.41*12;
+    de_max = 25;
+    de_min = -25;
+    cosa = cos(alpha*pi/180);
+    sina = sin(alpha*pi/180);
+    i_tail = 0*pi/180;
+    M_net_w = CM + (CL*cosa+CXw*sina)*lw/cref;
+    a_tail = alpha*pi/180 + ai_t_avg+i_tail;
+    CL_tail_r = M_net_w/(Sh/S*lt/cref*cos(a_tail));
+    CL_de = .871*S/Sh*.75;   %per radian
+    ARh = 4.6;
+    %CLat = 2*pi*(ARh/(2+ARh));
+        
+    de_req = (CL_tail_r - CL_tb)/CL_de;
     if verbose
         figure()
-        plot(y_tail, 2*ai_tail*180/pi);
+        plot(y_tail/.3048, 2*ai_tail*180/pi);
+        disp(['Max dCJ                 = ',num2str(max(dCJs))])
         disp(['ai_tail (avg)           = ',num2str(2*ai_t_avg*180/pi), ' deg'])
+        disp(['CL_t (no elev. defl.)   = ',num2str(CL_tb)])
+        disp(['Elevator deflection     = ',num2str(de_req*180/pi)])
+        xlabel('Tail span (ft)')
+        ylabel('Induced AoA at tail (deg)')
+        title('Tail Downwash')
     end
 end
 

@@ -16,7 +16,7 @@ if useTAT
     cm_t = -.1;
 else
     for i = 1:N
-        if dCJs(i) == 0
+        if dCJs(i) == 0 && dF(i) == 0
             %Use lookup for bw02b airfoil
             [cl_t(i),cx_t(i)] = get_unblown_coeffs(a_eff(i)*180/pi, unblown.cl, unblown.cd, unblown.alpha, unblown.cm);
             cm_t(i) = -.1;%Placeholder cm
@@ -33,6 +33,6 @@ cxs = cl_t.*sin(-ai') + cx_t.*cos(-ai');
 Gam_new = .5*cs.*cls';
 %Gam_new(1) = 0;
 %Gam_new(end) = 0;
-R = Gam - Gam_new;
+R = Gam - Gam_new';
 end
 
