@@ -138,8 +138,19 @@
     
     eta = clat/(2*pi);
     sweep_h = airplane.geometry.Htail.sweep;
-    CLah = (2*pi*AR)/(2+sqrt(4*(AR/eta)^2*(1+tan(sweep_h)^2)));
-    CLt = CLah*a_h*Sh/Sw*eta_h;
+    if abs(a_h)>=14 & abs(a_h) <= 18
+        cl_t=sign(a_h)*(2*pi*deg2rad*14-(a_h-14)*(1.2-0.7)/(18-14));
+    elseif abs(a_h)>18 & abs(a_h)<=45
+        cl_t=sign(a_h)*(2*pi*14*deg2rad-(18-14)*(1.2-0.7)/(18-14)+(a_h-18)*0.1/6);
+    elseif abs(a_h)>45
+        cl_t=sign(a_h)*(2*pi*14*deg2rad-(18-14)*(1.2-0.7)/(18-14)+(45-18)*0.1/6-1.1/(92-45)*(a_h-45));
+    else
+        cl_t=2*pi*deg2rad*a_h;
+    end     
+        
+    CLt = (cl_t*AR)/(2+sqrt(4*(AR/eta)^2*(1+tan(sweep_h)^2)));
+    
+    CLt = CLt*Sh/Sw*eta_h;
     %Elevator and Pitch Rate effects
     %CLde = airplane.stability.CLde;
     %CLde_check = Sh/Sw*CLah*tau_h;
