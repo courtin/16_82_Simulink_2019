@@ -65,10 +65,10 @@
 
 %   Blowing and Thrust Calculations
 %   ====================================
-    [dCJ_BL, ~, CT_BL] = propulsor_perf(d_BL, airplane.propulsion.left_blower, cbar,Sw, alt, V);
-    [dCJ_BR, ~, CT_BR] = propulsor_perf(d_BR, airplane.propulsion.right_blower, cbar,Sw, alt, V);
-    [dCJ_TL, T_L, CT_CL] = propulsor_perf(d_TL, airplane.propulsion.left_cruiser, cbar,Sw, alt, V);
-    [dCJ_TR, T_R, CT_CR] = propulsor_perf(d_TR, airplane.propulsion.right_cruiser, cbar,Sw, alt, V);
+    [dCJ_BL, ~, CT_BL] = propulsor_perf_qprop(d_BL, airplane.propulsion.left_blower, cbar,Sw, alt, V);
+    [dCJ_BR, ~, CT_BR] = propulsor_perf_qprop(d_BR, airplane.propulsion.right_blower, cbar,Sw, alt, V);
+    [dCJ_TL,~, T_L, CT_CL] = propulsor_perf_qprop(d_TL, airplane.propulsion.left_cruiser, cbar,Sw, alt, V);
+    [dCJ_TR,~, T_R, CT_CR] = propulsor_perf_qprop(d_TR, airplane.propulsion.right_cruiser, cbar,Sw, alt, V);
 
     %Outboard most motor contributes to half of the blowing
     dCJ_BL=(3*dCJ_BL+0.5*dCJ_TL)/3.5;
@@ -111,6 +111,20 @@
     [cl_left,cx_left,cm_left]=get_coeffs_wing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
     [cl_right,cx_right,cm_right]=get_coeffs_wing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
     
+    if a_w_deg>25
+        [~,~,cm_right]=get_coeffs_wing(25,dCJ_BR,flap_R_deg,airplane);
+        cm_right=cm_right-0.0067*(a_w_deg-25);
+        [~,~,cm_left]=get_coeffs_wing(25,dCJ_BL,flap_L_deg,airplane);
+        cm_left=cm_left-0.0067*(a_w_deg-25);
+    end
+    if a_w_deg<25
+        [~,~,cm_right]=get_coeffs_wing(25,dCJ_BR,flap_R_deg,airplane);
+        cm_right=cm_right-0.0067*(a_w_deg+25);
+        [~,~,cm_left]=get_coeffs_wing(25,dCJ_BL,flap_L_deg,airplane);
+        cm_left=cm_left-0.0067*(a_w_deg+25);
+    end
+    
+    
 %     cl_left = getCLwing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
 %     cl_right = getCLwing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
     
@@ -124,8 +138,19 @@
     
     eta = clat/(2*pi);
     sweep_h = airplane.geometry.Htail.sweep;
-    CLah = (2*pi*AR)/(2+sqrt(4*(AR/eta)^2*(1+tan(sweep_h)^2)));
-    CLt = CLah*a_h*Sh/Sw*eta_h;
+    if abs(a_h)>=14 & abs(a_h) <= 18
+        cl_t=sign(a_h)*(2*pi*deg2rad*14-(a_h-14)*(1.2-0.7)/(18-14));
+    elseif abs(a_h)>18 & abs(a_h)<=45
+        cl_t=sign(a_h)*(2*pi*14*deg2rad-(18-14)*(1.2-0.7)/(18-14)+(a_h-18)*0.1/6);
+    elseif abs(a_h)>45
+        cl_t=sign(a_h)*(2*pi*14*deg2rad-(18-14)*(1.2-0.7)/(18-14)+(45-18)*0.1/6-1.1/(92-45)*(a_h-45));
+    else
+        cl_t=2*pi*deg2rad*a_h;
+    end     
+        
+    CLt = (cl_t*AR)/(2+sqrt(4*(AR/eta)^2*(1+tan(sweep_h)^2)));
+    
+    CLt = CLt*Sh/Sw*eta_h;
     %Elevator and Pitch Rate effects
     %CLde = airplane.stability.CLde;
     %CLde_check = Sh/Sw*CLah*tau_h;
@@ -140,6 +165,9 @@
         error('CL is not size 1')
     end
     
+%     CL=min(CL,100);
+%     CL=max(CL,-100);
+    
 %	CX Calculations 
 %	====================================
 %     cx_left = getCXwing(a_w_deg,dCJ_BL,CT_BL,flap_L_deg,airplane);
@@ -150,7 +178,10 @@
     CDp = .02;  %Placeholder, this has little effect on the high-lift cases
     
     CX = CXw + CDi + CDp - CT_CL - CT_CR;
-
+    
+%     CX=min(CX,100);
+%     CX=max(CX,-100);
+    
 %	Cm Calculations 
 %	====================================    
 %     cm_left = getCMwing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
@@ -168,7 +199,8 @@
     
     Cm = CLw*(x_cg-x_acw)/cbar + Cmw + Cmh + Cmf + Cmde*u(1) + Cmq*x(3)*(cbar/(2*V));
     
-    
+%     Cm=max(Cm,-100);
+%     Cm=min(Cm,100);
     
 %	Current Lateral-Directional Characteristics
 %	===========================================
@@ -176,24 +208,24 @@
 %	==================================== 
 %	Rolling Moment Coefficient
 
-	%Cl      =	(ClBr*betar + CldRr*u(2)) + Clrr * x(7) + Clpr * x(6) ...
-    %            + (CldAr*u(3));%
+	Cl      =	Clb*betar + CldR*u(2) + Clr * x(7)*(b/(2*V)) + Clp * x(6)*(b/(2*V)) ...
+                + CldA*u(3);%
 									% Total Rolling-Moment Coefficient
-    Cl = 0;
+    %Cl = 0;
 
 %	CY Calculations 
 %	==================================== 
 %	Side-Force Coefficient
-	%CY	=	(CYBr*betar + CYdRr*u(2)) + (CYdAr*u(3));% + CYdASr*u(5));
-									% Total Side-Force Coefficient
-    CY = 0;
+	CY	=(	CYb*betar + CYdR*u(2) + CYdA*u(3)+CYp*x(6)*(b/(2*V))+CYr*x(7)*(b/(2*V)));% + CYdASr*u(5));
+								% Total Side-Force Coefficient
+    %CY = 0;
 %	Cn Calculations 
 %	====================================                                     
 %	Yawing Moment Coefficient
-	%Cn	=	(CnBr*betar + CndRr*u(2)) + Cnrr * x(7) + Cnpr * x(6) ...
-	%		+ (CndAr*u(3));% + CndASr*u(5));
+	Cn	=	Cnb*betar + CndR*u(2) + Cnr * x(7)*(b/(2*V)) + Cnp * x(6)*(b/(2*V)) ...
+			+ CndA*u(3);% + CndASr*u(5));
 									% Total Yawing-Moment Coefficient
-    Cn = 0;
+    %Cn = 0;
 
 % vis_data.dCJ_BL = dCJ_BL;
 % vis_data.dCJ_BR = dCJ_BR;
@@ -201,5 +233,5 @@
 CL_tail = (CLt + CLde*u(1))*Sw/Sh*1/eta_h; %Display CL referenced to tail area;
 % vis_data.CL = CL;
 % vis_data.Cmw = Cmw;
-
+spiral_stability=Clb*Cnr/(Clr*Cnb)
 vis_data = [dCJ_BL dCJ_BR CLw CL_tail CL Cmw];

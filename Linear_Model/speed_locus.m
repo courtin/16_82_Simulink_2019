@@ -4,10 +4,14 @@
 clear all
 close all
 STOL_Input;
+
+%Reduce engine power
+airplane.propulsion.left_blower.P_shaft_max = airplane.propulsion.left_blower.P_shaft_max*.6;
+airplane.propulsion.right_blower.P_shaft_max = airplane.propulsion.right_blower.P_shaft_max*.6;
 global V m Ixx Iyy Izz Ixz S b cBar TrimHist x u
 
 addpath ../SSTOL_Aero_Model/
-addpath ..
+addpath ../../16_82_Simulink_2019/
 
 
 g = airplane.environment.g;
@@ -27,6 +31,7 @@ ax = axes();
 hold on
 title('Root Locus')
 grid
+alpha_trim = zeros(1, length(V_range));
 for v = 1:length(V_range)
     VKIAS = V_range(v)
     hm          =   hft * 0.3048;    % Altitude above Sea Level, m
@@ -58,8 +63,8 @@ for v = 1:length(V_range)
     dA      =	0;      % Aileron angle, deg
     dE      =	-2.935;      % Elevator angle, deg
     dR      =	0;      % Rudder angle, deg
-    dF_L    =   0;     % Flap angle, deg
-    dF_R    =   0;     % Flap angle, deg
+    dF_L    =   40;     % Flap angle, deg
+    dF_R    =   40;     % Flap angle, deg
     dB_L    = 	.5;    % Left Blower throttle setting, % / 100
     dB_R    = 	.5;    % Right Blower throttle setting, % / 100
     dT_L    = 	0;    % Left Cruiser throttle setting, % / 100
@@ -166,7 +171,8 @@ for v = 1:length(V_range)
     disp('---------------------------------')
     disp(['CX = ',num2str(CX),' CL = ',num2str(CL),' CY = ',num2str(CY)])
     disp(['Cm = ',num2str(Cm),' Cl = ',num2str(Cl),' Cn = ',num2str(Cn)])
-
+    
+    alpha_trim(v) = x(2)/sqrt(x(1)^2+x(2)^2+x(5)^2);
 
     thresh	=	[.1;.1;.1;.1;.1;.1;.1;.1;.1;.1;.1;.1;.1;.1;.1;.1;.1;.1;.1;.1;.1];
     ti = 0;
@@ -190,6 +196,10 @@ for i = 1:length(V_range)
    labels(i) = s;
 end
 legend(labels)
+figure()
+plot(V_range, alpha_trim*180/pi)
+xlabel('V_\infty (kts)')
+ylabel('Trim AoA')
 %save('eig_high.mat', 'e')
 
 % e_u = unique(e);
