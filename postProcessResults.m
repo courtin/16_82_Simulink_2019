@@ -6,7 +6,7 @@ control_plot(results_controlinput)
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.4, 0.5, 0.6, 0.25]);
 
 %coefficients plot
-coefficients_plot(results_coeffs)
+coefficients_plot(results_coeffs, vis_data)
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.4, 0.75, 0.6, 0.25]);
 
 %% plot a 2D/3D trajectory

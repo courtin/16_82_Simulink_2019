@@ -19,4 +19,6 @@ CQ  = 1/2*(Vj/Vi+1)*hd_c;
 CJ  = 2*CQ*Vj/Vi;
 dCJ = 2*CQ*(Vj/Vi-Vi/Vj);
 CT  = CJ - 2*CQ;
+Vd = .5*(Vj+Vi);
+CT3 = hd_c*Vd*(Vj-Vi)/(.5*Vi^2);
 end
