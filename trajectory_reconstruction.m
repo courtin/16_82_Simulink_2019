@@ -25,6 +25,7 @@ if range(Ye) == 0
     title(sprintf('Trajectory (2D) over %.1f seconds', max(t)))
     xlabel('X')
     ylabel('Z')
+    ylim([min(Ze) max(Ze)+10])
     
 else
     
@@ -38,6 +39,10 @@ else
     
     %plot data
     plot3(Xe,Ye,Ze,'k','LineWidth',3)
+    
+    % reverse Y-axis so matches with left-handed simulation
+    aH = gca;
+    aH.YDir = 'reverse';
     
     %make it look nice
     grid

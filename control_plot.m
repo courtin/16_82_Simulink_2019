@@ -28,8 +28,9 @@ grid on
 
 ax5 = subplot(2,3,5);
 plot(t, results_controlinput.Data(:, 6:end))
-ylabel('Blowing')
+ylabel('Throttle')
 grid on
+legend('Cruisers','Blowers')
 
 
 linkaxes([ax1,ax2,ax3,ax4,ax5],'x')
