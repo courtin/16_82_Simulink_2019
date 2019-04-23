@@ -10,7 +10,9 @@ function [dCJ,Vj, T, CT] = propulsor_perf_qprop(thr, propulsor,c,S, alt, Vi)
 %           c           wing chord
 %
 
-
+if Vi==0
+    Vi=0.01;
+end
 %Don't allow throttle less than zero
 thr = max(thr, 0);
 
@@ -25,12 +27,7 @@ T = T_one * propulsor.N;
 %are multiple non-blowers ganged into a single propulsor. 
 
 Vj=propulsor.f_dv*[1 voltage Vi voltage^2 voltage*Vi Vi^2]'+Vi;
-if Vi~=0
-    CT=T/(0.5*rho*S*Vi^2);
-else
-    CT=0;
-end
-    
+CT=T/(0.5*rho*S*Vi^2);
 
 
 %Correct the coefficients for the multiple propulsors distributed across
