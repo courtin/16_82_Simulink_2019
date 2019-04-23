@@ -11,7 +11,9 @@ function [dCJ,Vj, T, CT] = propulsor_perf_qprop(thr, propulsor,c,S, alt, Vi)
 %
 
 if Vi==0
-    Vi=0.01;
+    Vi_nd=0.01;
+else
+    Vi_nd=Vi;
 end
 %Don't allow throttle less than zero
 thr = max(thr, 0);
@@ -27,7 +29,7 @@ T = T_one * propulsor.N;
 %are multiple non-blowers ganged into a single propulsor. 
 
 Vj=propulsor.f_dv*[1 voltage Vi voltage^2 voltage*Vi Vi^2]'+Vi;
-CT=T/(0.5*rho*S*Vi^2);
+CT=T/(0.5*rho*S*Vi_nd^2);
 
 
 %Correct the coefficients for the multiple propulsors distributed across
@@ -38,8 +40,8 @@ rh = propulsor.r_hub;
 if propulsor.N > 1
     b = propulsor.b;
     hd_c = (pi*(R^2-rh^2)*propulsor.N)/(b*c);
-    [~, ~, dCJ, ~, ~] = get_wake_coeffs(Vj,Vi, hd_c);
+    [~, ~, dCJ, ~, ~] = get_wake_coeffs(Vj,Vi_nd, hd_c);
 else
     hd_c = pi*(R^2-rh^2)/(2*R*c);
-    [~, ~, dCJ, ~, ~] = get_wake_coeffs(Vj,Vi, hd_c);
+    [~, ~, dCJ, ~, ~] = get_wake_coeffs(Vj,Vi_nd, hd_c);
 end
