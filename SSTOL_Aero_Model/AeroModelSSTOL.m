@@ -1,4 +1,4 @@
-	function [CX,CL,CY,Cl,Cm,Cn, vis_data]	=	AeroModelSSTOL(x,u,Mach,alphar,betar,V,airplane)
+	function [CX,CL,CY,Cl,Cm,Cn, T, vis_data]	=	AeroModelSSTOL(x,u,Mach,alphar,betar,V,airplane)
 %	SSTOL Aero Model
 %   x(1) = u_b          Body axis u velocity, m/s
 %   x(2) = w_b          Body axis w velocity, m/s
@@ -87,6 +87,8 @@ d2r = deg2rad(1);
     
     T_L=0.5*T_L;
     T_R=0.5*T_R;
+    
+    T=T_L+T_R;
     
 %   Stability Derivates from JVL
 %   ====================================
