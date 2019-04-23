@@ -2,11 +2,11 @@ function trajectory_reconstruction(stateHistory)
 
 %stateHistory = results_state;
 
-t = stateHistory.Time;
+t = stateHistory.Time(1:end-1);
 
-Xe = stateHistory.Data(:,10);
-Ye = stateHistory.Data(:,11);
-Ze = -stateHistory.Data(:,12);
+Xe = stateHistory.Data(1:end-1,10);
+Ye = stateHistory.Data(1:end-1,11);
+Ze = -stateHistory.Data(1:end-1,12);
 
 if range(Ye) == 0
     %only longitudinal, so a 2D plot will suffice

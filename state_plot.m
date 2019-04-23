@@ -1,37 +1,37 @@
 function state_plot(stateHistory,VinfHistory,forceHistory, momentHistory)
 
 
-t = stateHistory.Time;
+t = stateHistory.Time(1:end-1);
 
 
-U = stateHistory.Data(:,1);
-V = stateHistory.Data(:,5);
-W = stateHistory.Data(:,2);
+U = stateHistory.Data(1:end-1,1);
+V = stateHistory.Data(1:end-1,5);
+W = stateHistory.Data(1:end-1,2);
 
-phi = rad2deg(stateHistory.Data(:,8));
-theta = rad2deg(stateHistory.Data(:,4));
-psi = rad2deg(stateHistory.Data(:,9));
+phi = rad2deg(stateHistory.Data(1:end-1,8));
+theta = rad2deg(stateHistory.Data(1:end-1,4));
+psi = rad2deg(stateHistory.Data(1:end-1,9));
 
-p = rad2deg(stateHistory.Data(:,6));
-q = rad2deg(stateHistory.Data(:,3));
-r = rad2deg(stateHistory.Data(:,7));
+p = rad2deg(stateHistory.Data(1:end-1,6));
+q = rad2deg(stateHistory.Data(1:end-1,3));
+r = rad2deg(stateHistory.Data(1:end-1,7));
 
-Xe = stateHistory.Data(:,10);
-Ye = stateHistory.Data(:,11);
-Ze = -stateHistory.Data(:,12);
+Xe = stateHistory.Data(1:end-1,10);
+Ye = stateHistory.Data(1:end-1,11);
+Ze = -stateHistory.Data(1:end-1,12);
 
-Vinf = VinfHistory.Data(:,1);
-alpha = VinfHistory.Data(:,2);
-beta  = VinfHistory.Data(:,3);
+Vinf = VinfHistory.Data(1:end-1,1);
+alpha = VinfHistory.Data(1:end-1,2);
+beta  = VinfHistory.Data(1:end-1,3);
 
-FX = forceHistory.Data(:,1);
-FY = forceHistory.Data(:,2);
-FZ = forceHistory.Data(:,3);
+FX = forceHistory.Data(1:end-1,1);
+FY = forceHistory.Data(1:end-1,2);
+FZ = forceHistory.Data(1:end-1,3);
 
 
-MX = momentHistory.Data(:,1);
-MY = momentHistory.Data(:,2);
-MZ = momentHistory.Data(:,3);
+MX = momentHistory.Data(1:end-1,1);
+MY = momentHistory.Data(1:end-1,2);
+MZ = momentHistory.Data(1:end-1,3);
 
 
 
