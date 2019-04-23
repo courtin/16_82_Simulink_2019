@@ -27,6 +27,9 @@
 
 %	Inertial, Geometric, and Aerodynamic Properties
 %   *** STOL_Input.m must first be run to save Airplane.mat***
+
+d2r = deg2rad(1);
+
 	A=load('Airplane.mat');
     airplane = A.airplane;
     
@@ -134,18 +137,18 @@
     %C_L_ht
     eta_h = 1; %Update with better method of estimating tail dynamic pressure ratio
     eps = 2*CLw/(pi*e*AR); %May want to use M&S method here instead
-    a_h = (alphar+i_t-eps);
+    a_h = rad2deg(alphar+i_t-eps);
     
     eta = clat/(2*pi);
     sweep_h = airplane.geometry.Htail.sweep;
     if abs(a_h)>=14 & abs(a_h) <= 18
-        cl_t=sign(a_h)*(2*pi*deg2rad*14-(a_h-14)*(1.2-0.7)/(18-14));
+        cl_t=sign(a_h)*(2*pi*d2r*14-(a_h-14)*(1.2-0.7)/(18-14));
     elseif abs(a_h)>18 & abs(a_h)<=45
-        cl_t=sign(a_h)*(2*pi*14*deg2rad-(18-14)*(1.2-0.7)/(18-14)+(a_h-18)*0.1/6);
+        cl_t=sign(a_h)*(2*pi*14*d2r-(18-14)*(1.2-0.7)/(18-14)+(a_h-18)*0.1/6);
     elseif abs(a_h)>45
-        cl_t=sign(a_h)*(2*pi*14*deg2rad-(18-14)*(1.2-0.7)/(18-14)+(45-18)*0.1/6-1.1/(92-45)*(a_h-45));
+        cl_t=sign(a_h)*(2*pi*14*d2r-(18-14)*(1.2-0.7)/(18-14)+(45-18)*0.1/6-1.1/(92-45)*(a_h-45));
     else
-        cl_t=2*pi*deg2rad*a_h;
+        cl_t=2*pi*d2r*a_h;
     end     
         
     CLt = (cl_t*AR)/(2+sqrt(4*(AR/eta)^2*(1+tan(sweep_h)^2)));
@@ -189,7 +192,8 @@
 %     
     
     Cmw = (cm_left + cm_right)/2;
-    Cmh = -Vh*eta_h*CLah*a_h;
+%     Cmh = -Vh*eta_h*CLah*a_h;
+    Cmh = -Vh*eta_h*CLt;
     
     %Cmde = airplane.stability.Cmde;
     %Cmq = airplane.stability.Cmq;
