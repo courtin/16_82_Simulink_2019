@@ -122,7 +122,7 @@ d2r = deg2rad(1);
         [~,~,cm_left]=get_coeffs_wing(25,dCJ_BL,flap_L_deg,airplane);
         cm_left=cm_left-0.0067*(a_w_deg-25);
     end
-    if a_w_deg<25
+    if a_w_deg<-25
         [~,~,cm_right]=get_coeffs_wing(25,dCJ_BR,flap_R_deg,airplane);
         cm_right=cm_right-0.0067*(a_w_deg+25);
         [~,~,cm_left]=get_coeffs_wing(25,dCJ_BL,flap_L_deg,airplane);
@@ -144,18 +144,19 @@ d2r = deg2rad(1);
     eta = clat/(2*pi);
     sweep_h = airplane.geometry.Htail.sweep;
     if abs(a_h)>=14 & abs(a_h) <= 18
-        cl_t=sign(a_h)*(2*pi*d2r*14-(a_h-14)*(1.2-0.7)/(18-14));
+        cl_t=sign(a_h)*(2*pi*d2r*14-(abs(a_h)-14)*(1.2-0.7)/(18-14));
     elseif abs(a_h)>18 & abs(a_h)<=45
-        cl_t=sign(a_h)*(2*pi*14*d2r-(18-14)*(1.2-0.7)/(18-14)+(a_h-18)*0.1/6);
+        cl_t=sign(a_h)*(2*pi*14*d2r-(18-14)*(1.2-0.7)/(18-14)+(abs(a_h)-18)*0.1/6);
     elseif abs(a_h)>45
-        cl_t=sign(a_h)*(2*pi*14*d2r-(18-14)*(1.2-0.7)/(18-14)+(45-18)*0.1/6-1.1/(92-45)*(a_h-45));
+        cl_t=sign(a_h)*(2*pi*14*d2r-(18-14)*(1.2-0.7)/(18-14)+(45-18)*0.1/6-1.1/(92-45)*(abs(a_h)-45));
     else
         cl_t=2*pi*d2r*a_h;
     end     
         
-    CLt = (cl_t*AR)/(2+sqrt(4*(AR/eta)^2*(1+tan(sweep_h)^2)));
+%     CLt = (cl_t*AR)/(2+sqrt(4*(AR/eta)^2*(1+tan(sweep_h)^2)));
+    CLh=0.8*cl_t;
     
-    CLt = CLt*Sh/Sw*eta_h;
+    CLt = CLh*Sh/Sw*eta_h;
     %Elevator and Pitch Rate effects
     %CLde = airplane.stability.CLde;
     %CLde_check = Sh/Sw*CLah*tau_h;
@@ -182,7 +183,7 @@ d2r = deg2rad(1);
     CDi = CLw^2/(pi*AR*e+2*(CT_BL+CT_BR));
     CDp = .02;  %Placeholder, this has little effect on the high-lift cases
     
-    CX = CXw + CDi + CDp - CT_CL - CT_CR;
+    CX = CXw + CDi + CDp;% - CT_CL - CT_CR;
     
 %     CX=min(CX,100);
 %     CX=max(CX,-100);
@@ -195,7 +196,7 @@ d2r = deg2rad(1);
     
     Cmw = (cm_left + cm_right)/2;
 %     Cmh = -Vh*eta_h*CLah*a_h;
-    Cmh = -Vh*eta_h*CLt;
+    Cmh = -Vh*eta_h*CLh;
     
     %Cmde = airplane.stability.Cmde;
     %Cmq = airplane.stability.Cmq;

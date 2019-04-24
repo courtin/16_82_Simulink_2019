@@ -25,7 +25,7 @@ if range(Ye) == 0
     title(sprintf('Trajectory (2D) over %.1f seconds', max(t)))
     xlabel('X')
     ylabel('Z')
-    ylim([min(Ze) max(Ze)+10])
+    ylim([min(min(Ze),0) max(Ze)+10])
     
 else
     
