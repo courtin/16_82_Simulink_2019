@@ -1,0 +1,94 @@
+eSTOL Objective Jan 2019
+#Mach
+0.00
+#IYsym   IZsym   Zsym
+0        0       0.00
+#Sref    Cref    Bref
+192.90   5.00   42.23
+#Xref    Yref    Zref
+2.55     0.00    0.00
+#
+#
+
+#==========================================================
+SURFACE
+Wing Section 1
+#Nchordwise  Cspace   Nspanwise   Sspace
+12           1.0      12           1.0
+#
+COMPONENT
+1
+#
+YDUPLICATE
+0.0
+#
+ANGLE
+0.0
+#
+JET
+#Jname  Jgain  SgnDup   hjet   Nchordwise  Cspace
+CJet    1.0    +1.0     1.03   12          1.0
+
+#----------------------------------------------------------
+SECTION
+#Xle    Yle     Zle     Chord   Ainc  Nspanwise  Sspace
+0.00    0.00    0.00    5.0    0.0   0          0
+
+NACA
+4412
+
+CONTROL
+#Cname   Cgain  Xhinge  HingeVec     SgnDup
+flap     1.0    0.67    0.0 0.0 0.0  +1.0
+
+#----------------------------------------------------------
+SECTION
+#Xle    Yle     Zle     Chord   Ainc  Nspanwise  Sspace
+0.00    15.0    0.00    5.00    0.0   0          0
+
+NACA
+4412
+
+CONTROL
+#Cname   Cgain  Xhinge  HingeVec     SgnDup
+flap     1.0    0.67    0.0 0.0 0.0  +1.0
+
+#==========================================================
+SURFACE
+Wing Section 2
+#Nchordwise  Cspace   Nspanwise   Sspace
+12           1.0      6           1.0
+#
+COMPONENT
+1
+#
+YDUPLICATE
+0.0
+#
+ANGLE
+0.0
+
+#----------------------------------------------------------
+SECTION
+#Xle    Yle     Zle     Chord   Ainc  Nspanwise  Sspace
+0.00    15.0    0.00    5.00    0.0   0          0
+
+NACA
+4412
+
+CONTROL
+#Cname   Cgain  Xhinge  HingeVec     SgnDup
+aileron  1.0    0.67    0.0 0.0 0.0  -1.0
+
+#----------------------------------------------------------
+SECTION
+#Xle    Yle     Zle     Chord   Ainc  Nspanwise  Sspace
+1.40    21.12   0.00    2.80    0.0   0          0
+
+NACA
+4412
+
+CONTROL
+#Cname   Cgain  Xhinge  HingeVec     SgnDup
+aileron  1.0    0.70    0.0 0.0 0.0  -1.0
+

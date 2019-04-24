@@ -1,0 +1,14 @@
+This folder contains prototype versions of 3 codes
+
+1) Linear Lifting Line Model that includes the 2D blown wing wind tunnel polars.
+This is mostly implemented in run_LL and called by BLL_Main as the top-level
+function.  BLL_Test-BLL_Test4 are various prototypes of this. 
+
+2)Non-linear lifting line model that uses the same polars but instead of a 
+solution via a Fourier sine series it uses substitution to iteratively converge
+on the result.  This is run via NLL_Test and run_NLL, respectively. 
+These two give roughly similar answers; there are still some numerical issues
+with the NLL code but development stopped to work on..
+
+3) Weissenger Vortex Lattice implementation of the same problem.  Currently 
+in wvl_test.m, validated against simple AVL test cases w/o blowing.  

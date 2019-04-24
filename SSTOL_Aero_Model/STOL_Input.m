@@ -235,5 +235,16 @@ airplane.propulsion.right_cruiser.max_voltage=max_voltage;
 airplane.propulsion.left_cruiser.max_voltage=max_voltage;
 airplane.propulsion.right_blower.max_voltage=max_voltage;
 airplane.propulsion.left_blower.max_voltage=max_voltage;
+
+[airplane.vl.vortex, airplane.vl.cs, airplane.vl.N, airplane.vl.bref,...
+    airplane.vl.Sref, airplane.vl.vortex_cs, ...
+    airplane.vl.ra, airplane.vl.rb, airplane.vl.sections, airplane.vl.Ns,...
+    airplane.vl.C_flap, airplane.vl.C_motor] = setup_VLgeom(0);
+[airplane.vl.unblown] = setup_VLaero();
+
+airplane.geometry.Wing.S = airplane.vl.Sref;
+airplane.geometry.Wing.b = airplane.vl.bref;
+airplane.geometry.Htail.b = 4.42*.3048;
+
 save("Airplane.mat","airplane")
 clearvars -except airplane
