@@ -81,8 +81,8 @@ d2r = deg2rad(1);
     %CT_BR=CT_BR+0.5*CT_CR;
     
     %Half of outboard motor is pure thrust
-    CT_CL=0.5*CT_CL;
-    CT_CR=0.5*CT_CR;
+%     CT_CL=0.5*CT_CL;
+%     CT_CR=0.5*CT_CR;
    
     
     %T_L=0.5*T_L;

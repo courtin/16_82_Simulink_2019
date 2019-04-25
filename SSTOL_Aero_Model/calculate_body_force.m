@@ -3,8 +3,8 @@ function [norm_body_force, x, u] = calculate_body_force(inputs,airplane)
 %%
 CL          = 3;
 
-hft         =   0; %5000; %-airplane.weights.MTOW/1000/0.3048;   % Altitude above Sea Level, ft
-VKIAS       =   0.0000000001;     % Indicated Airspeed, kt
+hft         =   -airplane.weights.MTOW/1000/0.3048;   % Altitude above Sea Level, ft
+VKIAS       =   0.0000001;     % Indicated Airspeed, kt
 
 hm          =   hft * 0.3048;    % Altitude above Sea Level, m
 VmsIAS      =   VKIAS * 0.5154;  % Indicated Airspeed, m/s

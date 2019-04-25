@@ -45,3 +45,11 @@ else
     hd_c = pi*(R^2-rh^2)/(2*R*c);
     [~, ~, dCJ, ~, ~] = get_wake_coeffs(Vj,Vi_nd, hd_c);
 end
+if abs(Vi)<0.5 & abs(thr)<=0.01
+    dCJ=0;
+    T=0;
+    CT=0;
+end
+
+%dCJ=min(dCJ,100);
+end
