@@ -23,13 +23,13 @@ cm_coeffs=[-0.0332558354208018,-0.000868583556481255,-2.24349435852672e-06,-0.00
 cbar = airplane.geometry.Wing.cbar;
 S= airplane.geometry.Wing.S;
 [~,~, T_b,~] = propulsor_perf_qprop(thr_b, airplane.propulsion.right_blower,cbar,S, 0 ,V*cosd(90-10));
-[~,~, T_c,~] = propulsor_perf_qprop(thr_b, airplane.propulsion.right_blower,cbar,S, 0 ,V*cosd(90-10));
-T_c=0.5*T_c;
+%[~,~, T_c,~] = propulsor_perf_qprop(thr_b, airplane.propulsion.right_blower,cbar,S, 0 ,V*cosd(90-10));
+%T_c=0.5*T_c;
 
 [dCJ_B,~, ~,~] = propulsor_perf_qprop(thr_b, airplane.propulsion.right_blower,cbar,S, 0 ,V);
-[dCJ_C,~, ~,~] = propulsor_perf_qprop(thr_c, airplane.propulsion.right_blower,cbar,S, 0 ,V);
-dCJ_B=(airplane.propulsion.right_blower.N*dCJ_B+0.5*dCJ_C)/(airplane.propulsion.right_blower.N+.5);
-CT=2*(T_b+T_c)/(0.5*1.225*S*V^2);
+%[dCJ_C,~, ~,~] = propulsor_perf_qprop(thr_c, airplane.propulsion.right_blower,cbar,S, 0 ,V);
+%dCJ_B=(airplane.propulsion.right_blower.N*dCJ_B+0.5*dCJ_C)/(airplane.propulsion.right_blower.N+.5);
+CT=2*(T_b)/(0.5*1.225*S*V^2);
 
 Cl_ps_90=CT*sind(flap_deg+90);
 Cl_ps_n90=CT*sind(flap_deg-90);

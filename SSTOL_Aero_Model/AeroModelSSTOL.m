@@ -74,19 +74,19 @@ d2r = deg2rad(1);
     [dCJ_TR,~, T_R, CT_CR] = propulsor_perf_qprop(d_TR, airplane.propulsion.right_cruiser, cbar,Sw, alt, V);
 
     %Outboard most motor contributes to half of the blowing
-    dCJ_BL=(3*dCJ_BL+0.5*dCJ_TL)/3.5;
-    dCJ_BR=(3*dCJ_BR+0.5*dCJ_TR)/3.5;
+    %dCJ_BL=(3*dCJ_BL+0.5*dCJ_TL)/3.5;
+    %dCJ_BR=(3*dCJ_BR+0.5*dCJ_TR)/3.5;
     
-    CT_BL=CT_BL+0.5*CT_CL;
-    CT_BR=CT_BR+0.5*CT_CR;
+    %CT_BL=CT_BL+0.5*CT_CL;
+    %CT_BR=CT_BR+0.5*CT_CR;
     
     %Half of outboard motor is pure thrust
     CT_CL=0.5*CT_CL;
     CT_CR=0.5*CT_CR;
    
     
-    T_L=0.5*T_L;
-    T_R=0.5*T_R;
+    %T_L=0.5*T_L;
+    %T_R=0.5*T_R;
     
     T=T_L+T_R;
     
