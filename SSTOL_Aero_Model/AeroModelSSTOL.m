@@ -151,7 +151,7 @@ d2r = deg2rad(1);
 
     cl_t=cl_airfoil(a_h);    
 %     CLt = (cl_t*AR)/(2+sqrt(4*(AR/eta)^2*(1+tan(sweep_h)^2)));
-    CLh=0.8*cl_t;
+    CLh=0.9*cl_t;
     
     CLt = CLh*Sh/Sw*eta_h;
     %Elevator and Pitch Rate effects
