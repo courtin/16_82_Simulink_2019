@@ -28,7 +28,7 @@ T_c=0.5*T_c;
 
 [dCJ_B,~, ~,~] = propulsor_perf_qprop(thr_c, airplane.propulsion.right_blower,cbar,S, 0 ,V);
 [dCJ_C,~, ~,~] = propulsor_perf_qprop(thr_c, airplane.propulsion.right_blower,cbar,S, 0 ,V);
-dCJ_B=(airplane.propulstion.right_blower.N*dCJ_B+0.5*dCJ_C)/(airplane.propulstion.right_blower.N+.5);
+dCJ_B=(airplane.propulsion.right_blower.N*dCJ_B+0.5*dCJ_C)/(airplane.propulsion.right_blower.N+.5);
 CT=2*(T_b+T_c)/(0.5*1.225*S*V^2);
 
 Cl_ps_90=CT*sind(flap_deg+90);

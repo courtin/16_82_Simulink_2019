@@ -143,6 +143,7 @@ d2r = deg2rad(1);
         eps=min([eps pi/2]);
     elseif eps<0
         eps=max([eps -pi/2])
+    end
     a_h = rad2deg(alphar+i_t-eps);
     
     eta = clat/(2*pi);
