@@ -30,8 +30,8 @@
 
 d2r = deg2rad(1);
 
-	A=load('Airplane.mat');
-    airplane = A.airplane;
+% 	A=load('Airplane.mat');
+%     airplane = A.airplane;
     
 
     %Handy variable shorthands
@@ -68,8 +68,8 @@ d2r = deg2rad(1);
 
 %   Blowing and Thrust Calculations
 %   ====================================
-    [dCJ_BL, ~, CT_BL] = propulsor_perf_qprop(d_BL, airplane.propulsion.left_blower, cbar,Sw, alt, V);
-    [dCJ_BR, ~, CT_BR] = propulsor_perf_qprop(d_BR, airplane.propulsion.right_blower, cbar,Sw, alt, V);
+    [dCJ_BL, ~, ~, CT_BL] = propulsor_perf_qprop(d_BL, airplane.propulsion.left_blower, cbar,Sw, alt, V);
+    [dCJ_BR, ~,~, CT_BR] = propulsor_perf_qprop(d_BR, airplane.propulsion.right_blower, cbar,Sw, alt, V);
     [dCJ_TL,~, T_L, CT_CL] = propulsor_perf_qprop(d_TL, airplane.propulsion.left_cruiser, cbar,Sw, alt, V);
     [dCJ_TR,~, T_R, CT_CR] = propulsor_perf_qprop(d_TR, airplane.propulsion.right_cruiser, cbar,Sw, alt, V);
 
@@ -181,7 +181,10 @@ d2r = deg2rad(1);
     CDp = .02;  %Placeholder, this has little effect on the high-lift cases
     
     CX = CXw + CDi + CDp;% - CT_CL - CT_CR;
-    
+    CX
+    CXw
+    CDi
+    CDp
 %     CX=min(CX,100);
 %     CX=max(CX,-100);
     
@@ -238,4 +241,6 @@ CL_tail = (CLt + CLde*u(1))*Sw/Sh*1/eta_h; %Display CL referenced to tail area;
 % vis_data.CL = CL;
 % vis_data.Cmw = Cmw;
 spiral_stability=Clb*Cnr/(Clr*Cnb)
-vis_data = [dCJ_BL dCJ_BR CLw CL_tail CL Cmw];
+vis_data = [dCJ_BL dCJ_BR CLw CL_tail CL Cmw CX];
+CX
+    end
