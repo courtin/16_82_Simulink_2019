@@ -144,7 +144,8 @@ d2r = deg2rad(1);
     elseif eps<0
         eps=max([eps -pi/2])
     end
-    a_h = rad2deg(alphar+i_t-eps);
+    camber=0.05;
+    a_h = rad2deg(alphar+i_t-eps+camber*1.5);
     
     eta = clat/(2*pi);
     sweep_h = airplane.geometry.Htail.sweep;
@@ -241,6 +242,6 @@ CL_tail = (CLt + CLde*u(1))*Sw/Sh*1/eta_h; %Display CL referenced to tail area;
 % vis_data.CL = CL;
 % vis_data.Cmw = Cmw;
 spiral_stability=Clb*Cnr/(Clr*Cnb)
-vis_data = [dCJ_BL dCJ_BR CLw CL_tail CL Cmw CX];
+vis_data = [dCJ_BL dCJ_BR CLw CL_tail CL Cmw CX eps];
 CX
     end
