@@ -113,21 +113,21 @@ d2r = deg2rad(1);
     flap_L_deg = round(rad2deg(u(4)));
     flap_R_deg = round(rad2deg(u(5)));
     
-    [cl_left,cx_left,cm_left]=get_coeffs_wing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
-    [cl_right,cx_right,cm_right]=get_coeffs_wing(a_w_deg,dCJ_BR,flap_R_deg,airplane);
+    [cl_left,cx_left,cm_left]=get_coeffs_wing(a_w_deg,flap_L_deg,V,airplane,d_BL,d_TL);
+    [cl_right,cx_right,cm_right]=get_coeffs_wing(a_w_deg,flap_R_deg,V,airplane,d_BR,d_TR);
     
-    if a_w_deg>25
-        [~,~,cm_right]=get_coeffs_wing(25,dCJ_BR,flap_R_deg,airplane);
-        cm_right=cm_right-0.0067*(a_w_deg-25);
-        [~,~,cm_left]=get_coeffs_wing(25,dCJ_BL,flap_L_deg,airplane);
-        cm_left=cm_left-0.0067*(a_w_deg-25);
-    end
-    if a_w_deg<-25
-        [~,~,cm_right]=get_coeffs_wing(25,dCJ_BR,flap_R_deg,airplane);
-        cm_right=cm_right-0.0067*(a_w_deg+25);
-        [~,~,cm_left]=get_coeffs_wing(25,dCJ_BL,flap_L_deg,airplane);
-        cm_left=cm_left-0.0067*(a_w_deg+25);
-    end
+%     if a_w_deg>25
+%         [~,~,cm_right]=get_coeffs_wing(25,dCJ_BR,flap_R_deg,airplane);
+%         cm_right=cm_right-0.0067*(a_w_deg-25);
+%         [~,~,cm_left]=get_coeffs_wing(25,dCJ_BL,flap_L_deg,airplane);
+%         cm_left=cm_left-0.0067*(a_w_deg-25);
+%     end
+%     if a_w_deg<-25
+%         [~,~,cm_right]=get_coeffs_wing(25,dCJ_BR,flap_R_deg,airplane);
+%         cm_right=cm_right-0.0067*(a_w_deg+25);
+%         [~,~,cm_left]=get_coeffs_wing(25,dCJ_BL,flap_L_deg,airplane);
+%         cm_left=cm_left-0.0067*(a_w_deg+25);
+%     end
     
     
 %     cl_left = getCLwing(a_w_deg,dCJ_BL,flap_L_deg,airplane);
@@ -139,6 +139,10 @@ d2r = deg2rad(1);
     %C_L_ht
     eta_h = 1; %Update with better method of estimating tail dynamic pressure ratio
     eps = 2*CLw/(pi*e*AR); %May want to use M&S method here instead
+    if eps>0
+        eps=min([eps pi/2]);
+    elseif eps<0
+        eps=max([eps -pi/2])
     a_h = rad2deg(alphar+i_t-eps);
     
     eta = clat/(2*pi);
