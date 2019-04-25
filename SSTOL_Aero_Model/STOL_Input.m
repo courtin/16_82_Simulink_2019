@@ -237,6 +237,6 @@ airplane.propulsion.right_blower.max_voltage=max_voltage;
 airplane.propulsion.left_blower.max_voltage=max_voltage;
 airplane.weights.xcg=0.154;
 
-airplane.aero.Wing.x_ac=0.14;
+airplane.aero.Wing.x_ac=0.154;
 save("Airplane.mat","airplane")
 clearvars -except airplane
