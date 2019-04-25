@@ -1,4 +1,4 @@
-function [cl,cx,cm] = get_coeffs_wing(a_w_deg,dCJ_B,flap_deg,airplane)
+function [cl,cx,cm] = get_coeffs_wing(a_w_deg,flap_deg,V,airplane,thr)
 
 %for 10 degree motor mount (get_regression_coefficients(MAT,10,1,1,1), accurate as of 2/11/2019):
 cl_coeffs =[0.4807    0.0801   -0.0001    0.0137   -0.0000;
@@ -10,14 +10,38 @@ cx_coeffs =[0.3430   -0.0086    0.0005   -0.0034    0.0000;
 
 cm_coeffs = [-0.0346   -0.0009   -0.0000   -0.0031    0.0000;
              0.0419    0.0003    0.0000   -0.0037    0.0000];
+         
+cbar = airplane.geometry.Wing.cbar;
+S= airplane.geometry.Wing.S;
+[dCJ_s,~, T_s,~] = propulsor_perf_qprop(thr, airplane.propulsion.right_blower,cbar,S, 0 ,V*cosd(90-10))
+[dCJ_B,~, ~,~] = propulsor_perf_qprop(thr, airplane.propulsion.right_blower,cbar,S, 0 ,V)
+CT=2*T_s/(0.5*1.225*S*V^2);
 
+Cl_ps_90=CT*sind(flap_deg+90);
+Cl_ps_n90=CT*sind(flap_deg-90);
+
+a=[1 dCJ_B]*cl_coeffs(:,3);
+b=0;
+c=[1 dCJ_B]*cl_coeffs(:,2);
+d=[1 dCJ_B]*cl_coeffs(:,1);
+alpha1=(-b+sqrt(b^2-3*a*c))/(3*a);
+alpha2=(-b-sqrt(b^2-3*a*c))/(3*a);
+alpha_max=max([alpha1 alpha2]);
+alpha_min=min([alpha1 alpha2]);
 %load data
-alpha_range = airplane.aero.Wing.fits.alpha_range;
-dCJ_range = airplane.aero.Wing.fits.dCJ_range;
-flaps_range = airplane.aero.Wing.fits.flaps_range;
-cls = airplane.aero.Wing.fits.cls;
 
-[cl,cx,cm]=regression_results(a_w_deg, flap_deg, dCJ_B,cl_coeffs,cx_coeffs,cm_coeffs)
+cm=0;
+cx=0;
+
+if a_w_deg>=alpha_max
+    [cl_amax,cx_amax,cm_amax]=regression_results(alpha_max, flap_deg, dCJ_B,cl_coeffs,cx_coeffs,cm_coeffs);
+    cl=cl_amax+(a_w_deg-alpha_max)*(Cl_ps_90-cl_amax)/(90-alpha_max);
+elseif a_w_deg<=alpha_min
+    [cl_amin,cx_amin,cm_amin]=regression_results(alpha_min, flap_deg, dCJ_B,cl_coeffs,cx_coeffs,cm_coeffs);
+    cl=cl_amin+(a_w_deg-alpha_min)*(Cl_ps_n90-cl_amin)/(-90-alpha_min);
+else
+    [cl,cx,cm]=regression_results(a_w_deg, flap_deg, dCJ_B,cl_coeffs,cx_coeffs,cm_coeffs);
+end
 %%% TO DO: Include the flap range fitting to this function%%%%%%%
 
 % 

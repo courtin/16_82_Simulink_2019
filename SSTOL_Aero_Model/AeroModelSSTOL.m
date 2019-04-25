@@ -143,16 +143,8 @@ d2r = deg2rad(1);
     
     eta = clat/(2*pi);
     sweep_h = airplane.geometry.Htail.sweep;
-    if abs(a_h)>=14 & abs(a_h) <= 18
-        cl_t=sign(a_h)*(2*pi*d2r*14-(abs(a_h)-14)*(1.2-0.7)/(18-14));
-    elseif abs(a_h)>18 & abs(a_h)<=45
-        cl_t=sign(a_h)*(2*pi*14*d2r-(18-14)*(1.2-0.7)/(18-14)+(abs(a_h)-18)*0.1/6);
-    elseif abs(a_h)>45
-        cl_t=sign(a_h)*(2*pi*14*d2r-(18-14)*(1.2-0.7)/(18-14)+(45-18)*0.1/6-1.1/(92-45)*(abs(a_h)-45));
-    else
-        cl_t=2*pi*d2r*a_h;
-    end     
-        
+
+    cl_t=cl_airfoil(a_h);    
 %     CLt = (cl_t*AR)/(2+sqrt(4*(AR/eta)^2*(1+tan(sweep_h)^2)));
     CLh=0.8*cl_t;
     
