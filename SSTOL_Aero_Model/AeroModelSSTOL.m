@@ -142,7 +142,7 @@ d2r = deg2rad(1);
     if eps>0
         eps=min([eps pi/2]);
     elseif eps<0
-        eps=max([eps -pi/2])
+        eps=max([eps -pi/2]);
     end
     camber=0.05;
     a_h = rad2deg(alphar+i_t-eps+camber*1.5);

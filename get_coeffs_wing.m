@@ -63,9 +63,12 @@ else
     [cl,cx,cm]=regression_results(a_w_deg, flap_deg, dCJ_B,cl_coeffs,cx_coeffs,cm_coeffs);
 end
 
-if abs(flap_deg)<10
-    cx=cx-(10-abs(flap_deg))/10*0.3; %HACK TO MAKE LOW FLAPS CASE MAKE SENSE
+if abs(flap_deg)<20
+    cx=cx-(20-abs(flap_deg))/20*0.2; %HACK TO MAKE LOW FLAPS CASE MAKE SENSE
 end
+
+% if abs(flap_deg)>50
+%     cx=cx-
 
 
 %%% TO DO: Include the flap range fitting to this function%%%%%%%
