@@ -1,0 +1,2272 @@
+<?xml version="1.0"?>
+ 
+<PropertyList>
+
+ <fx>
+ 
+  <crank>
+   <name>engstart</name>
+   <path>Sounds/engstart.wav</path>
+   <property>/engines/engine/cranking</property>
+   <volume>
+    <offset>0.4</offset>
+   </volume>
+  </crank>
+
+  <crank>
+   <name>crank</name>
+   <mode>looped</mode>
+   <path>Sounds/cranking.wav</path>
+   <condition>
+    <property>/engines/engine/cranking</property>
+    <not>
+     <property>/engines/engine/running</property>
+    </not>
+   </condition>
+   <volume>
+    <offset>0.5</offset>
+   </volume>
+  </crank>
+
+  <crank>
+   <name>cough</name>
+   <path>Sounds/coughing.wav</path>
+   <property>/engines/engine/running</property>
+   <volume>
+    <offset>0.3</offset>
+   </volume>
+  </crank>
+
+  <engine>
+   <name>engine</name>
+   <mode>looped</mode>
+   <path>Sounds/wasp.wav</path>
+   <property>/engines/engine/running</property>
+   <volume>
+    <property>/engines/engine/mp-osi</property>
+    <factor>0.00375</factor>
+    <min>0.15</min>
+    <max>0.5</max>
+   </volume>
+   <volume>
+    <property>/orientation/alpha-deg</property>
+    <type>log</type>
+    <min>1.0</min>
+    <max>1.5</max>
+   </volume>
+   <volume>
+    <property>/sim/current-view/internal</property>
+    <offset>1.0</offset>
+    <factor>-0.7</factor>
+   </volume>
+   <pitch>
+    <property>/engines/engine/rpm</property>
+    <factor>0.0004</factor>
+    <min>0.5</min>
+    <max>2.0</max>
+    <offset>0.15</offset>
+   </pitch>
+  </engine>
+
+  <propeller>
+   <name>propeller</name>
+   <mode>looped</mode>
+   <path>Sounds/turboprop1.wav</path>
+   <property>/engines/engine/running</property>
+   <volume>
+    <property>/orientation/alpha-deg</property>
+    <type>log</type>
+    <min>0.2</min>
+    <max>1.0</max>
+   </volume>
+   <volume>
+    <property>/sim/current-view/internal</property>
+    <factor>0.5</factor>
+   </volume>
+   <pitch>
+    <property>/engines/engine/mp-osi</property>
+    <factor>0.0036</factor>
+    <min>0.5</min>
+    <max>2.0</max>
+    <offset>0.9</offset>
+   </pitch>
+  </propeller>
+
+  <rumble>
+   <name>rumble</name>
+   <mode>looped</mode>
+   <path>Sounds/rumble.wav</path>
+   <condition>
+    <or>
+     <property>/gear/gear[0]/wow</property>
+     <property>/gear/gear[1]/wow</property>
+     <property>/gear/gear[2]/wow</property>
+    </or>
+    <!-- <property>/sim/current-view/internal</property> -->
+   </condition>
+   <volume>
+    <property>/velocities/airspeed-kt</property>
+    <type>log</type>
+    <factor>0.25</factor>
+   </volume>
+  </rumble>
+
+  <squeal>
+   <name>squeal</name>
+   <path>Sounds/squeal.wav</path>
+   <condition>
+    <or>
+     <property>/gear/gear[0]/wow</property>
+     <property>/gear/gear[1]/wow</property>
+     <property>/gear/gear[2]/wow</property>
+    </or>
+   </condition>
+   <volume>
+    <property>/velocities/speed-down-fps</property>
+    <factor>0.5</factor>
+    <max>1.0</max>
+   </volume>
+   <volume>
+    <property>/velocities/airspeed-kt</property>
+    <factor>0.01</factor>
+    <max>1.0</max>
+   </volume>
+   <volume>
+    <internal>dt_stop</internal>
+    <factor>0.05</factor>
+    <max>1.0</max>
+   </volume>
+   <pitch>
+    <property>/velocities/airspeed-kt</property>
+    <factor>0.0025</factor>
+    <offset>1.2</offset>
+   </pitch>
+  </squeal>
+ 
+  <flap>
+   <name>flaps</name>
+   <mode>in-transit</mode>
+   <path>Sounds/flaps.wav</path>
+   <property>/surface-positions/flap-pos-norm</property>
+   <volume>
+    <factor>0.8</factor>
+   </volume>
+   <reference-dist>10.0</reference-dist>
+   <max-dist>20.0</max-dist>
+  </flap>
+
+  <wind>
+   <name>wind</name>
+   <mode>looped</mode>
+   <path>Sounds/wind.wav</path>
+   <property>/velocities/airspeed-kt</property>
+   <volume>
+    <property>/position/altitude-ft</property>
+    <factor>-0.000015</factor>
+    <offset>1.0</offset>
+    <min>0.1</min>
+    <max>1.0</max>
+   </volume>
+   <volume>
+     <property>/velocities/airspeed-kt</property>
+     <factor>0.0015</factor>
+     <min>0.03</min>
+     <max>0.25</max>
+   </volume>
+   <pitch>
+    <property>/velocities/airspeed-kt</property>
+    <factor>0.0035</factor>
+    <offset>1.25</offset>
+   </pitch>
+  </wind>
+ 
+  <stall>
+   <name>stall</name>
+   <mode>looped</mode>
+   <path>Sounds/stall.wav</path>
+   <condition>
+    <and>
+     <property>/sim/alarms/stall-warning</property>
+     <greater-than>
+       <property>/velocities/airspeed-kt</property>
+       <value>10</value>
+     </greater-than>
+     <not>
+       <property>/gear/gear[0]/wow</property>
+       <property>/gear/gear[1]/wow</property>
+       <property>/gear/gear[2]/wow</property>
+     </not>
+    </and>
+    <!-- <property>/sim/current-view/internal</property> -->
+   </condition>
+   <volume>
+    <property>/sim/alarms/stall-warning</property>
+    <max>1.0</max>
+   </volume>
+   <reference-dist>10.0</reference-dist>
+   <max-dist>20.0</max-dist>
+  </stall>
+
+ <!--                  Toggle Switches                  -->     
+  <click> 
+   <name>Battery on</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <property>controls/electric/battery-switch</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Battery off</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <not> 
+     <property>controls/electric/battery-switch</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Carb Heat on</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <property>controls/anti-ice/carb-heat</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Carb Heat off</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <not> 
+     <property>controls/anti-ice/carb-heat</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+ 
+  <click> 
+   <name>Fuel Cock on</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <property>controls/fuel/fuelcock</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Fuel Cock off</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <not> 
+     <property>controls/fuel/fuelcock</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+ 
+  <click> 
+   <name>Fuel Pump on</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <property>controls/engines/engine/fuel-pump</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Fuel Pump off</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <not> 
+     <property>controls/engines/engine/fuel-pump</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Generator on</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>controls/switches/generator</property>
+     <value>1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Generator off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>controls/switches/generator</property>
+     <value>0</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Generator Reset</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>controls/switches/generator</property>
+     <value>-1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Nav Light On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/switches/nav-lights</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Nav Light Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/switches/nav-lights</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+ 
+  <click> 
+   <name>Pitot Heat On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+     <property>controls/switches/pitot-heat</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Pitot Heat Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/switches/pitot-heat</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+ 
+  <click>
+   <name>Landing Light On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/switches/landing-light</property>
+   </condition>
+   <volume>
+    <factor>1.0</factor>
+   </volume>
+  </click>
+      
+  <click>
+   <name>Landing Light Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/switches/landing-light</property>
+    </not>
+   </condition>
+   <volume>
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Turn and Bank On</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <property>instrumentation/turn-indicator/serviceable</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Turn and Bank Off</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <not> 
+     <property>instrumentation/turn-indicator/serviceable</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  
+  <click> 
+   <name>Flashing Beacon On</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <property>controls/switches/flashing-beacon</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Flashing Beacon Off</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <not>
+     <property>controls/switches/flashing-beacon</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Magnetos-off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/engines/engine/magnetos</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+	 
+  <click> 
+   <name>Magnetos-R</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>controls/engines/engine/magnetos</property>
+     <value>1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  
+  <click> 
+   <name>Magnetos-L</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>controls/engines/engine/magnetos</property>
+     <value>2</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  
+  <click> 
+   <name>Magnetos-B</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>controls/engines/engine/magnetos</property>
+     <value>3</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Instrument Lights On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+     <property>controls/switches/instr-lights</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Instrument Lights Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not> 
+     <property>controls/switches/instr-lights</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Strobe Lights White</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>controls/switches/strobes</property>
+     <value>1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Strobe Lights Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not> 
+     <property>controls/switches/strobes</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Strobe Lights Red</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>controls/switches/strobes</property>
+     <value>-1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Avionics Master On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/switches/avionic-master</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+ 
+  <click> 
+   <name>Avionics Master Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/switches/avionic-master</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <squish> 
+   <name>Primer Out</name>
+   <path>Sounds/squeal.wav</path>
+   <condition>
+    <property>controls/engines/engine/primer-pump</property>
+   </condition>
+   <volume> 
+    <factor>0.1</factor>
+   </volume>
+  </squish>
+ 
+  <squish> 
+   <name>Primer In</name>
+   <path>Sounds/squeal.wav</path>
+   <condition>
+    <not>
+     <property>controls/engines/engine/primer-pump</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>0.1</factor>
+   </volume>
+  </squish>
+
+<!-- KMA26 Audio Panel -->
+
+  <click> 
+   <name>KMA26HiSens</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kma26/sens</property>
+     <value>1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>KMA26LoSens</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kma26/sens</property>
+     <value>0</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>KMA26SensTest</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kma26/sens</property>
+     <value>-1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+<!-- KX155A Nav/Comm Radio -->
+
+  <click> 
+   <name>KX155ACommPowerOff</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kx155a/commvol-norm</property>
+     <value>0</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KX155ACommPowerOn</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <greater-than>
+     <property>instrumentation/kx155a/commvol-norm</property>
+     <value>0</value>
+    </greater-than>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KX155ANavPowerOn</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kx155a/navvol-norm</property>
+     <value>0</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KX155ANavPowerOff</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <greater-than>
+     <property>instrumentation/kx155a/navvol-norm</property>
+     <value>0</value>
+    </greater-than>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+<!-- KN53 Nav Radio -->
+
+  <click> 
+   <name>KN53PowerOn</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kn53/navvol-norm</property>
+     <value>0</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KN53PowerOff</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <greater-than>
+     <property>instrumentation/kn53/navvol-norm</property>
+     <value>0</value>
+    </greater-than>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+<!-- KT76A Transponder -->
+
+  <click> 
+   <name>KT76ModeOff</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/mode</property>
+     <value>0</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76ModeStandby</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/mode</property>
+     <value>1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76ModeOn</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/mode</property>
+     <value>2</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+
+  <click> 
+   <name>KT76ModeAlt</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/mode</property>
+     <value>3</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+
+  <click> 
+   <name>KT76ModeTest</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/mode</property>
+     <value>4</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-0xxx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit1</property>
+     <value>0</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+
+  <click> 
+   <name>KT76-1xxx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit1</property>
+     <value>1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-2xxx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit1</property>
+     <value>2</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-3xxx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit1</property>
+     <value>3</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-4xxx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit1</property>
+     <value>4</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-5xxx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit1</property>
+     <value>5</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-6xxx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit1</property>
+     <value>6</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-7xxx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit1</property>
+     <value>7</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-x0xx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit2</property>
+     <value>0</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+
+  <click> 
+   <name>KT76-x1xx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit2</property>
+     <value>1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-x2xx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit2</property>
+     <value>2</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-x3xx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit2</property>
+     <value>3</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-x4xx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit2</property>
+     <value>4</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-x5xx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit2</property>
+     <value>5</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-x6xx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit2</property>
+     <value>6</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-x7xx</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit2</property>
+     <value>7</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xx0x</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit3</property>
+     <value>0</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+
+  <click> 
+   <name>KT76-xx1x</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit3</property>
+     <value>1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xx2x</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit3</property>
+     <value>2</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xx3x</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit3</property>
+     <value>3</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xx4x</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit3</property>
+     <value>4</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xx5x</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit3</property>
+     <value>5</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xx6x</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit3</property>
+     <value>6</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xx7x</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit3</property>
+     <value>7</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xxx0</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit4</property>
+     <value>0</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+
+  <click> 
+   <name>KT76-xxx1</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit4</property>
+     <value>1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xxx2</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit4</property>
+     <value>2</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xxx3</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit4</property>
+     <value>3</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xxx4</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit4</property>
+     <value>4</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xxx5</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit4</property>
+     <value>5</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xxx6</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit4</property>
+     <value>6</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>KT76-xxx7</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+     <property>instrumentation/kt76a/digit4</property>
+     <value>7</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>0.5</factor>
+   </volume>
+  </click>
+
+<!-- Fuel Tank Selection -->
+
+  <click> 
+   <name>Tanks - None</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <equals>
+     <property>controls/fuel/switch-position</property>
+     <value>0</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+
+  <click> 
+   <name>Tanks - Left</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <equals>
+     <property>controls/fuel/switch-position</property>
+     <value>1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Tanks - Both</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <equals>
+     <property>controls/fuel/switch-position</property>
+     <value>2</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Tanks - Right</name>
+   <path>Sounds/click.wav</path>
+   <condition> 
+    <equals>
+     <property>controls/fuel/switch-position</property>
+     <value>3</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Gyro Caged</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>instrumentation/attitude-indicator/caged</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Gyro Uncaged</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>instrumentation/attitude-indicator/caged</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+
+<!-- Warning Panel -->
+
+  <click> 
+   <name>Brightness - Night</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+      <property>instrumentation/warning-panel/night</property>
+      <value>1</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Brightness - Day</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <equals>
+      <property>instrumentation/warning-panel/night</property>
+      <value>0</value>
+    </equals>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+<!-- Breakers -->
+
+  <click> 
+   <name>Start Ctrl Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/start-ctrl</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Start Ctrl Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/start-ctrl</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Gen Ctrl Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/gen-ctrl</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Gen Ctrl Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/gen-ctrl</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Strobe White Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/strobe-white</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Strobe White Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/strobe-white</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Strobe Red Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/strobe-red</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Strobe Red Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/strobe-red</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+
+  <click> 
+   <name>Panel Lights Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/panel-lights</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Panel Lights Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/panel-lights</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Avionic Blower Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/avionic-blower</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Avionic Blower Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/avionic-blower</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Pitot Heat Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/pitot-heat</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Pitot Heat Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/pitot-heat</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Fuel Pump Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/fuel-pump</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Fuel Pump Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/fuel-pump</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Engine Instr 2 Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/eng-instr-2</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Engine Instr 2 Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/eng-instr-2</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>GPS Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/gps</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>GPS Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/gps</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Com2 Nav2 Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/com2-nav2</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Com2 Nav2 Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/com2-nav2</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Avionic Bus 2 Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/avionic-bus-2</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Avionic Bus 2 Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/avionic-bus-2</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>DME Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/dme</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>DME Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/dme</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Audio Marker Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/audio-marker</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Audio Marker Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/audio-marker</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Att Indic 2 Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/att-indic-2</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Att Indic 2 Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/att-indic-2</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Land Light Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/land-light</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Land Light Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/land-light</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Map Light Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/map-light</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Map Light Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/map-light</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Nav Lights Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/nav-lights</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Nav Light Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/nav-lights</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Eng Instr 1 Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/eng-instr-1</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Eng Instr 1 Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/eng-instr-1</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Instr Lights Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/instr-lights</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Instr Lights Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/instr-lights</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>RPM Ind Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/rpm-ind</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>RPM Ind Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/rpm-ind</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Lo Volt Warning Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/lo-volt-warning</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Lo Volt Warning Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/lo-volt-warning</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Turn and Slip Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/tands</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Turn and Slip Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/tands</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Fuel Lo Lev Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/fuel-lo-lev</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Fuel Lo Lev Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/fuel-lo-lev</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Att Indic 1 Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/att-indic-1</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Att Indic 1 Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/att-indic-1</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Stall Warning Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/stall-warning</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Stall Warning Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/stall-warning</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Ess Bus Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/ess-bus</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Ess Bus Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/ess-bus</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Main Bus Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/main-bus</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Main Bus Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/main-bus</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Gen Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/gen</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Gen Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/gen</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Avionic Relay Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/avionic-relay</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Avionic Relay Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/avionic-relay</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Flaps Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/flaps</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Flaps Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/flaps</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Mute Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/mute</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Mute Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/mute</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>HSI Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/hsi</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>HSI Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/hsi</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Alt Encoder Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/alt-encoder</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Alt Encoder Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/alt-encoder</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Transponder Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/transponder</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Transponder Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/transponder</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Nav 1 Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/nav1</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Nav 1 Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/nav1</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Com 1 Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/com1</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Com 1 Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/com1</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+  <click> 
+   <name>Avionic Bus 1 Breaker On</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <property>controls/circuit-breakers/avionic-bus-1</property>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+  <click> 
+   <name>Avionic Bus 1 Breaker Off</name>
+   <path>Sounds/click.wav</path>
+   <condition>
+    <not>
+     <property>controls/circuit-breakers/avionic-bus-1</property>
+    </not>
+   </condition>
+   <volume> 
+    <factor>1.0</factor>
+   </volume>
+  </click>
+
+ </fx>
+
+</PropertyList>

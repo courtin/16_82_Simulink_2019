@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+  <sim include="Nasal/views.xml">
+
+    <author>Guillaume CHAUVAT, Emmanuel BARANGER</author>
+    <aircraft-version>0.2</aircraft-version>
+    <status>Alpha</status>
+    <rating>
+      <FDM type="int">1</FDM>
+      <systems type="int">1</systems>
+      <cockpit type="int">3</cockpit>
+      <model type="int">2</model>
+    </rating>
+    <tags>
+      <tag>aerobatic</tag>
+      <tag>1970s</tag>
+      <tag>fixed-gear</tag>
+      <tag>tricycle</tag>
+      <tag>propeller</tag>
+      <tag>piston</tag>
+      <tag>twin-engine</tag>
+      <tag>fixed-pitch</tag>
+    </tags>
+
+    <fuel-fraction>0.5</fuel-fraction>
+
+    <startup>
+      <splash-texture>Aircraft/cri-cri/cri-cri-splash.rgb</splash-texture>
+    </startup>
+
+    <sound>
+      <path archive="y">Aircraft/cri-cri/Sounds/MC-15-sound.xml</path>
+    </sound>
+
+    <model>
+      <path archive="y">Aircraft/cri-cri/Models/MC-15.xml</path>
+      <fallback-model-index type="int">707</fallback-model-index>
+    </model>
+
+    <panel>
+      <visibility archive="y">false</visibility>
+    </panel>
+
+    <multiplay>
+      <chat_display>1</chat_display>
+    </multiplay> 
+
+    <help>
+      <title>MC-15</title>
+      <key>
+        <name>d</name>
+        <desc>Open/Close canopy</desc>
+      </key>
+      <line>To start, press }}s (magnetos on, start)</line>
+    </help>
+
+    <menubar>
+      <default>
+        <menu n="10">
+          <label>Cri-Cri</label>
+          <enabled type="bool">true</enabled>
+<!--
+          <item>
+            <label>Autostart</label>
+            <binding>
+              <command>property-toggle</command>
+              <property>sim/model/start-idling</property>
+            </binding>
+          </item>
+          <item>
+            <label>Select Livery</label>
+            <binding>
+              <command>nasal</command>
+              <script>aircraft.livery.dialog.toggle()</script>
+            </binding>
+          </item>
+-->
+        </menu>
+      </default>
+    </menubar>
+
+    <flaps>
+      <setting>0.000</setting> <!-- cruise -->
+      <setting>0.444</setting> <!-- takeoff -->
+      <setting>1.000</setting> <!-- landing -->
+    </flaps>
+
+    <weight n="0">
+      <name>Pilot</name>
+      <weight-lb>160</weight-lb>
+      <max-lb>180</max-lb>
+      <min-lb>100</min-lb>
+    </weight>
+
+    <gui>
+      <style>
+        <colors>
+        <splash-screen>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+        </splash-screen>
+        <splash-font>
+          <red>0.76</red>
+          <blue>0.76</blue>
+          <green>1.0</green>
+        </splash-font>
+        </colors>
+      </style>
+    </gui>
+  </sim>
+ 
+  <input>
+    <keyboard include="Nasal/MC-15-keyboard.xml"/>
+  </input>
+ 
+  <nasal>
+    <MC15>
+      <file>Aircraft/cri-cri/Nasal/doors.nas</file>
+      <file>Aircraft/cri-cri/Nasal/instruments.nas</file>
+    </MC15>
+  </nasal>
+
+  <!-- Démarrer avec les freins parking -->
+  <controls>
+    <gear>
+      <brake-parking type="double">1</brake-parking>
+    </gear>
+  </controls>
+  
+</PropertyList>

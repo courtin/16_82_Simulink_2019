@@ -1,0 +1,167 @@
+<!-- MC 15 Cri Cri FDM by Emmanuel BARANGER -->
+
+<airplane mass="176">
+
+<!-- Approach configuration -->
+<approach speed="40" aoa="12" fuel="0.5">
+  <control-setting axis="/controls/engines/engine[0]/throttle" value="0.4"/>
+  <control-setting axis="/controls/engines/engine[0]/mixture" value="1.0"/>
+  <control-setting axis="/controls/engines/engine[1]/throttle" value="0.4"/>
+  <control-setting axis="/controls/engines/engine[1]/mixture" value="1.0"/>
+  <control-setting axis="/controls/flight/flaps" value="1.0"/>
+  <solve-weight idx="0" weight="174"/>  <!-- masse maxi -->
+</approach>
+
+<!-- Cruise configuration -->
+<cruise speed="100" alt="6000" fuel="0.5">
+  <control-setting axis="/controls/engines/engine[0]/throttle" value="1.0"/>
+  <control-setting axis="/controls/engines/engine[0]/mixture" value="1.0"/>
+  <control-setting axis="/controls/engines/engine[1]/throttle" value="1.0"/>
+  <control-setting axis="/controls/engines/engine[1]/mixture" value="1.0"/>
+  <control-setting axis="/controls/flight/flaps" value="0.0"/>
+  <solve-weight idx="0" weight="174"/>
+</cruise>
+
+<cockpit x="0.020" y="0.0" z="0.388"/>
+
+<fuselage ax="1.475" ay="0" az="-0.145" 
+          bx="-2.144" by="0" bz="-0.120"
+          width="0.597" 
+          taper="0.5" 
+          midpoint="0.3"/>
+
+<wing x="0.21" y="0.290" z="-0.241" 
+      taper="1" 
+      incidence="0"
+      length="2.1" 
+      chord="0.6" 
+      sweep="0" 
+      dihedral="5" 
+      camber="0.06"
+      twist="0">
+  <stall aoa="18" width="3" peak="1.5"/>
+  <flap0 start="0.0" end="0.55" lift="1.6" drag="1.2"/>
+  <flap1 start="0.55" end="0.95" lift="1.6" drag="1.1"/>
+  <control-input axis="/controls/flight/flaps" control="FLAP0"/>
+  <control-input axis="/controls/flight/aileron" control="FLAP1" split="true"/>
+  <control-input axis="/controls/flight/aileron-trim" control="FLAP1" split="true"/>
+  <control-output control="FLAP0" prop="/surface-positions/flap-pos-norm"/>
+  <control-output control="FLAP1" side="left" prop="/surface-positions/left-aileron-pos-norm"/>
+  <control-output control="FLAP1" side="right" prop="/surface-positions/right-aileron-pos-norm"/>
+  <control-speed transition-time="5" control="FLAP0"/>
+</wing>
+
+<hstab x="-2.134" y="0" z="0.572" 
+       taper="1" 
+       effectiveness="1.0" 
+       length="0.743" 
+       chord="0.400" 
+       sweep="0">
+  <stall aoa="18" width="3" peak="1.5"/>
+  <flap0 start="0" end="1" lift="1.6" drag="1.1"/>
+  <control-input axis="/controls/flight/elevator" control="FLAP0"/>
+  <control-input axis="/controls/flight/elevator-trim" control="FLAP0"/>
+  <control-output control="FLAP0" prop="/surface-positions/elevator-pos-norm"/>
+</hstab>
+
+<vstab x="-1.762" y="0" z="-0.049" 
+       taper="0.5" 
+       effectiveness="1.0"
+       length="0.595" 
+       chord="0.636" 
+       sweep="39.8">
+  <stall aoa="18" width="3" peak="1.5"/>
+  <flap0 start="0" end="1" lift="1.5" drag="1.2"/>
+  <control-input axis="/controls/flight/rudder" control="FLAP0" invert="true"/>
+  <control-input axis="/controls/flight/rudder-trim" control="FLAP0" invert="true"/>
+  <control-output control="FLAP0" prop="/surface-positions/rudder-pos-norm" min="1" max="-1"/>
+</vstab>
+
+  <propeller x="1.295" y="0.461" z="0.167" 
+             radius="0.334"
+	     cruise-speed="120" 
+	     cruise-rpm="6000"
+	     cruise-alt="6000" 
+	     cruise-power="13"
+	     takeoff-power="14" 
+	     takeoff-rpm="6000"
+	     mass="33" 
+	     moment="0.15"  
+	     gear-ratio="1"
+             contra="0">
+    <piston-engine eng-rpm="6000" 
+                   eng-power="15"/>
+    <actionpt x="1.411" y="0.461" z="0.054" />
+    <control-input control="THROTTLE" axis="/controls/engines/engine[0]/throttle" />
+    <control-input control="STARTER" axis="/controls/engines/engine[0]/starter" />
+    <control-input control="MAGNETOS" axis="/controls/engines/engine[0]/magnetos" />
+    <control-input control="MIXTURE" axis="/controls/engines/engine[0]/mixture" />
+  </propeller>
+
+  <propeller x="1.295" y="-0.461" z="0.167" 
+             radius="0.334"
+	     cruise-speed="120" 
+	     cruise-rpm="6000"
+	     cruise-alt="6000" 
+	     cruise-power="13"
+	     takeoff-power="14" 
+	     takeoff-rpm="6000"
+	     mass="33" 
+	     moment="0.15"  
+	     gear-ratio="1"
+             contra="0">
+    <piston-engine eng-rpm="6000" 
+                   eng-power="15"/>
+    <actionpt x="1.411" y="-0.461" z="0.054" />
+    <control-input control="THROTTLE" axis="/controls/engines/engine[1]/throttle" />
+    <control-input control="STARTER" axis="/controls/engines/engine[1]/starter" />
+    <control-input control="MAGNETOS" axis="/controls/engines/engine[1]/magnetos" />
+    <control-input control="MIXTURE" axis="/controls/engines/engine[1]/mixture" />
+  </propeller>
+  
+<!-- Nose wheel -->
+<gear 
+   x="1.381" y="0" z="-0.584" 
+   compression="0.1" 
+   spring="0.8"
+   on-solid="1"
+   sfric="1"
+   dfric="1">
+  <control-input axis="/controls/flight/rudder" control="STEER" src0="-1.0" src1="1.0" dst0="-0.5" dst1="0.5"/>
+</gear>
+
+<!-- Left wheel -->
+<gear 
+   x="0.169" y="0.540" z="-0.604" 
+   compression="0.05" 
+   spring="0.8" 
+   on-solid="1" >
+  <control-input axis="/controls/gear/brake-left" control="BRAKE" split="true"/>
+  <control-input axis="/controls/gear/brake-parking" control="BRAKE" split="true"/>
+</gear>
+
+<!-- Right wheel -->
+<gear 
+   x="0.169" y="-0.540" z="-0.604" 
+   compression="0.05" 
+   spring="0.8"
+   on-solid="1" >
+  <control-input axis="/controls/gear/brake-right" control="BRAKE" split="true"/>
+  <control-input axis="/controls/gear/brake-parking" control="BRAKE" split="true"/>
+</gear>
+
+<!-- tail -->
+<gear 
+   x="-2.250" y="0.0" z="-0.225"
+   compression="0.01" 
+   on-solid="1" >
+</gear>
+
+<tank x="0.5" y="0" z="-0.05" capacity="50" />
+
+<ballast x="0.79" y="0.0" z="0.495" mass="38"/>
+
+<!-- Pilote -->
+<weight x="0" y="0" z="0.05" mass-prop="/sim/weight[0]/weight-lb" size="0"/>
+
+</airplane>

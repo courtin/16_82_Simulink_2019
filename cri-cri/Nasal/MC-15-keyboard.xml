@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+   <key n="100">
+    <name>d</name>
+    <desc>Canopy</desc>
+    <binding>
+     <command>nasal</command>
+     <script>MC15.canopy.toggle();</script>
+    </binding>
+   </key>
+
+</PropertyList>
+

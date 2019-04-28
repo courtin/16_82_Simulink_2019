@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<PropertyList include="MC-15-base.xml">
+
+  <sim>
+
+    <description>Colomban MC-15 Cri-Cri (YASim)</description>
+    <flight-model archive="y">yasim</flight-model>
+    <aero archive="y">MC-15-yasim</aero>
+
+  </sim>
+ 
+</PropertyList>

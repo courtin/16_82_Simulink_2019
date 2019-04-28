@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+<!-- Badin -->
+  <model>
+    <path>Aircraft/cri-cri/Models/Instruments/Asi/asi.xml</path>
+    <offsets>
+      <x-m>-0.58</x-m>
+      <y-m>-0.083</y-m>
+      <z-m>0.136</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+
+<!-- Compas -->
+  <model>
+    <path>Aircraft/cri-cri/Models/Instruments/Compass/j3compass.xml</path>
+    <offsets>
+      <x-m>-0.56</x-m>
+      <y-m>0</y-m>
+      <z-m>0.138</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+
+<!-- Altimetre -->
+  <model>
+    <path>Aircraft/cri-cri/Models/Instruments/Altimeter/alt.xml</path>
+    <offsets>
+      <x-m>-0.58</x-m>
+      <y-m>0.083</y-m>
+      <z-m>0.136</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+
+<!-- Truc gauche -->
+  <model>
+    <path>Aircraft/cri-cri/Models/Instruments/empty.ac</path>
+    <offsets>
+      <x-m>-0.565</x-m>
+      <y-m>-0.166</y-m>
+      <z-m>0.053</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+
+<!-- Accelerometre -->
+  <model>
+    <path>Aircraft/cri-cri/Models/Instruments/GMeter/GMeter.xml</path>
+    <offsets>
+      <x-m>-0.558</x-m>
+      <y-m>-0.083</y-m>
+      <z-m>0.053</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+
+<!-- Bille -->
+  <model>
+    <path>Aircraft/cri-cri/Models/Instruments/Turn/turn.xml</path>
+    <offsets>
+      <x-m>-0.565</x-m>
+      <y-m>0</y-m>
+      <z-m>0.053</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+
+<!-- Variometre -->
+  <model>
+    <path>Aircraft/cri-cri/Models/Instruments/VSI/vsi2.xml</path>
+    <offsets>
+      <x-m>-0.564</x-m>
+      <y-m>0.083</y-m>
+      <z-m>0.053</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+
+<!-- Truc droit -->
+  <model>
+    <path>Aircraft/cri-cri/Models/Instruments/empty.ac</path>
+    <offsets>
+      <x-m>-0.565</x-m>
+      <y-m>0.166</y-m>
+      <z-m>0.053</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+
+<!-- Radio -->
+  <model>
+    <path>Aircraft/Instruments-3d/ky196/ky196-comm1.xml</path>
+    <offsets>
+      <x-m>-0.5505</x-m>
+      <y-m>0</y-m>
+      <z-m>-0.01</z-m>
+      <pitch-deg>-10</pitch-deg>
+    </offsets>
+  </model>
+
+</PropertyList>

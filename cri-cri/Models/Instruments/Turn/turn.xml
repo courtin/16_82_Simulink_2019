@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<PropertyList>
+
+ <path>turn.ac</path>
+
+ <animation>
+  <type>material</type>
+  <object-name>Face</object-name>
+  <object-name>Needle1</object-name>
+  <object-name>Background</object-name>
+  <object-name>Ball</object-name>
+  <emission>
+    <factor-prop>/controls/lighting/instruments-norm</factor-prop>
+    <red>0.5</red>
+    <green>0.25</green>
+    <blue>0.25</blue>
+  </emission>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>Ball</object-name>
+  <property>/instrumentation/slip-skid-ball/indicated-slip-skid</property>
+  <min>-1.1</min>
+  <max>1.1</max>
+  <interpolation>
+   <entry>
+    <ind>-1.1</ind>
+    <dep>-6.2</dep>
+   </entry>
+   <entry>
+    <ind>1.1</ind>
+    <dep>6.2</dep>
+   </entry>
+  </interpolation>
+  <center>
+   <x-m>0</x-m>
+   <y-m>0</y-m>
+   <z-m>0.22</z-m>
+  </center>
+  <axis>
+   <x>-1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>Needle1</object-name>
+  <property>/instrumentation/turn-indicator/indicated-turn-rate</property>
+  <factor>8.0</factor>
+  <axis>
+   <x>-1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+</PropertyList>
