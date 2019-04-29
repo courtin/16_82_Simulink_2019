@@ -244,4 +244,4 @@ CL_tail = (CLt + CLde*u(1))*Sw/Sh*1/eta_h; %Display CL referenced to tail area;
 spiral_stability=Clb*Cnr/(Clr*Cnb)
 vis_data = [dCJ_BL dCJ_BR CLw CL_tail CL Cmw CX eps];
 CX
-    end
+end
