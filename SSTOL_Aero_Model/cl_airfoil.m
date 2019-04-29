@@ -1,6 +1,7 @@
 function cl_t=cl_airfoil(a_h)
 %% IN DEGREES
 %%
+a_h=mod(a_h+90,180)-90
 if abs(a_h)>=11 & abs(a_h) <= 15
         cl_t=sign(a_h)*(1/11*11-(abs(a_h)-11)*(1-0.6)/(15-11));
     elseif abs(a_h)>15 & abs(a_h)<=42

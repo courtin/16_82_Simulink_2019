@@ -203,7 +203,7 @@ d2r = deg2rad(1);
     %Cmq = airplane.stability.Cmq;
     
     Cmaf = 0; %Negelect fuselage contributions for now
-    Cmf = Cmaf*alphar;
+    Cmf = Cmaf*sin(alphar);
     
     Cm = CLw*(x_cg-x_acw)/cbar + Cmw + Cmh + Cmf + Cmde*u(1) + Cmq*x(3)*(cbar/(2*V));
     
@@ -216,7 +216,7 @@ d2r = deg2rad(1);
 %	==================================== 
 %	Rolling Moment Coefficient
 
-	Cl      =	Clb*betar + CldR*u(2) + Clr * x(7)*(b/(2*V)) + Clp * x(6)*(b/(2*V)) ...
+	Cl      =	Clb*sin(betar) + CldR*u(2) + Clr * x(7)*(b/(2*V)) + Clp * x(6)*(b/(2*V)) ...
                 + CldA*u(3);%
 									% Total Rolling-Moment Coefficient
     %Cl = 0;
@@ -224,13 +224,13 @@ d2r = deg2rad(1);
 %	CY Calculations 
 %	==================================== 
 %	Side-Force Coefficient
-	CY	=(	CYb*betar + CYdR*u(2) + CYdA*u(3)+CYp*x(6)*(b/(2*V))+CYr*x(7)*(b/(2*V)));% + CYdASr*u(5));
+	CY	=(	CYb*sin(betar) + CYdR*u(2) + CYdA*u(3)+CYp*x(6)*(b/(2*V))+CYr*x(7)*(b/(2*V)));% + CYdASr*u(5));
 								% Total Side-Force Coefficient
     %CY = 0;
 %	Cn Calculations 
 %	====================================                                     
 %	Yawing Moment Coefficient
-	Cn	=	Cnb*betar + CndR*u(2) + Cnr * x(7)*(b/(2*V)) + Cnp * x(6)*(b/(2*V)) ...
+	Cn	=	Cnb*sin(betar) + CndR*u(2) + Cnr * x(7)*(b/(2*V)) + Cnp * x(6)*(b/(2*V)) ...
 			+ CndA*u(3);% + CndASr*u(5));
 									% Total Yawing-Moment Coefficient
     %Cn = 0;

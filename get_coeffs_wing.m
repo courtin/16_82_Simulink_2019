@@ -48,19 +48,42 @@ alpha_min=min([alpha1 alpha2]);
 
 cm=0;
 
+% if a_w_deg>90
+%     a_w_deg=a_w_deg-180;
+% end
+% 
+% if a_w_deg<-90
+%     a_w_deg=a_w_deg+180;
+% end
 
+a_cm=a_w_deg;
+a_w_deg=mod(a_w_deg+90,180)-90;
 if a_w_deg>=alpha_max
-    [cl_amax,cx_amax,cm_amax]=regression_results(alpha_max, flap_deg, dCJ_B,cl_coeffs,cx_coeffs,cm_coeffs);
+    %a_w_deg=180/pi*asin(a_w_deg*pi/180);
+    [cl_amax,cx_amax,~]=regression_results(alpha_max, flap_deg, dCJ_B,cl_coeffs,cx_coeffs,cm_coeffs);
     cl=cl_amax+(a_w_deg-alpha_max)*(Cl_ps_90-cl_amax)/(90-alpha_max);
     cx=cx_amax+(a_w_deg-alpha_max)*(Cx_ps_90-cx_amax)/(90-alpha_max);
-    cm=cm_amax-0.0035*(a_w_deg-alpha_max);
 elseif a_w_deg<=alpha_min
+    %a_w_deg=180/pi*asin(a_w_deg*pi/180);
     [cl_amin,cx_amin,cm_amin]=regression_results(alpha_min, flap_deg, dCJ_B,cl_coeffs,cx_coeffs,cm_coeffs);
     cl=cl_amin+(a_w_deg-alpha_min)*(Cl_ps_n90-cl_amin)/(-90-alpha_min);
     cx=cx_amin+(a_w_deg-alpha_min)*(Cx_ps_n90-cx_amin)/(-90-alpha_min);
     cm=cm_amin-0.0035*(a_w_deg-alpha_min);
 else
     [cl,cx,cm]=regression_results(a_w_deg, flap_deg, dCJ_B,cl_coeffs,cx_coeffs,cm_coeffs);
+end
+
+
+if a_cm>=alpha_max
+        [~,~,cm_amax]=regression_results(alpha_max, flap_deg, dCJ_B,cl_coeffs,cx_coeffs,cm_coeffs);
+        a_quad=(-alpha_max+125*cm_amax+180)/(125*(alpha_max^2-285*alpha_max+18900));
+        b_quad=(-cm_amax-(180-alpha_max)^2*a_quad)/(180-alpha_max);
+        cm=cm_amax+a_quad*(a_cm-alpha_max)^2+b_quad*(a_cm-alpha_max);
+elseif a_cm<=alpha_min
+        [~,~,cm_amin]=regression_results(alpha_min, flap_deg, dCJ_B,cl_coeffs,cx_coeffs,cm_coeffs);
+        a_quad=-(alpha_min-125*cm_amin+180)/(125*(alpha_min^2-285*alpha_min+18900));
+        b_quad=(-cm_amin-(-180-alpha_min)^2*a_quad)/(-180-alpha_min);
+        cm=cm_amin+a_quad*(a_cm-alpha_min)^2+b_quad*(a_cm-alpha_min);
 end
 
 if abs(flap_deg)<20
