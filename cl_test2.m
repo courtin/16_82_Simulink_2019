@@ -8,7 +8,7 @@ flap_list=0:10:90
 for i=1:length(flap_list)
 
 flap_deg=flap_list(i);
-thr_B=1;
+thr_B=0.5;
 thr_C=0;
 
 i=0;
@@ -18,7 +18,8 @@ i=i+1;
 [cl(i),cx(i),cm(i)] = get_coeffs_wing(alpha,flap_deg,V,airplane,thr_B,thr_C);
 cl_t(i)=cl_airfoil(alpha);
 end
-plot(alpha_list,cl)
+plot(alpha_list,cl_t)
 hold on
 end
+grid on
 hold off

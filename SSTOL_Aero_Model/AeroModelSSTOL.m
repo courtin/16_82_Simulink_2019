@@ -181,11 +181,13 @@ d2r = deg2rad(1);
     CDi = CLw^2/(pi*AR*e+2*(CT_BL+CT_BR));
     CDp = .02;  %Placeholder, this has little effect on the high-lift cases
     
-    CX = CXw + CDi + CDp;% - CT_CL - CT_CR;
-    CX
-    CXw
-    CDi
-    CDp
+    Cdh= 1.8-1.8*cos(alphar);
+    CDh=Cdh*Sh/Sw;
+    
+    Cdv=1.8-1.8*cos(betar);
+    CDv=Cdv*Sv/Sw;
+     
+    CX = CXw + CDi + CDp + CDh + CDv;% - CT_CL - CT_CR;
 %     CX=min(CX,100);
 %     CX=max(CX,-100);
     
@@ -197,7 +199,8 @@ d2r = deg2rad(1);
     
     Cmw = (cm_left + cm_right)/2;
 %     Cmh = -Vh*eta_h*CLah*a_h;
-    Cmh = -Vh*eta_h*CLh;
+    Cmh = -Vh*eta_h*CLh*cos(alphar)-Vh*Cdh*sin(alphar);
+    
     
     %Cmde = airplane.stability.Cmde;
     %Cmq = airplane.stability.Cmq;
@@ -230,8 +233,9 @@ d2r = deg2rad(1);
 %	Cn Calculations 
 %	====================================                                     
 %	Yawing Moment Coefficient
+    Cnv=-CDv*lv/cbar*sin(betar);
 	Cn	=	Cnb*sin(betar) + CndR*u(2) + Cnr * x(7)*(b/(2*V)) + Cnp * x(6)*(b/(2*V)) ...
-			+ CndA*u(3);% + CndASr*u(5));
+			+ CndA*u(3)+Cnv;% + CndASr*u(5));
 									% Total Yawing-Moment Coefficient
     %Cn = 0;
 
