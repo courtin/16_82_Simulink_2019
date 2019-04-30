@@ -52,6 +52,7 @@ d2r = deg2rad(1);
     tau_h = airplane.aero.Htail.tau;
     x_cg = airplane.weights.xcg;
     x_acw = airplane.aero.Wing.x_ac;
+    AR_t=airplane.geometry.Htail.AR;
     
     alt = -x(12);
     
@@ -138,12 +139,12 @@ d2r = deg2rad(1);
     %Tail Lift Coefficient
     %C_L_ht
     eta_h = 1; %Update with better method of estimating tail dynamic pressure ratio
-    eps = 2*CLw/(pi*e*AR); %May want to use M&S method here instead
-    if eps>0
-        eps=min([eps pi/2]);
-    elseif eps<0
-        eps=max([eps -pi/2]);
-    end
+    eps = atan(2*CLw/(pi*e*AR)); %May want to use M&S method here instead
+%     if eps>0
+%         eps=min([eps pi/2]);
+%     elseif eps<0
+%         eps=max([eps -pi/2]);
+%     end
     camber=0.05;
     a_h = rad2deg(alphar+i_t-eps+camber*1.5);
     
@@ -151,8 +152,8 @@ d2r = deg2rad(1);
     sweep_h = airplane.geometry.Htail.sweep;
 
     cl_t=cl_airfoil(a_h);    
-%     CLt = (cl_t*AR)/(2+sqrt(4*(AR/eta)^2*(1+tan(sweep_h)^2)));
-    CLh=0.9*cl_t;
+    CLh = (cl_t*AR_t)/(2+sqrt(4*(AR_t/eta)^2*(1+tan(sweep_h)^2)));
+    %CLh=0.9*cl_t;
     
     CLt = CLh*Sh/Sw*eta_h;
     %Elevator and Pitch Rate effects
@@ -181,7 +182,7 @@ d2r = deg2rad(1);
     CDi = CLw^2/(pi*AR*e+2*(CT_BL+CT_BR));
     CDp = .02;  %Placeholder, this has little effect on the high-lift cases
     
-    Cdh= 1.8-1.8*cos(alphar);
+    Cdh= 1.8-1.8*cosd(a_h)+CLh^2/(pi*AR_t*e);
     CDh=Cdh*Sh/Sw;
     
     Cdv=1.8-1.8*cos(betar);
