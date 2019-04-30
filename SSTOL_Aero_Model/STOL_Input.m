@@ -239,5 +239,11 @@ airplane.weights.xcg=0.154;
 
 airplane.aero.Wing.x_ac=0.13;
 airplane.geometry.Htail.AR=4.5;
+airplane.weights.Ixx=8;
+airplane.weights.Iyy=6.5;
+airplane.weights.Izz=14.5;
+
+
+
 save("Airplane.mat","airplane")
 clearvars -except airplane
