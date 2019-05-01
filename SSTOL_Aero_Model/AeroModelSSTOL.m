@@ -234,7 +234,7 @@ d2r = deg2rad(1);
 %	Cn Calculations 
 %	====================================                                     
 %	Yawing Moment Coefficient
-    Cnv=-CDv*lv/cbar*sin(betar);
+    Cnv=+CDv*lv/cbar*sin(betar);
 	Cn	=	Cnb*sin(betar) + CndR*u(2) + Cnr * x(7)*(b/(2*V)) + Cnp * x(6)*(b/(2*V)) ...
 			+ CndA*u(3)+Cnv;% + CndASr*u(5));
 									% Total Yawing-Moment Coefficient
